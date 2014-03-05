@@ -1,0 +1,96 @@
+﻿@model SearchAvto.Models.ViewModels.RegistrationModel
+@{
+    ViewBag.Title = "Registrate";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Message</h2>
+
+@section Scripts{
+    <script>
+
+        function submitForm() {
+
+            console.log('here');
+
+            var Name = $("#name");
+            var Mail = $("#Email");
+            var PassWord = $("#Password");
+            var ConfirmPassword = $("#ConfirmPassword");
+
+            if (Name.val() == "" ||
+                Mail.val() == "" ||
+                PassWord.val() == "" ||
+                ConfirmPassword.val() == "") {
+                document.getElementById("information").innerHTML = 'Заполнены не все поля';
+                return;
+            }
+
+            console.log(PassWord.val());
+            console.log(ConfirmPassword.val());
+
+            if (ConfirmPassword.val() != PassWord.val()) {
+                document.getElementById("information").innerHTML = 'Пароли не совпадают';
+            }
+
+            else {
+                $("#main_form").submit();
+            }
+        }
+    </script>
+}
+<div class="container">
+    @using (Html.BeginForm("RegistrateUser", "User", FormMethod.Post, new { @id = "main_form" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <p id="information"></p>
+
+        <div class="form-horizontal">
+            <hr />
+            @Html.ValidationSummary(true)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, "name")
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Name, new { @required = true })
+                    @Html.ValidationMessageFor(model => model.Name)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Email, "email")
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Email, new { @required = true })
+                    @Html.ValidationMessageFor(model => model.Email)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Password, "Password")
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Password, new { @required = true })
+                    @Html.ValidationMessageFor(model => model.Password)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ConfirmPassword, "ConfirmPassword")
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ConfirmPassword, new { @required = true })
+                    @Html.ValidationMessageFor(model => model.ConfirmPassword)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="button" onclick="submitForm();" value="Зарегестрироваться" />
+                </div>
+            </div>
+        </div>
+    }
+
+    <div>
+        @Html.ActionLink("Назад", "Index")
+    </div>
+</div>

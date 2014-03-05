@@ -1,0 +1,30 @@
+﻿@model CarModel
+@{
+    ViewBag.Title = Model != null ? Model.FullName : "Модель не найдена";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (Model == null)
+{
+    <div class="container">
+        <div class="col-lg-12">
+            <h3>Модель не найдена</h3>
+        </div>
+    </div>
+    return;
+}
+@{
+    IEnumerable<Modification> modifications = Model.Modifications;
+}
+<div class="breadcrumbs flat">
+    @HtmlManager.BreadCrumbs(Html, Model)
+</div>
+<div class="container">
+    <h2>@Model.FullName</h2>
+    <div class="col-lg-12">@HtmlManager.Image(Model.Image, Model.Name)</div>
+    <ul class="list">
+        @foreach (Modification modification in modifications)
+        {
+            <li>@Html.ActionLink(modification.FullName, "Modification", new { id = modification.Id })</li>
+        }
+    </ul>
+</div>

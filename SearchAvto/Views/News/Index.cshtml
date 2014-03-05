@@ -1,0 +1,48 @@
+﻿@model IEnumerable<News>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="bg-content">
+    <!--  content  -->
+    <div id="content">
+        <div class="ic"></div>
+        <div class="container">
+            <div class="row">
+                <article class="span8">
+                    <div class="inner-1">
+                        <ul class="list-blog">
+                            @foreach (News news in Model)
+                            {
+                            <li>
+                                <h3>@news.Title</h3>
+                                <time datetime="@String.Format("{0:yyyy-MM-dd}", news.Date)" class="date-1"><i class="icon-calendar icon-white"></i> @String.Format("{0:dd-MM-yyyy}", news.Date)</time>
+                                <a href="@Url.Action( "News", "News", new { id = news.Id })#comments" class="comments"><i class="icon-comment icon-white"></i> @news.CommentsToNews.Count()</a>
+                                <div class="clear"></div>
+                                <div class="">
+                                    @HtmlManager.Image(news.Image,news.ShortTitle)
+
+                                </div>
+                                <p>Morbi ullamcorper, leo eget varius elementum, orci leo feugiat lectus, vitae lobortis mauris velit tempor erat. Etiam eget orci at massa pretium fringilla ac non tortor. Fusce sed velit risus, vitae vehicula quam. Cras at turpis urna, eget volutpat neque. Nullam porttitor, est interdum placerat pharetra, erat sapien aliquet urna, at commodo risus tellus eu nunc.</p>
+                                @Html.ActionLink("Подробнее", "News", "News", new { id = news.Id }, new { @class = "btn btn-1" })
+                            </li>
+                            }
+
+                        </ul>
+                    </div>
+                </article>
+                <article class="span4">
+                    <h3 class="extra">Search</h3>
+                    <form id="search" action="@Url.Action("Index","News")" method="GET" accept-charset="utf-8">
+                        <div class="clearfix">
+                            <input type="text" name="search" onblur="if (this.value == '') this.value = '';" onfocus="if (this.value == '') this.value = '';">
+                            <a href="#" onclick="document.getElementById('search').submit()" class="btn btn-1">Search</a>
+                        </div>
+                    </form>
+                </article>
+            </div>
+        </div>
+    </div>
+</div>
+

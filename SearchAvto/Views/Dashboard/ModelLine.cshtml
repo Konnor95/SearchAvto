@@ -1,0 +1,100 @@
+﻿@model ModelLine
+@{
+    ViewBag.Title = Model != null ? Model.FullName : "Модельная линия не найдена";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+@if (Model == null)
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Модельная линия не найдена</h1>
+        </div>
+    </div>
+    return;
+}
+@{
+    IEnumerable<CarModel> models = Model.CarModels;
+}
+@section Styles
+{
+    @Styles.Render("~/bundles/DataTablesStyles")
+}
+@section Scripts
+{
+    @Scripts.Render("~/bundles/DataTablesScripts")
+    <script>
+        $(document).ready(function () {
+            $('#dataTables-example').dataTable();
+        });
+    </script>
+}
+
+<div class="breadcrumbs flat">
+    @HtmlManager.DashboardBreadCrumbs(Html, Model)
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header fleft">@Model.FullName</h1>
+        <div class="action-buttons">
+            @HtmlManager.AddButton(HtmlManager.AddLink(Html, Model))
+            @HtmlManager.EditButton(HtmlManager.EditLink(Html, Model))
+            @HtmlManager.DeleteButton(HtmlManager.DeleteLink(Html, Model))
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        @HtmlManager.ProccessResultContainer(ViewBag.Result)
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Модели
+            </div>
+            @if (!models.Any())
+            {
+                <div class="panel-body">
+                    <h3>У модельной линии нет моделей</h3>
+                </div>
+                return;
+            }
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Имя</th>
+                                <th>Тип кузова</th>
+                                <th>Старт производства</th>
+                                <th>Окончание производства</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (CarModel carModel in models)
+                            {
+                                <tr>
+                                    <td>@carModel.Id</td>
+                                    <td>@Html.ActionLink(carModel.FullName, "Model", new { id = carModel.Id })</td>
+                                    @if (carModel.BodyType != null)
+                                    {
+                                        <td>@carModel.BodyType.Name</td>
+                                    }
+                                    else
+                                    {
+                                        <td>Не указан</td>}
+                                    @HtmlManager.TableCell(carModel.StartYearOfProduction)
+                                    @HtmlManager.TableCell(carModel.EndYearOfProduction)
+                                    <td>
+                                        @HtmlManager.EditIconLink(Url.Action("EditModel", "Dashboard", new { id = carModel.Id }))
+                                        @HtmlManager.DeleteIconLink(Url.Action("DeleteModel", "Dashboard", new { id = carModel.Id }))
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

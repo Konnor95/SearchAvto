@@ -1,0 +1,42 @@
+﻿@model CarModel
+@{
+    ViewBag.Title = Model != null ? "Удалить модель " + Model.FullName : "Модель не найдена";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+@if (Model == null)
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header fleft">Модель не найдена</h1>
+        </div>
+    </div>
+    return;
+}
+<div class="breadcrumbs flat">
+    @HtmlManager.DashboardBreadCrumbs(Html, Model, HtmlManager.DeleteLink(Html, Model))
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header fleft">Удалить модель @Model.FullName</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <p>Вы уверены, что хотите удалить модель @Model.FullName ? Будут удалены все модификации, относящиеся к этой модели.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        @HtmlManager.ProccessResultContainer(ViewBag.Result)
+        @using (Html.BeginForm("ManageModelDeleting", "Dashboard", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(id => Model.Id)
+            <div class="form-group">
+                @HtmlManager.SubmitButton()
+                @HtmlManager.DefaultButton(Html.ActionLink("Назад", "Model", "Dashboard", new { id = Model.Id }, null))
+            </div>
+        }
+    </div>
+</div>

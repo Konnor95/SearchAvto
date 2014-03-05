@@ -1,0 +1,100 @@
+﻿@model News
+@{
+    ViewBag.Title = Model != null ? Model.Title : "Новость не найдена";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+@if (Model == null)
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Новость не найдена</h1>
+        </div>
+    </div>
+    return;
+}
+@{
+    IEnumerable<CommentsToNew> modelLines = Model.CommentsToNews;
+}
+
+@section Styles
+{
+    @Styles.Render("~/bundles/DataTablesStyles")
+}
+@section Scripts
+{
+    @Scripts.Render("~/bundles/DataTablesScripts")
+    <script>
+        $(document).ready(function () {
+            $('#dataTables-example').dataTable();
+        });
+    </script>
+}
+@*<div class="breadcrumbs flat">
+    @HtmlManager.DashboardBreadCrumbs(Html, Model)
+</div>*@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header fleft">@Model.Title</h1>
+      <div class="action-buttons">
+    @*@HtmlManager.AddButton(HtmlManager.AddLink(Html, Model))*@
+            @HtmlManager.EditButton(HtmlManager.EditLink(Html, Model))
+            @HtmlManager.DeleteButton(HtmlManager.DeleteLink(Html, Model))
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        @HtmlManager.ProccessResultContainer(ViewBag.Result)
+        <div>
+            <h3 class="page-header">Название</h3>
+                    <div>@Model.Title</div>
+            <h3 class="page-header">Текст</h3>
+            <div >@Html.Raw(Model.Text)</div>
+            <h3 class="page-header">Изображение</h3>
+                    <div>@HtmlManager.Image(Model.Image, Model.Title)</div>
+        </div>
+
+    </div>
+</div>
+@*<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Модельные линии
+            </div>
+            @if (!modelLines.Any())
+            {
+                <div class="panel-body">
+                    <h3>У бренда нет модельных линий</h3>
+                </div>
+                return;
+            }
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Имя</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (ModelLine modelLine in modelLines)
+                            {
+                                <tr>
+                                    <td>@modelLine.Id</td>
+                                    <td>@Html.ActionLink(modelLine.FullName, "ModelLine", new { id = modelLine.Id })</td>
+                                    <td>
+                                        @HtmlManager.EditIconLink(Url.Action("EditModelLine", "Dashboard", new { id = modelLine.Id }))
+                                        @HtmlManager.DeleteIconLink(Url.Action("DeleteModelLine", "Dashboard", new { id = modelLine.Id }))
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>*@

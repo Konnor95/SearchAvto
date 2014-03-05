@@ -1,0 +1,42 @@
+﻿@model ModelLine
+@{
+    ViewBag.Title = Model != null ? Model.FullName : "Модельная линия не найдена";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model == null)
+{
+    <div class="container">
+        <div class="col-lg-12">
+            <h3>Модельная линия не найдена</h3>
+        </div>
+    </div>
+    return;
+}
+@{
+    IEnumerable<CarModel> models = Model.CarModels;
+}
+<div class="breadcrumbs flat">
+    @HtmlManager.BreadCrumbs(Html, Model)
+</div>
+<div class="container">
+    <div class="row">
+        <h2>Выберите модель</h2>
+        <ul class="thumbnails thumbnails-1">
+            @foreach (CarModel carModel in models)
+            {
+                <li class="span3">
+                    <div class="thumbnail thumbnail-1">
+                        <span>@Html.ActionLink(carModel.FullName, "Model", new { id = carModel.Id })</span>
+                        <div><a href="@Url.Action("Model", new { id = carModel.Id })">@HtmlManager.Image(carModel.Image, carModel.Name)</a></div>
+                    </div>
+                    <section>
+                        <div class="meta">
+                            <i title="Годы производства" class="calendar icon20"></i><span>@carModel.YearsOfProduction</span>
+                        </div>
+                    </section>
+                </li>
+            }
+        </ul>
+    </div>
+</div>

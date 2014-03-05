@@ -1,0 +1,129 @@
+﻿@model Tuple<ModelLine, IEnumerable<BodyClass>>
+@{
+    ViewBag.Title = Model != null ? "Добавить модель для " + Model.Item1.FullName : "Модельная линия не найдена";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+@if (Model==null||Model.Item1 == null)
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Модельная линия не найдена</h1>
+        </div>
+    </div>
+    return;
+}
+<div class="breadcrumbs flat">
+    @HtmlManager.DashboardBreadCrumbs(Html, Model.Item1, HtmlManager.AddLink(Html, Model.Item1))
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header fleft">Добавить модель для @Model.Item1.FullName</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-10">
+        @HtmlManager.ProccessResultContainer(ViewBag.Result)
+        @using (Html.BeginForm("ManageModelAdding", "Dashboard", FormMethod.Post, new { id = "main-form", enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true)
+                <input type="hidden" id="id" name="id" value="@Model.Item1.Id"/>
+                <div class="form-group">
+                    <label class="control-label col-md-2" for="Name">Название</label>
+                    <div class="col-md-2">
+                        <input type="hidden" id="bodyType" name="bodyType" />
+                        <input class="form-control" id="Name" name="Name" type="text" placeholder="Название"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-2" for="Name">Тип кузова</label>
+                    <div class="fleft pad-15">
+                        @Html.DropDownList("BodyClasses", new SelectList(Model.Item2, "Id", "Name"), new { @class = "form-control" })
+                    </div>
+                    <div class="fleft pad-15">
+                        @foreach (BodyClass bodyClass in Model.Item2)
+                        {
+                            @Html.DropDownList("BodyTypes" + bodyClass.Id, new SelectList(bodyClass.BodyTypes, "Id", "Name"), new { @class = "bodyTypeList form-control" })
+                        }
+                    </div>
+                </div>
+                @{
+            int year = DateTime.Now.Year;
+                }
+                <div class="form-group">
+                    <label class="control-label col-md-2" for="start">Старт производства</label>
+                    <div class="col-md-2">
+                        <input class="form-control" id="start" name="start" type="number" placeholder="Неизвестно" min="1769" max="@year" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-2" for="end">Окончание производства</label>
+                    <div class="col-md-2">
+                        <input class="form-control" id="end" name="end" type="number" placeholder="Неизвестно" min="1769" max="@year" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-2">Изображение</label>
+                    <div class="col-md-2">
+                        @HtmlManager.ImageUpload()
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <div class="alert alert-warning">
+                            Внимание! Для правильньного отображения модели должно быть заполнено имя модели либо годы производства.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @HtmlManager.SubmitButton()
+                        @HtmlManager.DefaultButton(Html.ActionLink("Назад", "Brand", "Dashboard", new { id = Model.Item1.Id }, null))
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    @foreach (BodyClass bodyClass in Model.Item2)
+    {
+        foreach (BodyType bodyType in bodyClass.BodyTypes)
+        {
+            @HtmlManager.InfoBox(bodyType.Id, bodyType.Name, bodyType.Description)
+        }
+    }
+</div>
+@section Scripts
+{
+    <script>
+        $('#main-form').on('submit', function () {
+            //e.preventDefault();
+            var classId = $('#BodyClasses').val();
+            var typeId = $("#BodyTypes" + classId).val();
+            $('#bodyType').val(typeId);
+            //console.log($('#bodyType').val());
+        });
+        $(document).ready(function () {
+            $('#BodyClasses').change(function () {
+                $(".bodyTypeList").css("display", "none");
+                var classId3 = $('#BodyClasses').val();
+                $("#BodyTypes" + classId3).css("display", "inline");
+                var id2 = $("#BodyTypes" + classId3).val();
+                $(".info-box").css("display", "none");
+                $("#InfoBox" + id2).css("display", "inline");
+            });
+            $('.bodyTypeList').change(function () {
+                var classId3 = $('#BodyClasses').val();
+                var id2 = $("#BodyTypes" + classId3).val();
+                $(".info-box").css("display", "none");
+                $("#InfoBox" + id2).css("display", "inline");
+            });
+            $(".bodyTypeList").css("display", "none");
+            var classId2 = $('#BodyClasses').val();
+            $("#BodyTypes" + classId2).css("display", "inline");
+            var id = $("#BodyTypes" + classId2).val();
+            $(".info-box").css("display", "none");
+            $("#InfoBox" + id).css("display", "inline");
+        });
+    </script>
+}

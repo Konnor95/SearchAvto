@@ -1,0 +1,160 @@
+﻿@model Modification
+@{
+    ViewBag.Title = Model != null ? Model.FullName : "Модификация не найдена";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+    bool hasFuelTank = false;
+}
+@if (Model == null)
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Модификация не найдена</h1>
+        </div>
+    </div>
+    return;
+}
+@section Styles
+{
+    @Styles.Render("~/bundles/DataTablesStyles")
+}
+
+<div class="breadcrumbs flat">
+    @HtmlManager.DashboardBreadCrumbs(Html, Model)
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header fleft">@Model.FullName</h1>
+        <div class="action-buttons">
+            @HtmlManager.EditButton(HtmlManager.EditLink(Html, Model))
+            @HtmlManager.DeleteButton(HtmlManager.DeleteLink(Html, Model))
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        @HtmlManager.ProccessResultContainer(ViewBag.Result)
+        <div class="panel panel-default">
+            <div class="panel-heading">Основные характеристики</div>
+            <table class="table table-bordered">
+                @HtmlManager.TableRow("Тип", Model.Type)
+                @HtmlManager.TableRow("Тип кузова", Model.CarModel.BodyType.Name)
+                @HtmlManager.TableRow("Количество мест", Model.NumberOfSeats)
+            </table>
+            @if (Model.HasAnySpeedInfo)
+            {
+                <div class="panel-heading">Скоростные характеристики</div>
+                <table class="table table-bordered">
+                    @HtmlManager.TableRow("Ускорение до 100 км/ч, с", Model.Velocity)
+                    @HtmlManager.TableRow("Максимальная скорость, км/ч", Model.MaxSpeed)
+                </table>
+            }
+
+            @if (Model.HasInternalCombustionEngine)
+            {
+                hasFuelTank = true;
+                <div class="panel-heading">Двигатель</div>
+                <table class="table table-bordered">
+                    @HtmlManager.TableRow("Расположение", Model.InternalCombustionEngine.EngineLocation.Name)
+                    @HtmlManager.TableRow("Объем, см<sup>3</sup>", Model.InternalCombustionEngine.Volume, Html)
+                    @HtmlManager.TableRow("Тип компновки", Model.InternalCombustionEngine.ValvesArrangement.Name)
+                    @HtmlManager.TableRow("Количество цилиндров", Model.InternalCombustionEngine.NumberOfValves)
+                    @HtmlManager.TableRow("Мощность, л.с.", Model.InternalCombustionEngine.Power)
+                    @HtmlManager.TableRow("Тип топлива", Model.InternalCombustionEngine.FuelType.Name)
+                    @HtmlManager.TableRow("Крутящий момент, Н&middot;м/об. в мин.", String.Format("{0}/{1}", Model.InternalCombustionEngine.Torque, Model.InternalCombustionEngine.TorqueRotations), Html)
+
+                </table>
+                <div class="panel-heading">Расход топлива</div>
+                <table class="table table-bordered">
+                    @HtmlManager.TableRow("По городу, л/100 км", Model.InternalCombustionEngine.FuelConsumptionInCity)
+                    @HtmlManager.TableRow("По трассе, л/100 км", Model.InternalCombustionEngine.FuelConsumptionOnRoad)
+                    @HtmlManager.TableRow("Смешанный цикл, л/100 км", Model.InternalCombustionEngine.FuelConsumptionCombined)
+                </table>
+            }
+            @if (Model.HasElectricEngine)
+            {
+                if (Model.ElectricEngine.HasBattery)
+                {
+                    <div class="panel-heading">Батарея</div>
+                    <table class="table table-bordered">
+                        @HtmlManager.TableRow("Тип", Model.ElectricEngine.BatteryType.Name)
+                        @HtmlManager.TableRow("Номинальное напряжение, В", Model.ElectricEngine.BatteryNominalVoltage)
+                    </table>
+                }
+                if (Model.ElectricEngine.HasFirstMotor)
+                {
+                    <div class="panel-heading">Основной электродвигатель</div>
+                    <table class="table table-bordered">
+                        @HtmlManager.TableRow("Мощность, л.с.", Model.ElectricEngine.ElectricMotor.Power)
+                        @HtmlManager.TableRow("Крутящий момент, Н&middot;м", Model.ElectricEngine.ElectricMotor.Torque, Html)
+                    </table>
+                }
+                if (Model.ElectricEngine.HasFirstMotor)
+                {
+                    <div class="panel-heading">Дополнительный электродвигатель</div>
+                    <table class="table table-bordered">
+                        @HtmlManager.TableRow("Мощность, л.с.", Model.ElectricEngine.ElectricMotor1.Power)
+                        @HtmlManager.TableRow("Крутящий момент, Н&middot;м", Model.ElectricEngine.ElectricMotor1.Torque, Html)
+                    </table>
+                }
+            }
+            @if (Model.HasAnyDimension)
+            {
+                <div class="panel-heading">Габариты</div>
+                <table class="table table-bordered">
+                    @HtmlManager.TableRow("Длина, мм", Model.Length)
+                    @HtmlManager.TableRow("Ширина, мм", Model.Width)
+                    @HtmlManager.TableRow("Высота, мм", Model.Height)
+                    @HtmlManager.TableRow("Колесная база, мм", Model.Wheelbase)
+                    @HtmlManager.TableRow("Ширина передней колеи, мм", Model.FrontTrackWidth)
+                    @HtmlManager.TableRow("Ширина задней колеи, мм", Model.BackTrackWidth)
+                </table>
+            }
+            @if (Model.HasAnyTransmissionOrWheelInfo)
+            {
+                <div class="panel-heading">Коробка передач</div>
+                <table class="table table-bordered">
+                    @HtmlManager.TableRow("Тип", Model.TransmissionType.Name)
+                    @HtmlManager.TableRow("Количество ступеней", Model.TransmissionStages)
+                    @HtmlManager.TableRow("Привод", Drives.GetById(Model.Drive).Name)
+                    @HtmlManager.TableRow("Колесная формула", Model.WheelFormula)
+                </table>
+            }
+            @if (Model.HasAnyMassInfo)
+            {
+                <div class="panel-heading">Масса</div>
+                <table class="table table-bordered">
+                    @HtmlManager.TableRow("Снаряженная масса, кг", Model.CurbWeight)
+                    @HtmlManager.TableRow("Полная масса, кг", Model.TotalWeight)
+                </table>
+            }
+            @if (Model.HasAnyTireInfo())
+            {
+                <div class="panel-heading">Прочее</div>
+                <table class="table table-bordered">
+                    @if (Model.HasAnyTireInfo())
+                    {
+                        @HtmlManager.TableRow("Шины", String.Format("{0}/{1}{2}{3}", Model.TireProfileWidth, Model.TireProfileHeight, Model.TireCarcassType.ShortName, Model.TireMountingDiameter))
+                    }
+                    @HtmlManager.TableRow("Объем багажника, л", Model.CargoVolume)
+                    @HtmlManager.TableRow("Максимальный объем багажника, л", Model.MaxCargoVolume)
+                    @if (hasFuelTank)
+                    {
+                        @HtmlManager.TableRow("Объем топливного бака, л", Model.InternalCombustionEngine.FuelTankVolume)
+                    }
+                </table>
+            }
+            @if (Model.HasAnyOtherInfo || hasFuelTank)
+            {
+                <div class="panel-heading">Прочее</div>
+                <table class="table table-bordered">
+                    @HtmlManager.TableRow("Объем багажника, л", Model.CargoVolume)
+                    @HtmlManager.TableRow("Максимальный объем багажника, л", Model.MaxCargoVolume)
+                    @if (hasFuelTank)
+                    {
+                        @HtmlManager.TableRow("Объем топливного бака, л", Model.InternalCombustionEngine.FuelTankVolume)
+                    }
+                </table>
+            }
+        </div>
+    </div>
+</div>

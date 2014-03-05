@@ -1,0 +1,343 @@
+﻿@using System.Collections
+@using System.Globalization
+@using System.Web.Mvc
+@using System.Web.Mvc.Html
+@using SearchAvto.Models.DataModels
+@using HtmlHelper = System.Web.Mvc.HtmlHelper
+@helper Image(string path, string alt = "",string styles = "")
+{
+    if (String.IsNullOrWhiteSpace(path))
+    {
+        <img style="@styles" class="thumb" src="/Images/no-image.png" alt="@alt" title="@alt" />
+    }
+    else
+    {
+        path = "/" + path;
+        <img style="@styles" class="thumb" src="@path" alt="@alt" title="@alt" />
+    }
+}
+@helper ImageUpload(string path = null, string alt = "", bool required = false)
+{
+    if (!String.IsNullOrWhiteSpace(path))
+    {
+        path = "/" + path;
+        <input type="hidden" name="DeleteImage" id="DeleteImage" value="false"/>
+        <div class="removable-image">
+            <img class="thumb" src="@path" alt="@alt" title="@alt" />
+            <img class="cross" onclick="HideImage();"src="/Images/Icons/x.png" title="Удалить"  alt="Удалить"/>
+        </div>
+        <script>
+            //TODO: fix with multiple
+            function HideImage() {
+                $(".removable-image").hide('slow');
+                $("#DeleteImage").val(true);
+            }
+        </script>
+    }
+    if (!required)
+    {
+        <input id="imageUpload" accept="image/*" name="imageUpload" type="file" />
+    }
+    else
+    {
+        <input id="imageUpload" accept="image/*" name="imageUpload" type="file" required="required" />
+    }
+}
+@helper BreadCrumbs(HtmlHelper html)
+{
+    @html.ActionLink("Бренды", "Index", "Search")
+
+}
+@helper BreadCrumbs(HtmlHelper html, Brand brand)
+{
+    @BreadCrumbs(html)
+    @html.ActionLink(brand.Name, "Brand", "Search", new { id = brand.Id }, null)
+}
+@helper BreadCrumbs(HtmlHelper html, ModelLine modelLine)
+{
+   @BreadCrumbs(html, modelLine.Brand)
+    @html.ActionLink(modelLine.FullName, "ModelLine", "Search", new { id = modelLine.Id }, null)
+}
+@helper BreadCrumbs(HtmlHelper html, CarModel carModel)
+{
+    @BreadCrumbs(html, carModel.ModelLine)
+    @html.ActionLink(carModel.FullName, "Model", "Search", new { id = carModel.Id }, null)
+}
+@helper BreadCrumbs(HtmlHelper html, Modification modification)
+{
+    @BreadCrumbs(html, modification.CarModel)
+    @html.ActionLink(modification.FullName, "Modification", "Search", new { id = modification.Id }, null)
+}
+
+
+@helper DashboardBreadCrumbs(HtmlHelper html, HtmlString s = null)
+{
+    @html.ActionLink("Бренды", "Brands", "Dashboard")
+    if (s != null)
+    { @s }
+}
+@helper DashboardBreadCrumbs(HtmlHelper html, Brand brand, HtmlString s = null)
+{
+    @DashboardBreadCrumbs(html)
+    @html.ActionLink(brand.Name, "Brand", "Dashboard", new { id = brand.Id }, null)
+    if (s != null)
+    { @s }
+}
+@helper DashboardBreadCrumbs(HtmlHelper html, ModelLine modelLine, HtmlString s = null)
+{
+    @DashboardBreadCrumbs(html, modelLine.Brand)
+    @html.ActionLink(modelLine.FullName, "ModelLine", "Dashboard", new { id = modelLine.Id }, null)
+    if (s != null)
+    { @s }
+}
+@helper DashboardBreadCrumbs(HtmlHelper html, CarModel carModel, HtmlString s = null)
+{
+    @DashboardBreadCrumbs(html, carModel.ModelLine)
+    @html.ActionLink(carModel.FullName, "Model", "Dashboard", new { id = carModel.Id }, null)
+    if (s != null)
+    { @s }
+}
+@helper DashboardBreadCrumbs(HtmlHelper html, Modification modification, HtmlString s = null)
+{
+    @DashboardBreadCrumbs(html, modification.CarModel)
+    @html.ActionLink(modification.FullName, "Modification", "Dashboard", new { id = modification.Id }, null)
+    if (s != null)
+    { @s }
+}
+@helper TableRow(string name, object value, HtmlHelper html = null)
+{
+    if (value != null)
+    {
+        <tr>
+            @if (html == null)
+            {
+                <td>@name</td>
+                <td>@value</td>
+            }
+            else
+            {
+                <td>@html.Raw(name)</td>
+                <td>@html.Raw(value)</td>
+            }
+        </tr>
+    }
+}
+@helper TableCell(object value, HtmlHelper html = null)
+{
+    if (value != null)
+    {
+        if (html == null)
+        {
+            <td>@value</td>
+        }
+        else
+        {
+            <td>@html.Raw(value)</td>
+        }
+    }
+    else
+    {
+        <td>Неизвестно</td>
+    }
+}
+@helper ProccessResultContainer(ProcessResult result = null, HtmlHelper html = null)
+{
+    if (result != null && !result.IsEmpty)
+    {
+        string classes = "alert  alert-dismissable ";
+        classes += result.Succeeded ? "alert-success" : "alert-danger";
+        <div class="@classes">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            @if (html == null)
+            {
+                <span>@result.Message</span>
+            }
+            else
+            {
+                <span>@html.Raw(result.Message)</span>
+            }
+        </div>
+    }
+}
+
+@helper DefaultButton(HtmlString actionLink)
+{
+    <button type="button" class="btn btn-default link-button">@actionLink</button>
+}
+@helper AddButton(HtmlString actionLink)
+{
+    <button type="button" class="btn  btn-success link-button">@actionLink</button>
+}
+@helper EditButton(HtmlString actionLink)
+{
+    <button type="button" class="btn  btn-primary link-button">@actionLink</button>
+}
+@helper DeleteButton(HtmlString actionLink)
+{
+    <button type="button" class="btn  btn-danger link-button">@actionLink</button>
+}
+@helper SubmitButton()
+{
+    <input type="submit" value="Подтвердить" class="btn btn-default btn-outline " />
+}
+
+@helper EditIconLink(string url)
+{
+    <a title="Редактировать" href="@url"><i class="fa fa-pencil fa-fw"></i>Редактировать</a>
+}
+@helper DeleteIconLink(string url)
+{
+    <a title="Удалить" href="@url"><i class="fa fa-trash-o fa-fw"></i>Удалить</a>
+}
+
+@functions
+{
+
+    public static HtmlString AddLink(HtmlHelper html)
+    {
+        return html.ActionLink("Добавить бренд", "AddBrand", "Dashboard");
+    }
+    public static HtmlString AddLink(HtmlHelper html, Brand x)
+    {
+        return html.ActionLink("Добавить модельную линию", "AddModelLine", "Dashboard", new { id = x.Id }, null);
+    }
+    public static HtmlString AddLink(HtmlHelper html, ModelLine x)
+    {
+        return html.ActionLink("Добавить модель", "AddModel", "Dashboard", new { id = x.Id }, null);
+    }
+    public static HtmlString AddLink(HtmlHelper html, CarModel x)
+    {
+        return html.ActionLink("Добавить модификацию", "AddModification", "Dashboard", new { id = x.Id }, null);
+    }
+
+
+
+    public static HtmlString EditLink(HtmlHelper html, Brand x)
+    {
+        return html.ActionLink("Редактировать", "EditBrand", "Dashboard", new { id = x.Id }, null);
+    }
+    public static HtmlString EditLink(HtmlHelper html, ModelLine x)
+    {
+        return html.ActionLink("Редактировать", "EditModelLine", "Dashboard", new { id = x.Id }, null);
+    }
+    public static HtmlString EditLink(HtmlHelper html, CarModel x)
+    {
+        return html.ActionLink("Редактировать", "EditModel", "Dashboard", new { id = x.Id }, null);
+    }
+    public static HtmlString EditLink(HtmlHelper html, Modification x)
+    {
+        return html.ActionLink("Редактировать", "EditModification", "Dashboard", new { id = x.Id }, null);
+    }
+
+    public static HtmlString EditLink(HtmlHelper html, News x)
+    {
+        return html.ActionLink("Редактировать", "EditNews", "Dashboard", new { id = x.Id }, null);
+    }
+
+
+
+    public static HtmlString DeleteLink(HtmlHelper html, Brand x)
+    {
+        return html.ActionLink("Удалить", "DeleteBrand", "Dashboard", new { id = x.Id }, null);
+    }
+    public static HtmlString DeleteLink(HtmlHelper html, ModelLine x)
+    {
+        return html.ActionLink("Удалить", "DeleteModelLine", "Dashboard", new { id = x.Id }, null);
+    }
+    public static HtmlString DeleteLink(HtmlHelper html, CarModel x)
+    {
+        return html.ActionLink("Удалить", "DeleteModel", "Dashboard", new { id = x.Id }, null);
+    }
+    public static HtmlString DeleteLink(HtmlHelper html, Modification x)
+    {
+        return html.ActionLink("Удалить", "DeleteModification", "Dashboard", new { id = x.Id }, null);
+    }
+
+    public static HtmlString DeleteLink(HtmlHelper html, News x)
+    {
+        return html.ActionLink("Удалить", "DeleteNews", "Dashboard", new { id = x.Id }, null);
+    }
+
+    public static string ToString(float? f)
+    {
+        if (!f.HasValue) return null;
+        return f.Value.ToString(new NumberFormatInfo { NumberDecimalSeparator = "." });
+    }
+
+    public static string ToString(double? f)
+    {
+        if (!f.HasValue) return null;
+        return f.Value.ToString(new NumberFormatInfo { NumberDecimalSeparator = "." });
+    }
+}
+@helper InfoBox(int id, string title, string text)
+{
+    string uid = "InfoBox" + id;
+    <div class="col-md-4 info-box" id="@uid">
+        <div class="panel panel-info">
+            <div class="panel-heading">@title</div>
+            <div class="panel-body"><p>@text</p></div>
+        </div>
+    </div>
+}
+
+@helper WarningNotification(string text)
+{
+    <div class="alert alert-warning">@text</div>
+}
+@helper InputText(string labelText, string id, string placeHolder = null, string value = null)
+{
+    <div class="form-group">
+        <label class="control-label col-md-4" for="@id">Название</label>
+        <div class="col-md-2">
+            <input type="text" class="form-control" id="@id" name="@id" placeholder="@placeHolder" value="@value" />
+        </div>
+    </div>
+}
+@helper InputNumber(string labelText, string id, float? placeHolder = null, float? min = null, float? max = null, double? value = null, float step = 1, HtmlHelper html = null)
+{
+    <div class="form-group">
+        <label class="control-label col-md-4" for="@id">
+            @if (html != null)
+            {
+                @html.Raw(labelText)
+            }
+            else
+            {
+                @labelText
+            }
+        </label>
+        <div class="col-md-2">
+            <input class="form-control" id="@id" name="@id" type="number" min="@ToString(min)" max="@ToString(max)" placeholder="@ToString(placeHolder)" value="@ToString(value)" step="@ToString(step)" />
+        </div>
+    </div>
+}
+
+@helper DropDownList(HtmlHelper html, string labelText, string id, IEnumerable items, string valueField = "Id", string textField = "Name", object selectedValue = null)
+{
+    <div class="form-group">
+        <label class="control-label col-md-4">@labelText</label>
+        <div class="fleft pad-15">
+            @html.DropDownList(id, new SelectList(items, valueField, textField, selectedValue), new { @class = "form-control" })
+        </div>
+    </div>
+}
+
+@helper ChooseDropDownList(string id, int value = 0)
+{
+
+    <div class="form-group">
+        <label class="control-label col-md-4">Информация</label>
+        <div class="col-md-4">
+            <select id="@id" name="@id" class="form-control">
+                @if (value == 0)
+                {
+                    <option value="0">Отсутствует</option>
+                }
+                <option value="0">Отсутствует</option>
+                <option value="1">Присутствует</option>
+                <option value="2">Выбрать из существующих</option>
+            </select>
+        </div>
+    </div>
+}

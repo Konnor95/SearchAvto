@@ -1,0 +1,43 @@
+﻿@model SearchAvto.Models.ViewModels.LogInModel
+
+@{
+    ViewBag.Title = "LogIn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <div class="container">
+        <h2>Войти</h2>
+
+        @using (Html.BeginForm("ManageLogin", "User"))
+        {
+            <p>
+                @Html.ActionLink("Регистрация", "Registrate", "User")
+            </p>
+
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true)
+
+                <div>
+                    @Html.LabelFor(model => model.Email, "Email")
+                    <div >
+                        @Html.TextBoxFor(model => model.Email, new { name = "email" })
+                        @Html.ValidationMessageFor(model => model.Email)
+                    </div>
+                </div>
+
+                <div>
+                    @Html.LabelFor(model => model.Password, "Пароль")
+                    <div>
+                        @Html.EditorFor(model => model.Password, new { name = "password" })
+                        @Html.ValidationMessageFor(model => model.Password)
+                    </div>
+                </div>
+
+                <div>
+                    <input style="margin: 10px 0" class="btn btn-1" type="submit" onclick="" value="Войти" />
+                </div>
+            </div>
+
+        }
+    </div>

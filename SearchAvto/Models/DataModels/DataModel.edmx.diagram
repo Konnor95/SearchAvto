@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="7981d944e0ef4e1da0e6d5939d1aecc0" Name="Diagram1">
+        <EntityTypeShape EntityType="DatabaseModel.Battery" Width="1.5" PointX="3" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.BatteryType" Width="1.5" PointX="0.75" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.BodyClass" Width="1.5" PointX="1.5" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.BodyType" Width="1.5" PointX="0.75" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.Brand" Width="1.5" PointX="1.5" PointY="19.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.CarModel" Width="1.5" PointX="3" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.CommentsToNew" Width="1.5" PointX="10" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.ElectricEngine" Width="1.5" PointX="3" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.ElectricMotor" Width="1.5" PointX="0.75" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.EngineLocation" Width="1.5" PointX="0.75" PointY="22.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.FuelType" Width="1.5" PointX="0.75" PointY="24.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.InternalCombustionEngine" Width="1.5" PointX="3" PointY="23.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.ModelLine" Width="1.5" PointX="0.75" PointY="13.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.Modification" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.News" Width="1.5" PointX="7.75" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.TireCarcassType" Width="1.5" PointX="3" PointY="28.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.TransmissionType" Width="1.5" PointX="3" PointY="31.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.User" Width="1.5" PointX="7.75" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.ValvesArrangement" Width="1.5" PointX="0.75" PointY="27" IsExpanded="true" />
+        <AssociationConnector Association="DatabaseModel.FK_Batteries_ToTable" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_ElectricMotors_ToTable" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_BodyTypes_ToTable" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_CarModels_ToTable_1" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_ModelLines_ToTable" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_CarModels_ToTable" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_Modifications_ToTable_3" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_Comments_ToTable" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_Comments_ToTable_1" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_ElectricEngines_ToTable_1" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_ElectricEngines_ToTable_2" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_Modifications_ToTable_1" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_InternalCombustionEngines_ToTable" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_InternalCombustionEngines_ToTable_2" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_InternalCombustionEngines_ToTable_1" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_Modifications_ToTable" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_Modifications_ToTable_2" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_Modifications_ToTable_4" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

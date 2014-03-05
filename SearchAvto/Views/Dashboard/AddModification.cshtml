@@ -1,0 +1,183 @@
+﻿@model AddModificationModel
+@{
+    ViewBag.Title = Model != null ? "Добавить модификацию для " + Model.CarModel.Name : "Модель не найдена";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+@if (Model == null || Model.CarModel == null)
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Модель не найдена</h1>
+        </div>
+    </div>
+    return;
+}
+<div class="breadcrumbs flat">
+    @HtmlManager.DashboardBreadCrumbs(Html, Model.CarModel, HtmlManager.AddLink(Html, Model.CarModel))
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header fleft">Добавить модель для @Model.CarModel.FullName</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        @HtmlManager.ProccessResultContainer(ViewBag.Result)
+        @using (Html.BeginForm("ManageModificationAdding", "Dashboard", FormMethod.Post, new { id = "main-form" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true)
+                <input type="hidden" id="ModelId" name="ModelId" value="@Model.CarModel.Id" />
+                <h4 class="page-header">Основные характеристики</h4>
+                @HtmlManager.InputText("Название", "Name", "Модификация 1")
+                @HtmlManager.InputNumber("Количество мест", "NumberOfSeats", min: 1, placeHolder: 4)
+                <h4 class="page-header">Скоростные характеристики</h4>
+                @HtmlManager.InputNumber("Ускорение до 100 км/ч, с", "Velocity", min: 1, placeHolder: 6.7f, step: 0.01f)
+                @HtmlManager.InputNumber("Максимальная скорость, км/ч", "MaxSpeed", min: 1, placeHolder: 120)
+                <h4 class="page-header">Двигатель внутреннего сгорания</h4>
+                @HtmlManager.ChooseDropDownList("ice")
+                <div id="new-ice" style="display: none">
+                    @HtmlManager.DropDownList(Html, "Расположение", "InternalCombustionEngine.Location", Model.EngineLocations)
+                    @HtmlManager.InputNumber("Объем, см<sup>3</sup>", "InternalCombustionEngine.Volume", min: 1, placeHolder: 3500, html: Html)
+                    @HtmlManager.DropDownList(Html, "Тип компновки цилиндров", "InternalCombustionEngine.ValvesArrangementId", Model.ValvesArrangements)
+                    @HtmlManager.InputNumber("Количество цилиндров", "InternalCombustionEngine.NumberOfValves", min: 1, placeHolder: 6)
+                    @HtmlManager.InputNumber("Мощность, л.с.", "InternalCombustionEngine.Power", min: 1, placeHolder: 200)
+                    @HtmlManager.DropDownList(Html, "Тип топлива", "InternalCombustionEngine.FuelTypeId", Model.FuelTypes)
+                    @HtmlManager.InputNumber("Крутящий момент, Н·м", "InternalCombustionEngine.Torque", min: 1, placeHolder: 250)
+                    @HtmlManager.InputNumber("Достигает максимума при, об", "InternalCombustionEngine.TorqueRotations", min: 1, placeHolder: 4800)
+                    @HtmlManager.InputNumber("Объем топливного бака, л", "InternalCombustionEngine.FuelTankVolume", min: 1, placeHolder: 70)
+                    <h4 class="inline-block">Расход топлива</h4>
+                    @HtmlManager.InputNumber("По городу, л/100 км", "InternalCombustionEngine.FuelConsumptionInCity", min: 1, placeHolder: 6.7f, step: 0.01f)
+                    @HtmlManager.InputNumber("По трассе, л/100 км", "InternalCombustionEngine.FuelConsumptionOnRoad", min: 1, placeHolder: 6.7f, step: 0.01f)
+                    @HtmlManager.InputNumber("Смешанный цикл, л/100 км", "InternalCombustionEngine.FuelConsumptionCombined", min: 1, placeHolder: 6.7f, step: 0.01f)
+                </div>
+                <div id="choose-ice" style="display: none">
+                    <div class="form-group">
+                        @if (!Model.Modifications.Any(x => x.InternalCombustionEngineId.HasValue))
+                        {
+                        <p>Не найдено других модификаций этой модели с двигателями внутреннего сгорания</p>
+                        }
+                        else
+                        {
+                            <label class="control-label col-md-4" for="InternalCombustionEngineId">Модификации</label>
+                        <div class="fleft pad-15">
+                            <select class="form-control" id="InternalCombustionEngineId" name="InternalCombustionEngineId">
+                                @foreach (Modification modification in Model.Modifications)
+                                {
+                                    if (modification.InternalCombustionEngineId.HasValue)
+                                    {
+                                        <option value="@modification.InternalCombustionEngineId.Value">@modification.FullName</option>
+                                    }
+
+                                }
+                            </select>
+
+                        </div>
+                        }
+                    </div>
+                </div>
+                <h4 class="page-header">Электрический двигатель</h4>
+                @HtmlManager.ChooseDropDownList("ee")
+                <div id="new-ee" style="display: none">
+                    <h4 class="inline-block">Основной электродвигатель</h4>
+                    @HtmlManager.InputNumber("Мощность, л.с.", "ElectricEngine.ElectricMotor.Power", min: 1, placeHolder: 200)
+                    @HtmlManager.InputNumber("Крутящий момент, Н·м", "ElectricEngine.ElectricMotor.Torque", min: 1, placeHolder: 250)
+                    <h4 class="inline-block">Дополнительный электродвигатель</h4>
+                    @HtmlManager.InputNumber("Мощность, л.с.", "ElectricEngine.ElectricMotor1.Power", min: 1, placeHolder: 200)
+                    @HtmlManager.InputNumber("Крутящий момент, Н·м", "ElectricEngine.ElectricMotor1.Torque", min: 1, placeHolder: 250)
+                    <h4 class="inline-block">Батарея</h4>
+                    @HtmlManager.DropDownList(Html, "Тип", "ElectricEngine.BatteryTypeId", Model.BatteryTypes)
+                    @HtmlManager.InputNumber("Номинальное напряжение, В", "ElectricEngine.BatteryNominalVoltage", min: 1, placeHolder: 250)
+                </div>
+                <div id="choose-ee" style="display: none">
+                    <div class="form-group">
+                        @if (!Model.Modifications.Any(x => x.ElectricEngineId.HasValue))
+                        {
+                        @HtmlManager.WarningNotification("Не найдено других модификаций этой модели с электрическими двигателями")
+                        }
+                        else
+                        {
+                        <label class="control-label col-md-4" for="ElectricEngineId">Модификации</label>
+                        <div class="fleft pad-15">
+                            <select class="form-control" id="ElectricEngineId" name="ElectricEngineId">
+                                @foreach (Modification modification in Model.Modifications)
+                                    {
+                                        if (modification.ElectricEngineId.HasValue)
+                                        {
+                                    <option value="@modification.ElectricEngineId.Value">@modification.FullName</option>
+                                        }
+                                    }
+                            </select>
+                        </div>
+                        }
+                    </div>
+                </div>
+                <h4 class="page-header">Габариты</h4>
+                @HtmlManager.InputNumber("Длина, мм", "Length", min: 1, placeHolder: 4000)
+                @HtmlManager.InputNumber("Ширина, мм", "Width", min: 1, placeHolder: 1800)
+                @HtmlManager.InputNumber("Высота, мм", "Height", min: 1, placeHolder: 1600)
+                @HtmlManager.InputNumber("Колесная база, мм", "Wheelbase", min: 1, placeHolder: 4000)
+                @HtmlManager.InputNumber("Ширина передней колеи, мм", "FrontTrackWidth", min: 1, placeHolder: 1600)
+                @HtmlManager.InputNumber("Ширина задней колеи, мм", "BackTrackWidth", min: 1, placeHolder: 1600)
+                <h4 class="page-header">Масса</h4>
+                @HtmlManager.InputNumber("Снаряженная масса, кг", "CurbWeight", min: 1, placeHolder: 2000)
+                @HtmlManager.InputNumber("Полная масса, кг", "TotalWeight", min: 1, placeHolder: 2500)
+                <h4 class="page-header">Трансмиссия и колеса</h4>
+                @HtmlManager.DropDownList(Html, "Тип", "TransmissionTypeId", Model.TransmissionTypes)
+                @HtmlManager.InputNumber("Количество ступеней", "TransmissionStages", min: 1, placeHolder: 5)
+                @HtmlManager.DropDownList(Html, "Привод", "Drive",Drives.GetAll())
+                @HtmlManager.InputNumber("Количество колес", "NumberOfWheels", min: 1, placeHolder: 4)
+                @HtmlManager.InputNumber("Количество ведущих колес", "NumberOfDrivenWheels", min: 1, placeHolder: 4)
+                <h4 class="page-header">Шины</h4>
+                @HtmlManager.InputNumber("Ширина  профиля, мм", "TireProfileWidth", min: 1, placeHolder: 230)
+                @HtmlManager.InputNumber("Отношение высоты профиля к ширине, %", "TireProfileHeight", min: 1, placeHolder: 82)
+                @HtmlManager.DropDownList(Html, "Тип каркаса", "TireCarcassTypeId", Model.TireCarcassTypes, textField: "FullName")
+                @HtmlManager.InputNumber("Посадочный диаметр (в дюймах)", "TireMountingDiameter", min: 1, placeHolder: 16)
+                <h4 class="page-header">Багажник</h4>
+                @HtmlManager.InputNumber("Объем, л", "CargoVolume", min: 1, placeHolder: 400)
+                @HtmlManager.InputNumber("Максимальный объем, л", "MaxCargoVolume", min: 1, placeHolder: 800)
+            </div>
+            <div class="form-group" style="margin: 50px 0">
+                @HtmlManager.SubmitButton()
+                @HtmlManager.DefaultButton(Html.ActionLink("Назад", "Model", "Dashboard", new { id = Model.CarModel.Id }, null))
+            </div>
+        }
+    </div>
+</div>
+@section Scripts{
+    <script>
+       /* $('#main-form').on('submit', function (e) {
+           e.preventDefault();
+            console.log("Car model id:" + $('#id').val());
+            console.log("Name:" + $('#Name').val());
+            console.log("Number of places:" + $('#Places').val());
+        });*/
+
+        var Ice = $("#ice");
+        var ee = $("#ee");
+        $(document).ready(function () {
+            Ice.change(function () { SwitchContainers(Ice, "#new-ice", "#choose-ice"); });
+            ee.change(function () { SwitchContainers(ee, "#new-ee", "#choose-ee"); });
+        });
+
+        function SwitchContainers(v, id1, id2) {
+            var c1 = $(id1);
+            var c2 = $(id2);
+            switch (v.val()) {
+                case '1':
+                    c2.hide();
+                    c1.fadeIn('slow');
+                    break;
+                case '2':
+                    c1.hide();
+                    c2.fadeIn('slow');
+                    break;
+                default:
+                    c1.fadeOut('fast');
+                    c2.fadeOut('fast');
+                    break;
+            }
+        }
+    </script>
+}

@@ -1,0 +1,186 @@
+﻿@using SearchAvto.Models.LogicModels
+@{
+    var user = DataManager.Users.Define(Context);
+}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>@ViewBag.Title</title>
+    <meta charset="utf-8">
+    <link rel="icon" href="~/Images/Icons/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="~/Images/Icons/favicon.png" type="image/x-icon" />
+    @Styles.Render("~/MainStyles")
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+    @Scripts.Render("~/MainScripts")
+    <script type="text/javascript">if ($(window).width() > 1024) { document.write("<" + "script src='/Scripts/jquery.preloader.min.js'><" + "/script>"); }	</script>
+    <script>
+        jQuery(window).load(function () {
+            var $x = $(window).width();
+            if ($x > 1024) jQuery("#content .row").preloader();
+            jQuery('.magnifier').touchTouch();
+            jQuery('.spinner').animate({ 'opacity': 0 }, 1000, 'easeOutCubic', function () { jQuery(this).css('display', 'none'); });
+        });
+        /*-------------------------*/
+        /* panel */
+        $(window).scroll(function () { if ($(this).scrollTop() > 0) { $("#advanced").css({ position: 'fixed' }); } else { $("#advanced").css({ position: 'relative' }); } });
+        $(function () {
+            $.cookie("panel");
+            $.cookie("panel2");
+            var strCookies = $.cookie("panel");
+            var strCookies2 = $.cookie("panel2");
+            if (strCookies == 'boo') {
+                if (strCookies2 == 'opened') {
+                    $("#advanced").css({ marginTop: '0' }).removeClass('closed');
+                } else {
+                    $("#advanced").css({ marginTop: '-40px' }).addClass('closed');
+                }
+                $("#advanced .trigger").toggle(function () {
+                    $(this).find('strong').animate({ opacity: 0 }).parent().parent('#advanced').removeClass('closed').animate({ marginTop: '0px' }, "fast");
+                    strCookies2 = $.cookie("panel2", 'opened');
+                    strCookies = $.cookie("panel", null);
+                },
+                function () {
+                    $(this).find('strong').animate({ opacity: 1 }).parent().parent('#advanced').addClass('closed').animate({ marginTop: '-40px' }, "fast");
+                    strCookies2 = $.cookie("panel2", null);
+                    strCookies = $.cookie("panel", 'boo');
+                });
+            }
+            else {
+                $("#advanced").css({ marginTop: '0' }).removeClass('closed');
+                $("#advanced .trigger").toggle(function () {
+                    $(this).find('strong').animate({ opacity: 1 }).parent().parent('#advanced').addClass('closed').animate({ marginTop: '-40px' }, "fast");
+                    strCookies2 = $.cookie("panel2", null);
+                    strCookies = $.cookie("panel", 'boo');
+                },
+                function () {
+                    $(this).find('strong').animate({ opacity: 0 }).parent().parent('#advanced').removeClass('closed').animate({ marginTop: '0px' }, "fast");
+                    strCookies2 = $.cookie("panel2", 'opened');
+                    strCookies = $.cookie("panel", null);
+                });
+            }
+        });
+
+        /*--------- end panel *------------*/
+        $(function () {
+            // IPad/IPhone
+            var viewportmeta = document.querySelector && document.querySelector('meta[name="viewport"]'),
+              ua = navigator.userAgent,
+
+              gestureStart = function () {
+                  viewportmeta.content = "width=device-width, minimum-scale=0.25, maximum-scale=1.6";
+              },
+
+              scaleFix = function () {
+                  if (viewportmeta && /iPhone|iPad/.test(ua) && !/Opera Mini/.test(ua)) {
+                      viewportmeta.content = "width=device-width, minimum-scale=1.0, maximum-scale=1.0";
+                      document.addEventListener("gesturestart", gestureStart, false);
+                  }
+              };
+            scaleFix();
+
+            // Menu Android
+            var userag = navigator.userAgent.toLowerCase();
+            var isAndroid = userag.indexOf("android") > -1;
+            if (isAndroid) {
+                $('.sf-menu').responsiveMenu({ autoArrows: true });
+            }
+
+        });
+
+        /* ------ fix fixed position for Android -----*/
+        var ua = navigator.userAgent.toLocaleLowerCase(),
+         regV = /ipod|ipad|iphone/gi,
+         result = ua.match(regV),
+         userScale = "";
+        if (!result) {
+            userScale = ",user-scalable=0";
+        }
+        document.write('<meta name="viewport" content="width=device-width,initial-scale=1.0' + userScale + '">'); /*--------------*/
+
+    </script>
+
+    <!--[if lt IE 8]>
+        <div style='text-align:center'><a href="http://www.microsoft.com/windows/internet-explorer/default.aspx?ocid=ie6_countdown_bannercode"><img src="http://www.theie6countdown.com/img/upgrade.jpg"  alt=""/></a></div>
+    <![endif]-->
+    <!--[if (gt IE 9)|!(IE)]><!-->
+    <!--<![endif]-->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+      <link rel="stylesheet" href="~/Content/Main/docs.css" type="text/css" media="screen">
+      <link rel="stylesheet" href="~/Content/Main/ie.css" type="text/css" media="screen">
+      <link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+      <link href='http://fonts.googleapis.com/css?family=Open+Sans:400' rel='stylesheet' type='text/css'>
+    <![endif]-->
+    
+</head>
+<body>
+    <div class="spinner"></div>
+    <!-- header start -->
+    <div id="panel">
+        <div class="navbar navbar-inverse navbar-fixed-top" id="advanced">
+            <span class="trigger"><strong></strong><em></em></span><div class="navbar-inner">
+                <div class="container">
+                    <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-top-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+                    <div class="nav-collapse collapse nav-top-collapse">
+                        <ul class="nav">
+                            <li class="home"><a href="/"><img src="/Images/Icons/tm_home.png"></a></li>
+                            <li class="divider-vertical"></li>
+                            @if (user == null)
+                            {
+                                <li class=""><a href="@Url.Action("Login","User")">Войти</a></li>
+                                <li class=""><a href="@Url.Action("Registrate","User")">Регистрация</a></li>
+                            }
+                            else
+                            {
+                                <li class=""><a href="#">Профиль</a></li>
+                                if (user.HasModeratorAccess)
+                                {
+                                    <li class=""><a href="@Url.Action("Index","Dashboard")">Панель управления</a></li>
+                                }
+
+                            }
+                            <li class="divider-vertical"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <header>
+        <div class="container clearfix">
+            <div class="row">
+                <div class="span12">
+                    <div class="navbar navbar_">
+                        <div class="container">
+                            <h1 class="brand brand_"><a href="/"><img alt="" src="~/Images/Icons/logo.png"> </a></h1>
+                            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse_">Menu <span class="icon-bar"></span> </a>
+                            <div class="nav-collapse nav-collapse_  collapse">
+                                <ul class="nav sf-menu">
+                                    <li class="active"><a href="/">Главная</a></li>
+                                    <li>@Html.ActionLink("Авто", "Index", "Search")</li>
+                                    <li>@Html.ActionLink("Новости", "Index", "News")</li>
+                                    <li>@Html.ActionLink("О нас", "About", "Home")</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    @RenderBody()
+    <!-- footer -->
+    <footer>
+        <div class="container clearfix">
+            <ul class="list-social pull-right">
+                <li><a class="icon-1" href="#"></a></li>
+                <li><a class="icon-2" href="#"></a></li>
+                <li><a class="icon-3" href="#"></a></li>
+                <li><a class="icon-4" href="#"></a></li>
+            </ul>
+            <div class="privacy pull-left">&copy; 2013 | <a href="http://www.dzyngiri.com">Dzyngiri : Online Design Magazine</a> | <a href="http://twitter.github.com/bootstrap/" target="_blank">Bootstrap</a> | Demo Illustrations by <a href="http://justinmezzell.com" target="_blank">Justin Mezzell</a></div>
+        </div>
+    </footer>
+    @RenderSection("Scripts", false)
+</body>
+</html>

@@ -1,0 +1,71 @@
+﻿@model News
+@{
+    ViewBag.Title = Model != null ? "Редактировать новость " + Model.ShortTitle: "Новость не найдена";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+@if (Model == null)
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Новость не найдена</h1>
+        </div>
+    </div>
+    return;
+}
+@*<div class="breadcrumbs flat">
+        @HtmlManager.DashboardBreadCrumbs(Html, HtmlManager.AddLink(Html))
+    </div>*@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header fleft">Редактировать новость</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        @HtmlManager.ProccessResultContainer(ViewBag.Result)
+        @using (Html.BeginForm("ManageNewsEditing", "Dashboard", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(id => Model.Id)
+                <div class="form-group">
+                    <label class="control-label col-md-2" for="Title">Название</label>
+                    <div class="col-md-2">
+                        <input class="form-control"  value="@Model.Title" id="Title" name="Title" type="text" placeholder="Название 1" required="required">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-2" for="Date">Дата публикации</label>
+                    <div class="col-md-2">
+                        <input class="form-control" value="@String.Format("{0:yyyy-MM-dd}", Model.Date)" id=" date" name="Date" type="date" required="required">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-2" for="Text">Текст новости</label><br />
+                </div>
+                <textarea id="Text" name="Text" required="required">@Html.Raw(Model.Text)</textarea>
+                <br/>
+                <div class="form-group">
+                    <label class="control-label col-md-2">Изображение</label>
+                    <div class="col-md-2">
+                        @HtmlManager.ImageUpload(Model.Image)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @HtmlManager.SubmitButton()
+                        @HtmlManager.DefaultButton(Html.ActionLink("Назад", "News", "Dashboard",new{id=Model.Id},null))
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@section Scripts
+{
+    <script src="~/Plugins/CKEditor/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('Text');
+    </script>
+}

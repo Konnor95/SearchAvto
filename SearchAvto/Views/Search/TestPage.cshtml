@@ -1,0 +1,113 @@
+﻿@model TestModel
+@{
+    ViewBag.Title = "Test";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    byte length = ViewBag.Length;
+    double segment = 100.0 / length;
+    var questions = Test.GetAllQuestions();
+}
+
+<div class="container">
+    <h2>Test</h2>
+    <input type="hidden" value="@segment" />
+    @using (Html.BeginForm("GetResult", "Search", FormMethod.Post, new { @id = "Values" }))
+    {
+        @Html.HiddenFor(model => model.Age)
+        @Html.HiddenFor(model => model.BodyType)
+        @Html.HiddenFor(model => model.Color)
+        @Html.HiddenFor(model => model.Distance)
+        @Html.HiddenFor(model => model.Electric)
+        @Html.HiddenFor(model => model.MainFeature)
+        @Html.HiddenFor(model => model.NegativeTrait)
+        @Html.HiddenFor(model => model.OutLand)
+        @Html.HiddenFor(model => model.Passengers)
+        @Html.HiddenFor(model => model.PositiveTrait)
+        @Html.HiddenFor(model => model.Price)
+        @Html.HiddenFor(model => model.Speed)
+    }
+    <div class="test" id="test">
+        <div id="subdiv" style="display: block;height: 95%;">
+            @{
+                int count = 0;
+                int total = Test.Length;
+            }
+            @foreach (Question question in questions)
+            {
+                ++count;
+                string uid = "Q" + count;
+                <div id="@uid"class="pad-15" style="display: none;">
+                    @if (question != null)
+                    {
+                        <p>@count. @question.Text</p>
+                        <ul class="portfolio clearfix">
+                            @if (question.Image1 != null)
+                            {
+                                <li class="box box-50"><a href="@question.Image1" id="@ViewBag.Id-1" class="magnifier"><div class=""><img alt="" src="@question.Image1" style="visibility: visible; opacity: 1;"></div></a></li>
+                            }
+                            @if (question.Image2 != null)
+                            {
+                                <li class="box box-50"><a href="@question.Image2" id="@ViewBag.Id-2" class="magnifier"><div class=""><img alt="" src="@question.Image2" style="visibility: visible; opacity: 1;"></div></a></li>
+                            }
+                        </ul>
+                        bool b = true;
+                        foreach (var value in question.Answers)
+                        {
+                            <div class="radio">
+                                <label>
+                                    @if (b)
+                                    {
+                                        <input type="radio" name="@question.Id" value="@value.Id" required checked="checked" />
+                                        b = false;
+                                    }
+                                    else
+                                    {
+                                        <input type="radio" name="@question.Id" value="@value.Id" required />
+                                    }
+                                    @value.Text
+                                </label>
+                            </div>
+                        }
+                        if (count == total)
+                        {
+                            <button id="send" onclick="GetResult()" class="btn btn-1">Ответить</button>
+                        }
+                        else
+                        {
+                            <button id="send" onclick="NextQuestion('@question.Id', '@question.Id.Substring(1)'); " class=" btn btn-1">Ответить</button>
+                        }
+
+                    }
+                    else
+                    {
+                    <p>Упс! Произошла ошибка</p>
+                    }
+                </div>
+            }
+        </div>
+        <div style="position: relative;bottom: 5px;margin: 10px 5px" id="bar-container" class="progress progress-striped active">
+            <div id="bar" class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0"></div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+
+    <script>
+        var id = 1;
+        function NextQuestion(sourceName, name) {
+            $("#" + name).val($("input[name=" + sourceName + "]:checked").val());
+            $("#Q" + (id + 1)).fadeIn('slow');
+            $("#Q" + id).replaceWith("");
+            $("#bar").css("width", (id * parseFloat('@segment')) + "%");
+            id++;
+        }
+        function GetResult() {
+            $("#Values").submit();
+        };
+        $(document).ready(function () {
+            $('.magnifier').touchTouch();
+            $('#Q1').show();
+         
+        });
+    </script>
+}

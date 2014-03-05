@@ -1,0 +1,30 @@
+﻿@model News
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <h2>@Model.Title</h2>
+    @HtmlManager.Image(Model.Image)
+    <div class="news-text">
+        @Html.Raw(Model.Text)
+    </div>
+    <div class="meta">
+        <time datetime="@String.Format("{0:yyyy-MM-dd}", Model.Date)" class="date-1"><i class="icon-calendar icon-white"></i> @String.Format("{0:dd-MM-yyyy}", Model.Date)</time>
+    </div>
+    <div class="comments-container" id="comments">
+        @{
+            var comments = Model.CommentsToNews;
+            if (comments != null)
+            {
+                foreach (CommentsToNew comment in comments)
+                {
+               
+                    <div class="comment">@comment.Text</div>
+                }
+
+            }
+        }
+    </div>
+</div>
+

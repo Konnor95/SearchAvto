@@ -1,0 +1,1348 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Batteries">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TypeId" Type="int" Nullable="false" />
+          <Property Name="NominalVoltage" Type="int" />
+        </EntityType>
+        <EntityType Name="BatteryTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BodyClasses">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BodyTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="BodyClassId" Type="int" Nullable="false" />
+          <Property Name="BaseBodyTypeId" Type="int" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Brands">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Image" Type="nvarchar(max)" />
+          <Property Name="Description" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="CarModels">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="1000" />
+          <Property Name="ProductionStarted" Type="date" />
+          <Property Name="ProductionEnded" Type="date" />
+          <Property Name="ModelLineId" Type="int" Nullable="false" />
+          <Property Name="BodyTypeId" Type="int" />
+          <Property Name="Image" Type="nvarchar(max)" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="TColor" Type="tinyint" Nullable="false" />
+          <Property Name="TPositiveTrait" Type="tinyint" Nullable="false" />
+          <Property Name="TNegativeTrait" Type="tinyint" Nullable="false" />
+          <Property Name="TMainFeature" Type="tinyint" Nullable="false" />
+          <Property Name="TElectric" Type="tinyint" Nullable="false" />
+          <Property Name="TAge" Type="tinyint" Nullable="false" />
+          <Property Name="TSpeed" Type="tinyint" Nullable="false" />
+          <Property Name="TOutLand" Type="tinyint" Nullable="false" />
+          <Property Name="TPassengers" Type="tinyint" Nullable="false" />
+          <Property Name="TDistance" Type="tinyint" Nullable="false" />
+          <Property Name="TPrice" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CommentsToNews">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="NewsId" Type="int" Nullable="false" />
+          <Property Name="Text" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ElectricEngines">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ElectricMotorId1" Type="int" />
+          <Property Name="ElectricMotorId2" Type="int" />
+          <Property Name="BatteryTypeId" Type="int" />
+          <Property Name="BatteryNominalVoltage" Type="int" />
+        </EntityType>
+        <EntityType Name="ElectricMotors">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Power" Type="int" />
+          <Property Name="Torque" Type="int" />
+        </EntityType>
+        <EntityType Name="EngineLocations">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FuelTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="InternalCombustionEngines">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Location" Type="int" />
+          <Property Name="Volume" Type="int" />
+          <Property Name="NumberOfValves" Type="int" />
+          <Property Name="ValvesArrangementId" Type="int" />
+          <Property Name="FuelTypeId" Type="int" />
+          <Property Name="Power" Type="int" />
+          <Property Name="Torque" Type="int" />
+          <Property Name="TorqueRotations" Type="int" />
+          <Property Name="FuelConsumptionInCity" Type="float" />
+          <Property Name="FuelConsumptionOnRoad" Type="float" />
+          <Property Name="FuelConsumptionCombined" Type="float" />
+          <Property Name="FuelTankVolume" Type="float" />
+        </EntityType>
+        <EntityType Name="ModelLines">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="BrandId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Modifications">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="1000" />
+          <Property Name="ModelId" Type="int" Nullable="false" />
+          <Property Name="MaxSpeed" Type="int" />
+          <Property Name="Velocity" Type="float" />
+          <Property Name="NumberOfSeats" Type="tinyint" />
+          <Property Name="Length" Type="int" />
+          <Property Name="Height" Type="int" />
+          <Property Name="Width" Type="int" />
+          <Property Name="CurbWeight" Type="int" />
+          <Property Name="TotalWeight" Type="int" />
+          <Property Name="CargoVolume" Type="int" />
+          <Property Name="MaxCargoVolume" Type="int" />
+          <Property Name="Wheelbase" Type="int" />
+          <Property Name="FrontTrackWidth" Type="float" />
+          <Property Name="BackTrackWidth" Type="float" />
+          <Property Name="InternalCombustionEngineId" Type="int" />
+          <Property Name="ElectricEngineId" Type="int" />
+          <Property Name="TransmissionTypeId" Type="int" />
+          <Property Name="TransmissionStages" Type="int" />
+          <Property Name="Drive" Type="tinyint" />
+          <Property Name="NumberOfWheels" Type="tinyint" />
+          <Property Name="NumberOfDrivenWheels" Type="tinyint" />
+          <Property Name="TireProfileWidth" Type="int" />
+          <Property Name="TireProfileHeight" Type="int" />
+          <Property Name="TireCarcassTypeId" Type="int" />
+          <Property Name="TireMountingDiameter" Type="float" />
+        </EntityType>
+        <EntityType Name="News">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Text" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="Image" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="TireCarcassTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ShortName" Type="nvarchar" MaxLength="1" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TransmissionTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Status" Type="smallint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ValvesArrangements">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CodeName" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Batteries_ToTable">
+          <End Role="BatteryTypes" Type="Self.BatteryTypes" Multiplicity="1" />
+          <End Role="Batteries" Type="Self.Batteries" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BatteryTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Batteries">
+              <PropertyRef Name="TypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BodyTypes_ToTable">
+          <End Role="BodyClasses" Type="Self.BodyClasses" Multiplicity="1" />
+          <End Role="BodyTypes" Type="Self.BodyTypes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BodyClasses">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BodyTypes">
+              <PropertyRef Name="BodyClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CarModels_ToTable">
+          <End Role="ModelLines" Type="Self.ModelLines" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CarModels" Type="Self.CarModels" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ModelLines">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CarModels">
+              <PropertyRef Name="ModelLineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CarModels_ToTable_1">
+          <End Role="BodyTypes" Type="Self.BodyTypes" Multiplicity="0..1" />
+          <End Role="CarModels" Type="Self.CarModels" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BodyTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CarModels">
+              <PropertyRef Name="BodyTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_ToTable">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="CommentsToNews" Type="Self.CommentsToNews" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CommentsToNews">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_ToTable_1">
+          <End Role="News" Type="Self.News" Multiplicity="1" />
+          <End Role="CommentsToNews" Type="Self.CommentsToNews" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="News">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CommentsToNews">
+              <PropertyRef Name="NewsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ElectricEngines_ToTable_1">
+          <End Role="ElectricMotors" Type="Self.ElectricMotors" Multiplicity="0..1" />
+          <End Role="ElectricEngines" Type="Self.ElectricEngines" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ElectricMotors">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ElectricEngines">
+              <PropertyRef Name="ElectricMotorId1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ElectricEngines_ToTable_2">
+          <End Role="ElectricMotors" Type="Self.ElectricMotors" Multiplicity="0..1" />
+          <End Role="ElectricEngines" Type="Self.ElectricEngines" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ElectricMotors">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ElectricEngines">
+              <PropertyRef Name="ElectricMotorId2" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ElectricMotors_ToTable">
+          <End Role="BatteryTypes" Type="Self.BatteryTypes" Multiplicity="0..1" />
+          <End Role="ElectricEngines" Type="Self.ElectricEngines" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BatteryTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ElectricEngines">
+              <PropertyRef Name="BatteryTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InternalCombustionEngines_ToTable">
+          <End Role="EngineLocations" Type="Self.EngineLocations" Multiplicity="0..1" />
+          <End Role="InternalCombustionEngines" Type="Self.InternalCombustionEngines" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EngineLocations">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InternalCombustionEngines">
+              <PropertyRef Name="Location" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InternalCombustionEngines_ToTable_1">
+          <End Role="ValvesArrangements" Type="Self.ValvesArrangements" Multiplicity="0..1" />
+          <End Role="InternalCombustionEngines" Type="Self.InternalCombustionEngines" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ValvesArrangements">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InternalCombustionEngines">
+              <PropertyRef Name="ValvesArrangementId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InternalCombustionEngines_ToTable_2">
+          <End Role="FuelTypes" Type="Self.FuelTypes" Multiplicity="0..1" />
+          <End Role="InternalCombustionEngines" Type="Self.InternalCombustionEngines" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FuelTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InternalCombustionEngines">
+              <PropertyRef Name="FuelTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ModelLines_ToTable">
+          <End Role="Brands" Type="Self.Brands" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ModelLines" Type="Self.ModelLines" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Brands">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ModelLines">
+              <PropertyRef Name="BrandId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Modifications_ToTable">
+          <End Role="InternalCombustionEngines" Type="Self.InternalCombustionEngines" Multiplicity="0..1" />
+          <End Role="Modifications" Type="Self.Modifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InternalCombustionEngines">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Modifications">
+              <PropertyRef Name="InternalCombustionEngineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Modifications_ToTable_1">
+          <End Role="ElectricEngines" Type="Self.ElectricEngines" Multiplicity="0..1" />
+          <End Role="Modifications" Type="Self.Modifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ElectricEngines">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Modifications">
+              <PropertyRef Name="ElectricEngineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Modifications_ToTable_2">
+          <End Role="TransmissionTypes" Type="Self.TransmissionTypes" Multiplicity="0..1" />
+          <End Role="Modifications" Type="Self.Modifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TransmissionTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Modifications">
+              <PropertyRef Name="TransmissionTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Modifications_ToTable_3">
+          <End Role="CarModels" Type="Self.CarModels" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Modifications" Type="Self.Modifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CarModels">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Modifications">
+              <PropertyRef Name="ModelId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Modifications_ToTable_4">
+          <End Role="TireCarcassTypes" Type="Self.TireCarcassTypes" Multiplicity="0..1" />
+          <End Role="Modifications" Type="Self.Modifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TireCarcassTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Modifications">
+              <PropertyRef Name="TireCarcassTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DatabaseModelStoreContainer">
+          <EntitySet Name="Batteries" EntityType="Self.Batteries" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BatteryTypes" EntityType="Self.BatteryTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BodyClasses" EntityType="Self.BodyClasses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BodyTypes" EntityType="Self.BodyTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Brands" EntityType="Self.Brands" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CarModels" EntityType="Self.CarModels" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CommentsToNews" EntityType="Self.CommentsToNews" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ElectricEngines" EntityType="Self.ElectricEngines" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ElectricMotors" EntityType="Self.ElectricMotors" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EngineLocations" EntityType="Self.EngineLocations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FuelTypes" EntityType="Self.FuelTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InternalCombustionEngines" EntityType="Self.InternalCombustionEngines" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ModelLines" EntityType="Self.ModelLines" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Modifications" EntityType="Self.Modifications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="News" EntityType="Self.News" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TireCarcassTypes" EntityType="Self.TireCarcassTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TransmissionTypes" EntityType="Self.TransmissionTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ValvesArrangements" EntityType="Self.ValvesArrangements" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Batteries_ToTable" Association="Self.FK_Batteries_ToTable">
+            <End Role="BatteryTypes" EntitySet="BatteryTypes" />
+            <End Role="Batteries" EntitySet="Batteries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BodyTypes_ToTable" Association="Self.FK_BodyTypes_ToTable">
+            <End Role="BodyClasses" EntitySet="BodyClasses" />
+            <End Role="BodyTypes" EntitySet="BodyTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CarModels_ToTable" Association="Self.FK_CarModels_ToTable">
+            <End Role="ModelLines" EntitySet="ModelLines" />
+            <End Role="CarModels" EntitySet="CarModels" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CarModels_ToTable_1" Association="Self.FK_CarModels_ToTable_1">
+            <End Role="BodyTypes" EntitySet="BodyTypes" />
+            <End Role="CarModels" EntitySet="CarModels" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_ToTable" Association="Self.FK_Comments_ToTable">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="CommentsToNews" EntitySet="CommentsToNews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_ToTable_1" Association="Self.FK_Comments_ToTable_1">
+            <End Role="News" EntitySet="News" />
+            <End Role="CommentsToNews" EntitySet="CommentsToNews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ElectricEngines_ToTable_1" Association="Self.FK_ElectricEngines_ToTable_1">
+            <End Role="ElectricMotors" EntitySet="ElectricMotors" />
+            <End Role="ElectricEngines" EntitySet="ElectricEngines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ElectricEngines_ToTable_2" Association="Self.FK_ElectricEngines_ToTable_2">
+            <End Role="ElectricMotors" EntitySet="ElectricMotors" />
+            <End Role="ElectricEngines" EntitySet="ElectricEngines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ElectricMotors_ToTable" Association="Self.FK_ElectricMotors_ToTable">
+            <End Role="BatteryTypes" EntitySet="BatteryTypes" />
+            <End Role="ElectricEngines" EntitySet="ElectricEngines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InternalCombustionEngines_ToTable" Association="Self.FK_InternalCombustionEngines_ToTable">
+            <End Role="EngineLocations" EntitySet="EngineLocations" />
+            <End Role="InternalCombustionEngines" EntitySet="InternalCombustionEngines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InternalCombustionEngines_ToTable_1" Association="Self.FK_InternalCombustionEngines_ToTable_1">
+            <End Role="ValvesArrangements" EntitySet="ValvesArrangements" />
+            <End Role="InternalCombustionEngines" EntitySet="InternalCombustionEngines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InternalCombustionEngines_ToTable_2" Association="Self.FK_InternalCombustionEngines_ToTable_2">
+            <End Role="FuelTypes" EntitySet="FuelTypes" />
+            <End Role="InternalCombustionEngines" EntitySet="InternalCombustionEngines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ModelLines_ToTable" Association="Self.FK_ModelLines_ToTable">
+            <End Role="Brands" EntitySet="Brands" />
+            <End Role="ModelLines" EntitySet="ModelLines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Modifications_ToTable" Association="Self.FK_Modifications_ToTable">
+            <End Role="InternalCombustionEngines" EntitySet="InternalCombustionEngines" />
+            <End Role="Modifications" EntitySet="Modifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Modifications_ToTable_1" Association="Self.FK_Modifications_ToTable_1">
+            <End Role="ElectricEngines" EntitySet="ElectricEngines" />
+            <End Role="Modifications" EntitySet="Modifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Modifications_ToTable_2" Association="Self.FK_Modifications_ToTable_2">
+            <End Role="TransmissionTypes" EntitySet="TransmissionTypes" />
+            <End Role="Modifications" EntitySet="Modifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Modifications_ToTable_3" Association="Self.FK_Modifications_ToTable_3">
+            <End Role="CarModels" EntitySet="CarModels" />
+            <End Role="Modifications" EntitySet="Modifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Modifications_ToTable_4" Association="Self.FK_Modifications_ToTable_4">
+            <End Role="TireCarcassTypes" EntitySet="TireCarcassTypes" />
+            <End Role="Modifications" EntitySet="Modifications" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Battery">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TypeId" Type="Int32" Nullable="false" />
+          <Property Name="NominalVoltage" Type="Int32" />
+          <NavigationProperty Name="BatteryType" Relationship="Self.FK_Batteries_ToTable" FromRole="Batteries" ToRole="BatteryTypes" />
+        </EntityType>
+        <EntityType Name="BatteryType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Batteries" Relationship="Self.FK_Batteries_ToTable" FromRole="BatteryTypes" ToRole="Batteries" />
+          <NavigationProperty Name="ElectricEngines" Relationship="Self.FK_ElectricMotors_ToTable" FromRole="BatteryTypes" ToRole="ElectricEngines" />
+        </EntityType>
+        <EntityType Name="BodyClass">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="BodyTypes" Relationship="Self.FK_BodyTypes_ToTable" FromRole="BodyClasses" ToRole="BodyTypes" />
+        </EntityType>
+        <EntityType Name="BodyType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BodyClassId" Type="Int32" Nullable="false" />
+          <Property Name="BaseBodyTypeId" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="BodyClass" Relationship="Self.FK_BodyTypes_ToTable" FromRole="BodyTypes" ToRole="BodyClasses" />
+          <NavigationProperty Name="CarModels" Relationship="Self.FK_CarModels_ToTable_1" FromRole="BodyTypes" ToRole="CarModels" />
+        </EntityType>
+        <EntityType Name="Brand">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ModelLines" Relationship="Self.FK_ModelLines_ToTable" FromRole="Brands" ToRole="ModelLines" />
+        </EntityType>
+        <EntityType Name="CarModel">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="ProductionStarted" Type="DateTime" Precision="0" />
+          <Property Name="ProductionEnded" Type="DateTime" Precision="0" />
+          <Property Name="ModelLineId" Type="Int32" Nullable="false" />
+          <Property Name="BodyTypeId" Type="Int32" />
+          <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TColor" Type="Byte" Nullable="false" />
+          <Property Name="TPositiveTrait" Type="Byte" Nullable="false" />
+          <Property Name="TNegativeTrait" Type="Byte" Nullable="false" />
+          <Property Name="TMainFeature" Type="Byte" Nullable="false" />
+          <Property Name="TElectric" Type="Byte" Nullable="false" />
+          <Property Name="TAge" Type="Byte" Nullable="false" />
+          <Property Name="TSpeed" Type="Byte" Nullable="false" />
+          <Property Name="TOutLand" Type="Byte" Nullable="false" />
+          <Property Name="TPassengers" Type="Byte" Nullable="false" />
+          <Property Name="TDistance" Type="Byte" Nullable="false" />
+          <Property Name="TPrice" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="BodyType" Relationship="Self.FK_CarModels_ToTable_1" FromRole="CarModels" ToRole="BodyTypes" />
+          <NavigationProperty Name="ModelLine" Relationship="Self.FK_CarModels_ToTable" FromRole="CarModels" ToRole="ModelLines" />
+          <NavigationProperty Name="Modifications" Relationship="Self.FK_Modifications_ToTable_3" FromRole="CarModels" ToRole="Modifications" />
+        </EntityType>
+        <EntityType Name="CommentsToNew">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="NewsId" Type="Int32" Nullable="false" />
+          <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Comments_ToTable" FromRole="CommentsToNews" ToRole="Users" />
+          <NavigationProperty Name="News" Relationship="Self.FK_Comments_ToTable_1" FromRole="CommentsToNews" ToRole="News" />
+        </EntityType>
+        <EntityType Name="ElectricEngine">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ElectricMotorId1" Type="Int32" />
+          <Property Name="ElectricMotorId2" Type="Int32" />
+          <Property Name="BatteryTypeId" Type="Int32" />
+          <Property Name="BatteryNominalVoltage" Type="Int32" />
+          <NavigationProperty Name="BatteryType" Relationship="Self.FK_ElectricMotors_ToTable" FromRole="ElectricEngines" ToRole="BatteryTypes" />
+          <NavigationProperty Name="ElectricMotor" Relationship="Self.FK_ElectricEngines_ToTable_1" FromRole="ElectricEngines" ToRole="ElectricMotors" />
+          <NavigationProperty Name="ElectricMotor1" Relationship="Self.FK_ElectricEngines_ToTable_2" FromRole="ElectricEngines" ToRole="ElectricMotors" />
+          <NavigationProperty Name="Modifications" Relationship="Self.FK_Modifications_ToTable_1" FromRole="ElectricEngines" ToRole="Modifications" />
+        </EntityType>
+        <EntityType Name="ElectricMotor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Power" Type="Int32" />
+          <Property Name="Torque" Type="Int32" />
+          <NavigationProperty Name="ElectricEngines" Relationship="Self.FK_ElectricEngines_ToTable_1" FromRole="ElectricMotors" ToRole="ElectricEngines" />
+          <NavigationProperty Name="ElectricEngines1" Relationship="Self.FK_ElectricEngines_ToTable_2" FromRole="ElectricMotors" ToRole="ElectricEngines" />
+        </EntityType>
+        <EntityType Name="EngineLocation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="InternalCombustionEngines" Relationship="Self.FK_InternalCombustionEngines_ToTable" FromRole="EngineLocations" ToRole="InternalCombustionEngines" />
+        </EntityType>
+        <EntityType Name="FuelType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="InternalCombustionEngines" Relationship="Self.FK_InternalCombustionEngines_ToTable_2" FromRole="FuelTypes" ToRole="InternalCombustionEngines" />
+        </EntityType>
+        <EntityType Name="InternalCombustionEngine">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Location" Type="Int32" />
+          <Property Name="Volume" Type="Int32" />
+          <Property Name="NumberOfValves" Type="Int32" />
+          <Property Name="ValvesArrangementId" Type="Int32" />
+          <Property Name="FuelTypeId" Type="Int32" />
+          <Property Name="Power" Type="Int32" />
+          <Property Name="Torque" Type="Int32" />
+          <Property Name="TorqueRotations" Type="Int32" />
+          <Property Name="FuelConsumptionInCity" Type="Double" />
+          <Property Name="FuelConsumptionOnRoad" Type="Double" />
+          <Property Name="FuelConsumptionCombined" Type="Double" />
+          <Property Name="FuelTankVolume" Type="Double" />
+          <NavigationProperty Name="EngineLocation" Relationship="Self.FK_InternalCombustionEngines_ToTable" FromRole="InternalCombustionEngines" ToRole="EngineLocations" />
+          <NavigationProperty Name="FuelType" Relationship="Self.FK_InternalCombustionEngines_ToTable_2" FromRole="InternalCombustionEngines" ToRole="FuelTypes" />
+          <NavigationProperty Name="ValvesArrangement" Relationship="Self.FK_InternalCombustionEngines_ToTable_1" FromRole="InternalCombustionEngines" ToRole="ValvesArrangements" />
+          <NavigationProperty Name="Modifications" Relationship="Self.FK_Modifications_ToTable" FromRole="InternalCombustionEngines" ToRole="Modifications" />
+        </EntityType>
+        <EntityType Name="ModelLine">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BrandId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Brand" Relationship="Self.FK_ModelLines_ToTable" FromRole="ModelLines" ToRole="Brands" />
+          <NavigationProperty Name="CarModels" Relationship="Self.FK_CarModels_ToTable" FromRole="ModelLines" ToRole="CarModels" />
+        </EntityType>
+        <EntityType Name="Modification">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="ModelId" Type="Int32" Nullable="false" />
+          <Property Name="MaxSpeed" Type="Int32" />
+          <Property Name="Velocity" Type="Double" />
+          <Property Name="NumberOfSeats" Type="Byte" />
+          <Property Name="Length" Type="Int32" />
+          <Property Name="Height" Type="Int32" />
+          <Property Name="Width" Type="Int32" />
+          <Property Name="CurbWeight" Type="Int32" />
+          <Property Name="TotalWeight" Type="Int32" />
+          <Property Name="CargoVolume" Type="Int32" />
+          <Property Name="MaxCargoVolume" Type="Int32" />
+          <Property Name="Wheelbase" Type="Int32" />
+          <Property Name="FrontTrackWidth" Type="Double" />
+          <Property Name="BackTrackWidth" Type="Double" />
+          <Property Name="InternalCombustionEngineId" Type="Int32" />
+          <Property Name="ElectricEngineId" Type="Int32" />
+          <Property Name="TransmissionTypeId" Type="Int32" />
+          <Property Name="TransmissionStages" Type="Int32" />
+          <Property Name="Drive" Type="Byte" />
+          <Property Name="NumberOfWheels" Type="Byte" />
+          <Property Name="NumberOfDrivenWheels" Type="Byte" />
+          <Property Name="TireProfileWidth" Type="Int32" />
+          <Property Name="TireProfileHeight" Type="Int32" />
+          <Property Name="TireCarcassTypeId" Type="Int32" />
+          <Property Name="TireMountingDiameter" Type="Double" />
+          <NavigationProperty Name="CarModel" Relationship="Self.FK_Modifications_ToTable_3" FromRole="Modifications" ToRole="CarModels" />
+          <NavigationProperty Name="ElectricEngine" Relationship="Self.FK_Modifications_ToTable_1" FromRole="Modifications" ToRole="ElectricEngines" />
+          <NavigationProperty Name="InternalCombustionEngine" Relationship="Self.FK_Modifications_ToTable" FromRole="Modifications" ToRole="InternalCombustionEngines" />
+          <NavigationProperty Name="TransmissionType" Relationship="Self.FK_Modifications_ToTable_2" FromRole="Modifications" ToRole="TransmissionTypes" />
+          <NavigationProperty Name="TireCarcassType" Relationship="Self.FK_Modifications_ToTable_4" FromRole="Modifications" ToRole="TireCarcassTypes" />
+        </EntityType>
+        <EntityType Name="News">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CommentsToNews" Relationship="Self.FK_Comments_ToTable_1" FromRole="News" ToRole="CommentsToNews" />
+        </EntityType>
+        <EntityType Name="TireCarcassType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ShortName" Type="String" MaxLength="1" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FullName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Modifications" Relationship="Self.FK_Modifications_ToTable_4" FromRole="TireCarcassTypes" ToRole="Modifications" />
+        </EntityType>
+        <EntityType Name="TransmissionType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Modifications" Relationship="Self.FK_Modifications_ToTable_2" FromRole="TransmissionTypes" ToRole="Modifications" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Status" Type="Int16" Nullable="false" />
+          <NavigationProperty Name="CommentsToNews" Relationship="Self.FK_Comments_ToTable" FromRole="Users" ToRole="CommentsToNews" />
+        </EntityType>
+        <EntityType Name="ValvesArrangement">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CodeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="InternalCombustionEngines" Relationship="Self.FK_InternalCombustionEngines_ToTable_1" FromRole="ValvesArrangements" ToRole="InternalCombustionEngines" />
+        </EntityType>
+        <Association Name="FK_Batteries_ToTable">
+          <End Role="BatteryTypes" Type="Self.BatteryType" Multiplicity="1" />
+          <End Role="Batteries" Type="Self.Battery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BatteryTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Batteries">
+              <PropertyRef Name="TypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ElectricMotors_ToTable">
+          <End Role="BatteryTypes" Type="Self.BatteryType" Multiplicity="0..1" />
+          <End Role="ElectricEngines" Type="Self.ElectricEngine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BatteryTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ElectricEngines">
+              <PropertyRef Name="BatteryTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BodyTypes_ToTable">
+          <End Role="BodyClasses" Type="Self.BodyClass" Multiplicity="1" />
+          <End Role="BodyTypes" Type="Self.BodyType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BodyClasses">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BodyTypes">
+              <PropertyRef Name="BodyClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CarModels_ToTable_1">
+          <End Role="BodyTypes" Type="Self.BodyType" Multiplicity="0..1" />
+          <End Role="CarModels" Type="Self.CarModel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BodyTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CarModels">
+              <PropertyRef Name="BodyTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ModelLines_ToTable">
+          <End Role="Brands" Type="Self.Brand" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ModelLines" Type="Self.ModelLine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Brands">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ModelLines">
+              <PropertyRef Name="BrandId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CarModels_ToTable">
+          <End Role="ModelLines" Type="Self.ModelLine" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CarModels" Type="Self.CarModel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ModelLines">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CarModels">
+              <PropertyRef Name="ModelLineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Modifications_ToTable_3">
+          <End Role="CarModels" Type="Self.CarModel" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Modifications" Type="Self.Modification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CarModels">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Modifications">
+              <PropertyRef Name="ModelId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_ToTable">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="CommentsToNews" Type="Self.CommentsToNew" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CommentsToNews">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_ToTable_1">
+          <End Role="News" Type="Self.News" Multiplicity="1" />
+          <End Role="CommentsToNews" Type="Self.CommentsToNew" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="News">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CommentsToNews">
+              <PropertyRef Name="NewsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ElectricEngines_ToTable_1">
+          <End Role="ElectricMotors" Type="Self.ElectricMotor" Multiplicity="0..1" />
+          <End Role="ElectricEngines" Type="Self.ElectricEngine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ElectricMotors">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ElectricEngines">
+              <PropertyRef Name="ElectricMotorId1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ElectricEngines_ToTable_2">
+          <End Role="ElectricMotors" Type="Self.ElectricMotor" Multiplicity="0..1" />
+          <End Role="ElectricEngines" Type="Self.ElectricEngine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ElectricMotors">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ElectricEngines">
+              <PropertyRef Name="ElectricMotorId2" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Modifications_ToTable_1">
+          <End Role="ElectricEngines" Type="Self.ElectricEngine" Multiplicity="0..1" />
+          <End Role="Modifications" Type="Self.Modification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ElectricEngines">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Modifications">
+              <PropertyRef Name="ElectricEngineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InternalCombustionEngines_ToTable">
+          <End Role="EngineLocations" Type="Self.EngineLocation" Multiplicity="0..1" />
+          <End Role="InternalCombustionEngines" Type="Self.InternalCombustionEngine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EngineLocations">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InternalCombustionEngines">
+              <PropertyRef Name="Location" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InternalCombustionEngines_ToTable_2">
+          <End Role="FuelTypes" Type="Self.FuelType" Multiplicity="0..1" />
+          <End Role="InternalCombustionEngines" Type="Self.InternalCombustionEngine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FuelTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InternalCombustionEngines">
+              <PropertyRef Name="FuelTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InternalCombustionEngines_ToTable_1">
+          <End Role="ValvesArrangements" Type="Self.ValvesArrangement" Multiplicity="0..1" />
+          <End Role="InternalCombustionEngines" Type="Self.InternalCombustionEngine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ValvesArrangements">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InternalCombustionEngines">
+              <PropertyRef Name="ValvesArrangementId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Modifications_ToTable">
+          <End Role="InternalCombustionEngines" Type="Self.InternalCombustionEngine" Multiplicity="0..1" />
+          <End Role="Modifications" Type="Self.Modification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InternalCombustionEngines">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Modifications">
+              <PropertyRef Name="InternalCombustionEngineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Modifications_ToTable_2">
+          <End Role="TransmissionTypes" Type="Self.TransmissionType" Multiplicity="0..1" />
+          <End Role="Modifications" Type="Self.Modification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TransmissionTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Modifications">
+              <PropertyRef Name="TransmissionTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Modifications_ToTable_4">
+          <End Role="TireCarcassTypes" Type="Self.TireCarcassType" Multiplicity="0..1" />
+          <End Role="Modifications" Type="Self.Modification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TireCarcassTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Modifications">
+              <PropertyRef Name="TireCarcassTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DatabaseEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Batteries" EntityType="Self.Battery" />
+          <EntitySet Name="BatteryTypes" EntityType="Self.BatteryType" />
+          <EntitySet Name="BodyClasses" EntityType="Self.BodyClass" />
+          <EntitySet Name="BodyTypes" EntityType="Self.BodyType" />
+          <EntitySet Name="Brands" EntityType="Self.Brand" />
+          <EntitySet Name="CarModels" EntityType="Self.CarModel" />
+          <EntitySet Name="CommentsToNews" EntityType="Self.CommentsToNew" />
+          <EntitySet Name="ElectricEngines" EntityType="Self.ElectricEngine" />
+          <EntitySet Name="ElectricMotors" EntityType="Self.ElectricMotor" />
+          <EntitySet Name="EngineLocations" EntityType="Self.EngineLocation" />
+          <EntitySet Name="FuelTypes" EntityType="Self.FuelType" />
+          <EntitySet Name="InternalCombustionEngines" EntityType="Self.InternalCombustionEngine" />
+          <EntitySet Name="ModelLines" EntityType="Self.ModelLine" />
+          <EntitySet Name="Modifications" EntityType="Self.Modification" />
+          <EntitySet Name="News" EntityType="Self.News" />
+          <EntitySet Name="TireCarcassTypes" EntityType="Self.TireCarcassType" />
+          <EntitySet Name="TransmissionTypes" EntityType="Self.TransmissionType" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="ValvesArrangements" EntityType="Self.ValvesArrangement" />
+          <AssociationSet Name="FK_Batteries_ToTable" Association="Self.FK_Batteries_ToTable">
+            <End Role="BatteryTypes" EntitySet="BatteryTypes" />
+            <End Role="Batteries" EntitySet="Batteries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ElectricMotors_ToTable" Association="Self.FK_ElectricMotors_ToTable">
+            <End Role="BatteryTypes" EntitySet="BatteryTypes" />
+            <End Role="ElectricEngines" EntitySet="ElectricEngines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BodyTypes_ToTable" Association="Self.FK_BodyTypes_ToTable">
+            <End Role="BodyClasses" EntitySet="BodyClasses" />
+            <End Role="BodyTypes" EntitySet="BodyTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CarModels_ToTable_1" Association="Self.FK_CarModels_ToTable_1">
+            <End Role="BodyTypes" EntitySet="BodyTypes" />
+            <End Role="CarModels" EntitySet="CarModels" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ModelLines_ToTable" Association="Self.FK_ModelLines_ToTable">
+            <End Role="Brands" EntitySet="Brands" />
+            <End Role="ModelLines" EntitySet="ModelLines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CarModels_ToTable" Association="Self.FK_CarModels_ToTable">
+            <End Role="ModelLines" EntitySet="ModelLines" />
+            <End Role="CarModels" EntitySet="CarModels" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Modifications_ToTable_3" Association="Self.FK_Modifications_ToTable_3">
+            <End Role="CarModels" EntitySet="CarModels" />
+            <End Role="Modifications" EntitySet="Modifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_ToTable" Association="Self.FK_Comments_ToTable">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="CommentsToNews" EntitySet="CommentsToNews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_ToTable_1" Association="Self.FK_Comments_ToTable_1">
+            <End Role="News" EntitySet="News" />
+            <End Role="CommentsToNews" EntitySet="CommentsToNews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ElectricEngines_ToTable_1" Association="Self.FK_ElectricEngines_ToTable_1">
+            <End Role="ElectricMotors" EntitySet="ElectricMotors" />
+            <End Role="ElectricEngines" EntitySet="ElectricEngines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ElectricEngines_ToTable_2" Association="Self.FK_ElectricEngines_ToTable_2">
+            <End Role="ElectricMotors" EntitySet="ElectricMotors" />
+            <End Role="ElectricEngines" EntitySet="ElectricEngines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Modifications_ToTable_1" Association="Self.FK_Modifications_ToTable_1">
+            <End Role="ElectricEngines" EntitySet="ElectricEngines" />
+            <End Role="Modifications" EntitySet="Modifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InternalCombustionEngines_ToTable" Association="Self.FK_InternalCombustionEngines_ToTable">
+            <End Role="EngineLocations" EntitySet="EngineLocations" />
+            <End Role="InternalCombustionEngines" EntitySet="InternalCombustionEngines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InternalCombustionEngines_ToTable_2" Association="Self.FK_InternalCombustionEngines_ToTable_2">
+            <End Role="FuelTypes" EntitySet="FuelTypes" />
+            <End Role="InternalCombustionEngines" EntitySet="InternalCombustionEngines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InternalCombustionEngines_ToTable_1" Association="Self.FK_InternalCombustionEngines_ToTable_1">
+            <End Role="ValvesArrangements" EntitySet="ValvesArrangements" />
+            <End Role="InternalCombustionEngines" EntitySet="InternalCombustionEngines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Modifications_ToTable" Association="Self.FK_Modifications_ToTable">
+            <End Role="InternalCombustionEngines" EntitySet="InternalCombustionEngines" />
+            <End Role="Modifications" EntitySet="Modifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Modifications_ToTable_2" Association="Self.FK_Modifications_ToTable_2">
+            <End Role="TransmissionTypes" EntitySet="TransmissionTypes" />
+            <End Role="Modifications" EntitySet="Modifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Modifications_ToTable_4" Association="Self.FK_Modifications_ToTable_4">
+            <End Role="TireCarcassTypes" EntitySet="TireCarcassTypes" />
+            <End Role="Modifications" EntitySet="Modifications" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DatabaseModelStoreContainer" CdmEntityContainer="DatabaseEntities">
+          <EntitySetMapping Name="Batteries">
+            <EntityTypeMapping TypeName="DatabaseModel.Battery">
+              <MappingFragment StoreEntitySet="Batteries">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="NominalVoltage" ColumnName="NominalVoltage" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BatteryTypes">
+            <EntityTypeMapping TypeName="DatabaseModel.BatteryType">
+              <MappingFragment StoreEntitySet="BatteryTypes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BodyClasses">
+            <EntityTypeMapping TypeName="DatabaseModel.BodyClass">
+              <MappingFragment StoreEntitySet="BodyClasses">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BodyTypes">
+            <EntityTypeMapping TypeName="DatabaseModel.BodyType">
+              <MappingFragment StoreEntitySet="BodyTypes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="BodyClassId" ColumnName="BodyClassId" />
+                <ScalarProperty Name="BaseBodyTypeId" ColumnName="BaseBodyTypeId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Brands">
+            <EntityTypeMapping TypeName="DatabaseModel.Brand">
+              <MappingFragment StoreEntitySet="Brands">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CarModels">
+            <EntityTypeMapping TypeName="DatabaseModel.CarModel">
+              <MappingFragment StoreEntitySet="CarModels">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ProductionStarted" ColumnName="ProductionStarted" />
+                <ScalarProperty Name="ProductionEnded" ColumnName="ProductionEnded" />
+                <ScalarProperty Name="ModelLineId" ColumnName="ModelLineId" />
+                <ScalarProperty Name="BodyTypeId" ColumnName="BodyTypeId" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="TColor" ColumnName="TColor" />
+                <ScalarProperty Name="TPositiveTrait" ColumnName="TPositiveTrait" />
+                <ScalarProperty Name="TNegativeTrait" ColumnName="TNegativeTrait" />
+                <ScalarProperty Name="TMainFeature" ColumnName="TMainFeature" />
+                <ScalarProperty Name="TElectric" ColumnName="TElectric" />
+                <ScalarProperty Name="TAge" ColumnName="TAge" />
+                <ScalarProperty Name="TSpeed" ColumnName="TSpeed" />
+                <ScalarProperty Name="TOutLand" ColumnName="TOutLand" />
+                <ScalarProperty Name="TPassengers" ColumnName="TPassengers" />
+                <ScalarProperty Name="TDistance" ColumnName="TDistance" />
+                <ScalarProperty Name="TPrice" ColumnName="TPrice" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CommentsToNews">
+            <EntityTypeMapping TypeName="DatabaseModel.CommentsToNew">
+              <MappingFragment StoreEntitySet="CommentsToNews">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="NewsId" ColumnName="NewsId" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ElectricEngines">
+            <EntityTypeMapping TypeName="DatabaseModel.ElectricEngine">
+              <MappingFragment StoreEntitySet="ElectricEngines">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ElectricMotorId1" ColumnName="ElectricMotorId1" />
+                <ScalarProperty Name="ElectricMotorId2" ColumnName="ElectricMotorId2" />
+                <ScalarProperty Name="BatteryTypeId" ColumnName="BatteryTypeId" />
+                <ScalarProperty Name="BatteryNominalVoltage" ColumnName="BatteryNominalVoltage" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ElectricMotors">
+            <EntityTypeMapping TypeName="DatabaseModel.ElectricMotor">
+              <MappingFragment StoreEntitySet="ElectricMotors">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Power" ColumnName="Power" />
+                <ScalarProperty Name="Torque" ColumnName="Torque" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EngineLocations">
+            <EntityTypeMapping TypeName="DatabaseModel.EngineLocation">
+              <MappingFragment StoreEntitySet="EngineLocations">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FuelTypes">
+            <EntityTypeMapping TypeName="DatabaseModel.FuelType">
+              <MappingFragment StoreEntitySet="FuelTypes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InternalCombustionEngines">
+            <EntityTypeMapping TypeName="DatabaseModel.InternalCombustionEngine">
+              <MappingFragment StoreEntitySet="InternalCombustionEngines">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Volume" ColumnName="Volume" />
+                <ScalarProperty Name="NumberOfValves" ColumnName="NumberOfValves" />
+                <ScalarProperty Name="ValvesArrangementId" ColumnName="ValvesArrangementId" />
+                <ScalarProperty Name="FuelTypeId" ColumnName="FuelTypeId" />
+                <ScalarProperty Name="Power" ColumnName="Power" />
+                <ScalarProperty Name="Torque" ColumnName="Torque" />
+                <ScalarProperty Name="TorqueRotations" ColumnName="TorqueRotations" />
+                <ScalarProperty Name="FuelConsumptionInCity" ColumnName="FuelConsumptionInCity" />
+                <ScalarProperty Name="FuelConsumptionOnRoad" ColumnName="FuelConsumptionOnRoad" />
+                <ScalarProperty Name="FuelConsumptionCombined" ColumnName="FuelConsumptionCombined" />
+                <ScalarProperty Name="FuelTankVolume" ColumnName="FuelTankVolume" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ModelLines">
+            <EntityTypeMapping TypeName="DatabaseModel.ModelLine">
+              <MappingFragment StoreEntitySet="ModelLines">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="BrandId" ColumnName="BrandId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Modifications">
+            <EntityTypeMapping TypeName="DatabaseModel.Modification">
+              <MappingFragment StoreEntitySet="Modifications">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ModelId" ColumnName="ModelId" />
+                <ScalarProperty Name="MaxSpeed" ColumnName="MaxSpeed" />
+                <ScalarProperty Name="Velocity" ColumnName="Velocity" />
+                <ScalarProperty Name="NumberOfSeats" ColumnName="NumberOfSeats" />
+                <ScalarProperty Name="Length" ColumnName="Length" />
+                <ScalarProperty Name="Height" ColumnName="Height" />
+                <ScalarProperty Name="Width" ColumnName="Width" />
+                <ScalarProperty Name="CurbWeight" ColumnName="CurbWeight" />
+                <ScalarProperty Name="TotalWeight" ColumnName="TotalWeight" />
+                <ScalarProperty Name="CargoVolume" ColumnName="CargoVolume" />
+                <ScalarProperty Name="MaxCargoVolume" ColumnName="MaxCargoVolume" />
+                <ScalarProperty Name="Wheelbase" ColumnName="Wheelbase" />
+                <ScalarProperty Name="FrontTrackWidth" ColumnName="FrontTrackWidth" />
+                <ScalarProperty Name="BackTrackWidth" ColumnName="BackTrackWidth" />
+                <ScalarProperty Name="InternalCombustionEngineId" ColumnName="InternalCombustionEngineId" />
+                <ScalarProperty Name="ElectricEngineId" ColumnName="ElectricEngineId" />
+                <ScalarProperty Name="TransmissionTypeId" ColumnName="TransmissionTypeId" />
+                <ScalarProperty Name="TransmissionStages" ColumnName="TransmissionStages" />
+                <ScalarProperty Name="Drive" ColumnName="Drive" />
+                <ScalarProperty Name="NumberOfWheels" ColumnName="NumberOfWheels" />
+                <ScalarProperty Name="NumberOfDrivenWheels" ColumnName="NumberOfDrivenWheels" />
+                <ScalarProperty Name="TireProfileWidth" ColumnName="TireProfileWidth" />
+                <ScalarProperty Name="TireProfileHeight" ColumnName="TireProfileHeight" />
+                <ScalarProperty Name="TireCarcassTypeId" ColumnName="TireCarcassTypeId" />
+                <ScalarProperty Name="TireMountingDiameter" ColumnName="TireMountingDiameter" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="News">
+            <EntityTypeMapping TypeName="DatabaseModel.News">
+              <MappingFragment StoreEntitySet="News">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TireCarcassTypes">
+            <EntityTypeMapping TypeName="DatabaseModel.TireCarcassType">
+              <MappingFragment StoreEntitySet="TireCarcassTypes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ShortName" ColumnName="ShortName" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TransmissionTypes">
+            <EntityTypeMapping TypeName="DatabaseModel.TransmissionType">
+              <MappingFragment StoreEntitySet="TransmissionTypes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="DatabaseModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ValvesArrangements">
+            <EntityTypeMapping TypeName="DatabaseModel.ValvesArrangement">
+              <MappingFragment StoreEntitySet="ValvesArrangements">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CodeName" ColumnName="CodeName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
