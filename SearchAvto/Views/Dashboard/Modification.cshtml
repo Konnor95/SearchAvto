@@ -56,7 +56,7 @@
                 <table class="table table-bordered">
                     @HtmlManager.TableRow("Расположение", Model.InternalCombustionEngine.EngineLocation.Name)
                     @HtmlManager.TableRow("Объем, см<sup>3</sup>", Model.InternalCombustionEngine.Volume, Html)
-                    @HtmlManager.TableRow("Тип компновки", Model.InternalCombustionEngine.ValvesArrangement.Name)
+                    @HtmlManager.TableRow("Тип компоновки", Model.InternalCombustionEngine.ValvesArrangement.Name)
                     @HtmlManager.TableRow("Количество цилиндров", Model.InternalCombustionEngine.NumberOfValves)
                     @HtmlManager.TableRow("Мощность, л.с.", Model.InternalCombustionEngine.Power)
                     @HtmlManager.TableRow("Тип топлива", Model.InternalCombustionEngine.FuelType.Name)
@@ -111,7 +111,7 @@
             }
             @if (Model.HasAnyTransmissionOrWheelInfo)
             {
-                <div class="panel-heading">Коробка передач</div>
+                <div class="panel-heading">Колеса и коробка передач</div>
                 <table class="table table-bordered">
                     @HtmlManager.TableRow("Тип", Model.TransmissionType.Name)
                     @HtmlManager.TableRow("Количество ступеней", Model.TransmissionStages)
@@ -127,7 +127,7 @@
                     @HtmlManager.TableRow("Полная масса, кг", Model.TotalWeight)
                 </table>
             }
-            @if (Model.HasAnyTireInfo())
+            @if (Model.HasAnyTireInfo() || hasFuelTank)
             {
                 <div class="panel-heading">Прочее</div>
                 <table class="table table-bordered">
@@ -135,18 +135,6 @@
                     {
                         @HtmlManager.TableRow("Шины", String.Format("{0}/{1}{2}{3}", Model.TireProfileWidth, Model.TireProfileHeight, Model.TireCarcassType.ShortName, Model.TireMountingDiameter))
                     }
-                    @HtmlManager.TableRow("Объем багажника, л", Model.CargoVolume)
-                    @HtmlManager.TableRow("Максимальный объем багажника, л", Model.MaxCargoVolume)
-                    @if (hasFuelTank)
-                    {
-                        @HtmlManager.TableRow("Объем топливного бака, л", Model.InternalCombustionEngine.FuelTankVolume)
-                    }
-                </table>
-            }
-            @if (Model.HasAnyOtherInfo || hasFuelTank)
-            {
-                <div class="panel-heading">Прочее</div>
-                <table class="table table-bordered">
                     @HtmlManager.TableRow("Объем багажника, л", Model.CargoVolume)
                     @HtmlManager.TableRow("Максимальный объем багажника, л", Model.MaxCargoVolume)
                     @if (hasFuelTank)

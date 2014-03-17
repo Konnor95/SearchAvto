@@ -40,7 +40,7 @@
         <table class="table table-2">
             @HtmlManager.TableRow("Расположение", Model.InternalCombustionEngine.EngineLocation.Name)
             @HtmlManager.TableRow("Объем, см<sup>3</sup>", Model.InternalCombustionEngine.Volume, Html)
-            @HtmlManager.TableRow("Тип компновки", Model.InternalCombustionEngine.ValvesArrangement.Name)
+            @HtmlManager.TableRow("Тип компоновки", Model.InternalCombustionEngine.ValvesArrangement.Name)
             @HtmlManager.TableRow("Количество цилиндров", Model.InternalCombustionEngine.NumberOfValves)
             @HtmlManager.TableRow("Мощность, л.с.", Model.InternalCombustionEngine.Power)
             @HtmlManager.TableRow("Тип топлива", Model.InternalCombustionEngine.FuelType.Name)
@@ -95,7 +95,7 @@
     }
     @if (Model.HasAnyTransmissionOrWheelInfo)
     {
-        <div class="sub-heading">Коробка передач</div>
+        <div class="sub-heading">Колеса и коробка передач</div>
         <table class="table table-2">
             @HtmlManager.TableRow("Тип", Model.TransmissionType.Name)
             @HtmlManager.TableRow("Количество ступеней", Model.TransmissionStages)

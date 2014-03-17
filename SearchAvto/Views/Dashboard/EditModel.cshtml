@@ -1,6 +1,6 @@
 ﻿@model Tuple<CarModel, IEnumerable<BodyClass>>
 @{
-    ViewBag.Title = Model != null ? "Добавить модель для " + Model.Item1.FullName : "Модель не найдена";
+    ViewBag.Title = Model != null ? "Редактировать модель для " + Model.Item1.FullName : "Модель не найдена";
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
 @if (Model == null)
@@ -30,28 +30,30 @@
         @using (Html.BeginForm("ManageModelEditing", "Dashboard", FormMethod.Post, new { id = "main-form", enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
-             <input type="hidden" id="id" name="id" value="@Model.Item1.Id"/>
+            <input type="hidden" id="id" name="id" value="@Model.Item1.Id" />
+            <input type="hidden" id="bodyType" name="bodyType" />
             <div class="form-horizontal">
                 @Html.ValidationSummary(true)
+                @HtmlManager.InputText("Название", "Name", "Название", Model.Item1.Name)
                 <div class="form-group">
-                    <label class="control-label col-md-2" for="Name">Название</label>
-                    <div class="col-md-2">
-                        <input type="hidden" id="bodyType" name="bodyType" />
-                        <input class="form-control" id="Name" name="Name" type="text" value="@Model.Item1.Name" placeholder="Название" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-md-2" for="Name">Тип кузова</label>
+                    <label class="control-label col-md-3">Тип кузова</label>
                     <div class="fleft pad-15">
-                        @Html.DropDownList("BodyClasses", new SelectList(Model.Item2, "Id", "Name",Model.Item1.BodyType.BodyClassId), new { @class = "form-control" })
+                        @{
+            object selected = null;
+            if (Model.Item1.BodyTypeId.HasValue)
+            {
+                selected = Model.Item1.BodyType.BodyClassId;
+            }
+                        }
+                        @Html.DropDownList("BodyClasses", new SelectList(Model.Item2, "Id", "Name", selected), new { @class = "form-control" })
                     </div>
                     <div class="fleft pad-15">
                         @foreach (BodyClass bodyClass in Model.Item2)
                         {
                             var list = new SelectList(bodyClass.BodyTypes, "Id", "Name");
-                            if (bodyClass.Id == Model.Item1.BodyType.BodyClassId)
+                            if (selected != null&&bodyClass.Id == Model.Item1.BodyType.BodyClassId)
                             {
-                                list = new SelectList(bodyClass.BodyTypes, "Id", "Name",Model.Item1.BodyTypeId);
+                                list = new SelectList(bodyClass.BodyTypes, "Id", "Name", Model.Item1.BodyTypeId);
                             }
                             @Html.DropDownList("BodyTypes" + bodyClass.Id, list, new { @class = "bodyTypeList form-control" })
                         }
@@ -60,24 +62,19 @@
                 @{
             int year = DateTime.Now.Year;
                 }
+                @HtmlManager.InputNumber("Старт производства", "start", min: 1769, max: year, value: Model.Item1.StartYearOfProductionAsNumber)
+                @HtmlManager.InputNumber("Окончание производства", "end", min: 1769, max: year, value: Model.Item1.EndYearOfProductionAsNumber)
                 <div class="form-group">
-                    <label class="control-label col-md-2" for="start">Старт производства</label>
-                    <div class="col-md-2">
-                        <input class="form-control" value="@Model.Item1.StartYearOfProductionAsNumber" id="start" name="start" type="number" placeholder="Неизвестно" min="1769" max="@year" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-md-2" for="end">Окончание производства</label>
-                    <div class="col-md-2">
-                        <input class="form-control" value="@Model.Item1.EndYearOfProductionAsNumber" id="end" name="end" type="number" placeholder="Неизвестно" min="1769" max="@year" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-md-2">Изображение</label>
-                    <div class="col-md-2">
+                    <label class="control-label col-md-3">Изображение</label>
+                    <div class="col-md-3">
                         @HtmlManager.ImageUpload(Model.Item1.Image)
                     </div>
                 </div>
+                <h4 class="page-header">Вопросы для теста</h4>
+                @foreach (var question in Test.GetAllQuestions())
+                {
+                    @HtmlManager.DropDownList(Html, question.Meaning, "results", question.Answers, "Id", "Meaning", Model.Item1.GetTestVaue(question.Id))
+                }
                 <div class="form-group">
                     <div class="col-md-6">
                         <div class="alert alert-warning">
@@ -88,9 +85,10 @@
                 <div class="form-group">
                     <div class="col-md-10">
                         @HtmlManager.SubmitButton()
-                        @HtmlManager.DefaultButton(Html.ActionLink("Назад", "Model", "Dashboard", new { id = Model.Item1.Id },null))
+                        @HtmlManager.DefaultButton(Html.ActionLink("Назад", "Model", "Dashboard", new { id = Model.Item1.Id }, null))
                     </div>
                 </div>
+
             </div>
         }
     </div>

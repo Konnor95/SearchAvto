@@ -69,6 +69,11 @@
                         @HtmlManager.ImageUpload()
                     </div>
                 </div>
+                <h4 class="page-header">Вопросы для теста</h4>
+                @foreach (var test in Test.GetAllQuestions())
+                {
+                    @HtmlManager.DropDownList(Html, test.Meaning, "results", test.Answers,"Id","Meaning")
+                }
                 <div class="form-group">
                     <div class="col-md-6">
                         <div class="alert alert-warning">

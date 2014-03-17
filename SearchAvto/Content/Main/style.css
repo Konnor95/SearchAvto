@@ -1674,7 +1674,7 @@ footer {
 	color: firebrick;
 }
 
-.thumbnail div {
+.thumbnail .image {
 	width: 164px;
 	height: 164px;
 }
@@ -1694,33 +1694,77 @@ footer {
 .test {
 	margin: 0 auto;
 	width: 80%;
-	height: 580px;
+	min-height: 500px;
 	border: 1px solid firebrick;
 	-webkit-box-shadow: 0 0 18px 0 firebrick;
 	-moz-box-shadow: 0 0 18px 0 firebrick;
 	box-shadow: 0 0 18px 0 firebrick;
 }
-.test p{
-	 font-size: x-large;
-	color: firebrick;
-}
-.test label {
-	display: inline-block;
-	padding-left: 5px;
-	padding-top: 2px;
-	margin: 0;
-	color: firebrick;
-	font-size: larger;
-}
-.test .answer {
-	display: block;
-}
+
+	.test p {
+		font-size: x-large;
+		color: firebrick;
+	}
+
+	.test label {
+		display: inline-block;
+		padding-left: 5px;
+		padding-top: 2px;
+		margin: 0;
+		color: firebrick;
+		font-size: larger;
+	}
+
+	.test .answer {
+		display: block;
+	}
+
 .pad-15 {
 	padding: 15px;
 }
 
+.news-list {
+	margin: 20px;
+	display: block;
+}
+
+	.news-list li {
+		display: inline-block;
+		width: 256px;
+		padding: 15px;
+	}
+
+		.news-list li .news-thumb {
+			display: block;
+			width: 100%;
+		}
+
+			.news-list li .news-thumb img {
+				margin-bottom: -26px;
+			}
 
 
+		.news-list li .comments-counter {
+			position: relative;
+			left: 0;
+			bottom: 0;
+			display: inline-block;
+		}
+
+			.news-list li .comments-counter a {
+				color: firebrick;
+				display: block;
+				width: 100%;
+				height: 100%;
+				background-color: white;
+				border-top-right-radius: 5px;
+				padding: 3px;
+				text-align: center;
+			}
+
+				.news-list li .comments-counter a:hover {
+					color: #000000;
+				}
 
 
 
@@ -1730,29 +1774,31 @@ footer {
 
 
 @-webkit-keyframes progress-bar-stripes {
-  from {
-	background-position: 40px 0;
-  }
-  to {
-	background-position: 0 0;
-  }
+	from {
+		background-position: 40px 0;
+	}
+
+	to {
+		background-position: 0 0;
+	}
 }
 
 @keyframes progress-bar-stripes {
-  from {
-	background-position: 40px 0;
-  }
-  to {
-	background-position: 0 0;
-  }
+	from {
+		background-position: 40px 0;
+	}
+
+	to {
+		background-position: 0 0;
+	}
 }
 
 .progress {
 	height: 20px;
-  margin-bottom: 20px;
-  overflow: hidden;
-  background-color: #f5f5f5;
-  border-radius: 4px;
+	margin-bottom: 20px;
+	overflow: hidden;
+	background-color: #f5f5f5;
+	border-radius: 4px;
 	-webkit-box-shadow: inset 0 1px 2px #000000;
 	-webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
 	box-shadow: inset 0 1px 2px #000000;
@@ -1761,80 +1807,88 @@ footer {
 
 .progress-bar {
 	float: left;
-  width: 0;
-  height: 100%;
-  font-size: 12px;
-  line-height: 20px;
-  color: #ffffff;
-  text-align: center;
-  background-color: #428bca;
+	width: 0;
+	height: 100%;
+	font-size: 12px;
+	line-height: 20px;
+	color: #ffffff;
+	text-align: center;
+	background-color: #428bca;
 	-webkit-box-shadow: inset 0 -1px 0 #000000;
 	-webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
 	box-shadow: inset 0 -1px 0 #000000;
 	box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
-  -webkit-transition: width 0.6s ease;
-		  transition: width 0.6s ease;
+	-webkit-transition: width 0.6s ease;
+	transition: width 0.6s ease;
 }
 
 .progress-striped .progress-bar {
-  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-  background-size: 40px 40px;
+	background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+	background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+	background-size: 40px 40px;
 }
 
 .progress.active .progress-bar {
-  -webkit-animation: progress-bar-stripes 2s linear infinite;
-		  animation: progress-bar-stripes 2s linear infinite;
+	-webkit-animation: progress-bar-stripes 2s linear infinite;
+	animation: progress-bar-stripes 2s linear infinite;
 }
 
 .progress-bar-success {
-  background-color: #5cb85c;
+	background-color: #5cb85c;
 }
 
 .progress-striped .progress-bar-success {
-  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+	background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+	background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
 }
 
 .progress-bar-info {
-  background-color: #5bc0de;
+	background-color: #5bc0de;
 }
 
 .progress-striped .progress-bar-info {
-  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+	background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+	background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
 }
 
 .progress-bar-warning {
-  background-color: #f0ad4e;
+	background-color: #f0ad4e;
 }
 
 .progress-striped .progress-bar-warning {
-  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+	background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+	background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
 }
 
 .progress-bar-danger {
-  background-color: firebrick;
+	background-color: firebrick;
 }
 
 .progress-striped .progress-bar-danger {
-  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+	background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+	background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
 }
-.box-50 {
-	width: 45%;
+
+.box-30 {
+	width: 29%;
 }
-a:hover,.list li a:hover {
-    color: black;
+
+a:hover, .list li a:hover {
+	color: black;
 }
+
 ul.list {
-    width: 100%;
+	width: 100%;
 }
+
 .comments-container {
-    
 }
-.comments-container img{
-    width: 64px;
-    height: 64px;
+
+	.comments-container img {
+		width: 64px;
+		height: 64px;
+	}
+
+article h4 a {
+	text-rendering: optimizelegibility;
 }

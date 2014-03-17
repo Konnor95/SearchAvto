@@ -25,7 +25,8 @@ namespace SearchAvto
                 "~/Content/Main/style.css",
                 "~/Content/Main/touchTouch.css",
                 "~/Content/Main/kwicks-slider.css",
-                "~/Content/Main/docs.css"));
+                "~/Content/Main/docs.css",
+                 "~/Content/Dashboard/font-awesome.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/ControlPanelScripts").Include(
                 "~/Scripts/Dashboard/jquery-{version}.js",

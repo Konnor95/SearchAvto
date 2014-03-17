@@ -25,7 +25,6 @@ namespace SearchAvto.Models.DataModels
         public int BaseBodyTypeId { get; set; }
         public string Description { get; set; }
     
-        public virtual BodyClass BodyClass { get; set; }
         public virtual ICollection<CarModel> CarModels { get; set; }
     }
 }

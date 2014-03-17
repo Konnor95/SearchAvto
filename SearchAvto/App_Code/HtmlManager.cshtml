@@ -183,11 +183,11 @@
 
 @helper EditIconLink(string url)
 {
-    <a title="Редактировать" href="@url"><i class="fa fa-pencil fa-fw"></i>Редактировать</a>
+    <a style="display: inline-block" title="Редактировать" href="@url"><i class="fa fa-pencil fa-fw"></i>Изменить</a>
 }
 @helper DeleteIconLink(string url)
 {
-    <a title="Удалить" href="@url"><i class="fa fa-trash-o fa-fw"></i>Удалить</a>
+    <a style="display: inline-block" title="Удалить" href="@url"><i class="fa fa-trash-o fa-fw"></i>Удалить</a>
 }
 
 @functions
@@ -288,7 +288,7 @@
 @helper InputText(string labelText, string id, string placeHolder = null, string value = null)
 {
     <div class="form-group">
-        <label class="control-label col-md-4" for="@id">Название</label>
+        <label class="control-label col-md-3" for="@id">Название</label>
         <div class="col-md-2">
             <input type="text" class="form-control" id="@id" name="@id" placeholder="@placeHolder" value="@value" />
         </div>
@@ -296,8 +296,10 @@
 }
 @helper InputNumber(string labelText, string id, float? placeHolder = null, float? min = null, float? max = null, double? value = null, float step = 1, HtmlHelper html = null)
 {
+    string placeholder = placeHolder == null ? "Неизвестно" : ToString(placeHolder);
     <div class="form-group">
-        <label class="control-label col-md-4" for="@id">
+        
+        <label class="control-label col-md-3" for="@id">
             @if (html != null)
             {
                 @html.Raw(labelText)
@@ -308,7 +310,7 @@
             }
         </label>
         <div class="col-md-2">
-            <input class="form-control" id="@id" name="@id" type="number" min="@ToString(min)" max="@ToString(max)" placeholder="@ToString(placeHolder)" value="@ToString(value)" step="@ToString(step)" />
+            <input class="form-control" id="@id" name="@id" type="number" min="@ToString(min)" max="@ToString(max)" placeholder="@placeholder" value="@ToString(value)" step="@ToString(step)" />
         </div>
     </div>
 }
@@ -316,7 +318,7 @@
 @helper DropDownList(HtmlHelper html, string labelText, string id, IEnumerable items, string valueField = "Id", string textField = "Name", object selectedValue = null)
 {
     <div class="form-group">
-        <label class="control-label col-md-4">@labelText</label>
+        <label class="control-label col-md-3">@labelText</label>
         <div class="fleft pad-15">
             @html.DropDownList(id, new SelectList(items, valueField, textField, selectedValue), new { @class = "form-control" })
         </div>
@@ -327,13 +329,13 @@
 {
 
     <div class="form-group">
-        <label class="control-label col-md-4">Информация</label>
-        <div class="col-md-4">
+        <label class="control-label col-md-3">Информация</label>
+        <div class="col-md-3">
             <select id="@id" name="@id" class="form-control">
-                @if (value == 0)
+                @*if (value == 0)
                 {
                     <option value="0">Отсутствует</option>
-                }
+                }*@
                 <option value="0">Отсутствует</option>
                 <option value="1">Присутствует</option>
                 <option value="2">Выбрать из существующих</option>

@@ -19,7 +19,7 @@
                 <li class="span3">
                     <div class="thumbnail thumbnail-1">
                         <span>@Html.ActionLink(brand.Name, "Brand", new { id = brand.Id })</span>
-                        <div><a href="@Url.Action("Brand", new { id = brand.Id })">@HtmlManager.Image(brand.Image,brand.Name)</a></div>
+                        <div class="image"><a href="@Url.Action("Brand", new { id = brand.Id })">@HtmlManager.Image(brand.Image,brand.Name)</a></div>
                     </div>
                 </li>
             }

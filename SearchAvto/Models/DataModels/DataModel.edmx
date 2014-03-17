@@ -5,22 +5,7 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="DatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Batteries">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="TypeId" Type="int" Nullable="false" />
-          <Property Name="NominalVoltage" Type="int" />
-        </EntityType>
         <EntityType Name="BatteryTypes">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-        </EntityType>
-        <EntityType Name="BodyClasses">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -59,18 +44,17 @@
           <Property Name="Image" Type="nvarchar(max)" />
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="TColor" Type="tinyint" Nullable="false" />
-          <Property Name="TPositiveTrait" Type="tinyint" Nullable="false" />
-          <Property Name="TNegativeTrait" Type="tinyint" Nullable="false" />
           <Property Name="TMainFeature" Type="tinyint" Nullable="false" />
-          <Property Name="TElectric" Type="tinyint" Nullable="false" />
+          <Property Name="TEngine" Type="tinyint" Nullable="false" />
           <Property Name="TAge" Type="tinyint" Nullable="false" />
           <Property Name="TSpeed" Type="tinyint" Nullable="false" />
+          <Property Name="TSize" Type="tinyint" Nullable="false" />
           <Property Name="TOutLand" Type="tinyint" Nullable="false" />
           <Property Name="TPassengers" Type="tinyint" Nullable="false" />
           <Property Name="TDistance" Type="tinyint" Nullable="false" />
           <Property Name="TPrice" Type="tinyint" Nullable="false" />
         </EntityType>
-        <EntityType Name="CommentsToNews">
+        <EntityType Name="Comments">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -136,6 +120,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="1000" Nullable="false" />
           <Property Name="BrandId" Type="int" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Modifications">
           <Key>
@@ -203,6 +188,7 @@
           <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Status" Type="smallint" Nullable="false" />
+          <Property Name="Avatar" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="ValvesArrangements">
           <Key>
@@ -212,30 +198,6 @@
           <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
           <Property Name="CodeName" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <Association Name="FK_Batteries_ToTable">
-          <End Role="BatteryTypes" Type="Self.BatteryTypes" Multiplicity="1" />
-          <End Role="Batteries" Type="Self.Batteries" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="BatteryTypes">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Batteries">
-              <PropertyRef Name="TypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_BodyTypes_ToTable">
-          <End Role="BodyClasses" Type="Self.BodyClasses" Multiplicity="1" />
-          <End Role="BodyTypes" Type="Self.BodyTypes" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="BodyClasses">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="BodyTypes">
-              <PropertyRef Name="BodyClassId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_CarModels_ToTable">
           <End Role="ModelLines" Type="Self.ModelLines" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -264,24 +226,24 @@
         </Association>
         <Association Name="FK_Comments_ToTable">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="CommentsToNews" Type="Self.CommentsToNews" Multiplicity="*" />
+          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="CommentsToNews">
+            <Dependent Role="Comments">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Comments_ToTable_1">
           <End Role="News" Type="Self.News" Multiplicity="1" />
-          <End Role="CommentsToNews" Type="Self.CommentsToNews" Multiplicity="*" />
+          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="News">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="CommentsToNews">
+            <Dependent Role="Comments">
               <PropertyRef Name="NewsId" />
             </Dependent>
           </ReferentialConstraint>
@@ -435,13 +397,11 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="DatabaseModelStoreContainer">
-          <EntitySet Name="Batteries" EntityType="Self.Batteries" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BatteryTypes" EntityType="Self.BatteryTypes" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="BodyClasses" EntityType="Self.BodyClasses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BodyTypes" EntityType="Self.BodyTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Brands" EntityType="Self.Brands" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CarModels" EntityType="Self.CarModels" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="CommentsToNews" EntityType="Self.CommentsToNews" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Comments" EntityType="Self.Comments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ElectricEngines" EntityType="Self.ElectricEngines" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ElectricMotors" EntityType="Self.ElectricMotors" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EngineLocations" EntityType="Self.EngineLocations" Schema="dbo" store:Type="Tables" />
@@ -454,14 +414,6 @@
           <EntitySet Name="TransmissionTypes" EntityType="Self.TransmissionTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ValvesArrangements" EntityType="Self.ValvesArrangements" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Batteries_ToTable" Association="Self.FK_Batteries_ToTable">
-            <End Role="BatteryTypes" EntitySet="BatteryTypes" />
-            <End Role="Batteries" EntitySet="Batteries" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BodyTypes_ToTable" Association="Self.FK_BodyTypes_ToTable">
-            <End Role="BodyClasses" EntitySet="BodyClasses" />
-            <End Role="BodyTypes" EntitySet="BodyTypes" />
-          </AssociationSet>
           <AssociationSet Name="FK_CarModels_ToTable" Association="Self.FK_CarModels_ToTable">
             <End Role="ModelLines" EntitySet="ModelLines" />
             <End Role="CarModels" EntitySet="CarModels" />
@@ -472,11 +424,11 @@
           </AssociationSet>
           <AssociationSet Name="FK_Comments_ToTable" Association="Self.FK_Comments_ToTable">
             <End Role="Users" EntitySet="Users" />
-            <End Role="CommentsToNews" EntitySet="CommentsToNews" />
+            <End Role="Comments" EntitySet="Comments" />
           </AssociationSet>
           <AssociationSet Name="FK_Comments_ToTable_1" Association="Self.FK_Comments_ToTable_1">
             <End Role="News" EntitySet="News" />
-            <End Role="CommentsToNews" EntitySet="CommentsToNews" />
+            <End Role="Comments" EntitySet="Comments" />
           </AssociationSet>
           <AssociationSet Name="FK_ElectricEngines_ToTable_1" Association="Self.FK_ElectricEngines_ToTable_1">
             <End Role="ElectricMotors" EntitySet="ElectricMotors" />
@@ -532,31 +484,13 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Battery">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TypeId" Type="Int32" Nullable="false" />
-          <Property Name="NominalVoltage" Type="Int32" />
-          <NavigationProperty Name="BatteryType" Relationship="Self.FK_Batteries_ToTable" FromRole="Batteries" ToRole="BatteryTypes" />
-        </EntityType>
         <EntityType Name="BatteryType">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Batteries" Relationship="Self.FK_Batteries_ToTable" FromRole="BatteryTypes" ToRole="Batteries" />
           <NavigationProperty Name="ElectricEngines" Relationship="Self.FK_ElectricMotors_ToTable" FromRole="BatteryTypes" ToRole="ElectricEngines" />
-        </EntityType>
-        <EntityType Name="BodyClass">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="BodyTypes" Relationship="Self.FK_BodyTypes_ToTable" FromRole="BodyClasses" ToRole="BodyTypes" />
         </EntityType>
         <EntityType Name="BodyType">
           <Key>
@@ -567,7 +501,6 @@
           <Property Name="BodyClassId" Type="Int32" Nullable="false" />
           <Property Name="BaseBodyTypeId" Type="Int32" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="BodyClass" Relationship="Self.FK_BodyTypes_ToTable" FromRole="BodyTypes" ToRole="BodyClasses" />
           <NavigationProperty Name="CarModels" Relationship="Self.FK_CarModels_ToTable_1" FromRole="BodyTypes" ToRole="CarModels" />
         </EntityType>
         <EntityType Name="Brand">
@@ -593,12 +526,11 @@
           <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="TColor" Type="Byte" Nullable="false" />
-          <Property Name="TPositiveTrait" Type="Byte" Nullable="false" />
-          <Property Name="TNegativeTrait" Type="Byte" Nullable="false" />
           <Property Name="TMainFeature" Type="Byte" Nullable="false" />
-          <Property Name="TElectric" Type="Byte" Nullable="false" />
+          <Property Name="TEngine" Type="Byte" Nullable="false" />
           <Property Name="TAge" Type="Byte" Nullable="false" />
           <Property Name="TSpeed" Type="Byte" Nullable="false" />
+          <Property Name="TSize" Type="Byte" Nullable="false" />
           <Property Name="TOutLand" Type="Byte" Nullable="false" />
           <Property Name="TPassengers" Type="Byte" Nullable="false" />
           <Property Name="TDistance" Type="Byte" Nullable="false" />
@@ -607,7 +539,7 @@
           <NavigationProperty Name="ModelLine" Relationship="Self.FK_CarModels_ToTable" FromRole="CarModels" ToRole="ModelLines" />
           <NavigationProperty Name="Modifications" Relationship="Self.FK_Modifications_ToTable_3" FromRole="CarModels" ToRole="Modifications" />
         </EntityType>
-        <EntityType Name="CommentsToNew">
+        <EntityType Name="Comment">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -615,8 +547,8 @@
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="NewsId" Type="Int32" Nullable="false" />
           <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="User" Relationship="Self.FK_Comments_ToTable" FromRole="CommentsToNews" ToRole="Users" />
-          <NavigationProperty Name="News" Relationship="Self.FK_Comments_ToTable_1" FromRole="CommentsToNews" ToRole="News" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Comments_ToTable" FromRole="Comments" ToRole="Users" />
+          <NavigationProperty Name="News" Relationship="Self.FK_Comments_ToTable_1" FromRole="Comments" ToRole="News" />
         </EntityType>
         <EntityType Name="ElectricEngine">
           <Key>
@@ -687,6 +619,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="BrandId" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Brand" Relationship="Self.FK_ModelLines_ToTable" FromRole="ModelLines" ToRole="Brands" />
           <NavigationProperty Name="CarModels" Relationship="Self.FK_CarModels_ToTable" FromRole="ModelLines" ToRole="CarModels" />
         </EntityType>
@@ -736,7 +669,7 @@
           <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="CommentsToNews" Relationship="Self.FK_Comments_ToTable_1" FromRole="News" ToRole="CommentsToNews" />
+          <NavigationProperty Name="Comments" Relationship="Self.FK_Comments_ToTable_1" FromRole="News" ToRole="Comments" />
         </EntityType>
         <EntityType Name="TireCarcassType">
           <Key>
@@ -764,7 +697,8 @@
           <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Status" Type="Int16" Nullable="false" />
-          <NavigationProperty Name="CommentsToNews" Relationship="Self.FK_Comments_ToTable" FromRole="Users" ToRole="CommentsToNews" />
+          <Property Name="Avatar" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Comments" Relationship="Self.FK_Comments_ToTable" FromRole="Users" ToRole="Comments" />
         </EntityType>
         <EntityType Name="ValvesArrangement">
           <Key>
@@ -775,18 +709,6 @@
           <Property Name="CodeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="InternalCombustionEngines" Relationship="Self.FK_InternalCombustionEngines_ToTable_1" FromRole="ValvesArrangements" ToRole="InternalCombustionEngines" />
         </EntityType>
-        <Association Name="FK_Batteries_ToTable">
-          <End Role="BatteryTypes" Type="Self.BatteryType" Multiplicity="1" />
-          <End Role="Batteries" Type="Self.Battery" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="BatteryTypes">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Batteries">
-              <PropertyRef Name="TypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ElectricMotors_ToTable">
           <End Role="BatteryTypes" Type="Self.BatteryType" Multiplicity="0..1" />
           <End Role="ElectricEngines" Type="Self.ElectricEngine" Multiplicity="*" />
@@ -796,18 +718,6 @@
             </Principal>
             <Dependent Role="ElectricEngines">
               <PropertyRef Name="BatteryTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_BodyTypes_ToTable">
-          <End Role="BodyClasses" Type="Self.BodyClass" Multiplicity="1" />
-          <End Role="BodyTypes" Type="Self.BodyType" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="BodyClasses">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="BodyTypes">
-              <PropertyRef Name="BodyClassId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -867,24 +777,24 @@
         </Association>
         <Association Name="FK_Comments_ToTable">
           <End Role="Users" Type="Self.User" Multiplicity="1" />
-          <End Role="CommentsToNews" Type="Self.CommentsToNew" Multiplicity="*" />
+          <End Role="Comments" Type="Self.Comment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="CommentsToNews">
+            <Dependent Role="Comments">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Comments_ToTable_1">
           <End Role="News" Type="Self.News" Multiplicity="1" />
-          <End Role="CommentsToNews" Type="Self.CommentsToNew" Multiplicity="*" />
+          <End Role="Comments" Type="Self.Comment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="News">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="CommentsToNews">
+            <Dependent Role="Comments">
               <PropertyRef Name="NewsId" />
             </Dependent>
           </ReferentialConstraint>
@@ -998,13 +908,11 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="DatabaseEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Batteries" EntityType="Self.Battery" />
           <EntitySet Name="BatteryTypes" EntityType="Self.BatteryType" />
-          <EntitySet Name="BodyClasses" EntityType="Self.BodyClass" />
           <EntitySet Name="BodyTypes" EntityType="Self.BodyType" />
           <EntitySet Name="Brands" EntityType="Self.Brand" />
           <EntitySet Name="CarModels" EntityType="Self.CarModel" />
-          <EntitySet Name="CommentsToNews" EntityType="Self.CommentsToNew" />
+          <EntitySet Name="Comments" EntityType="Self.Comment" />
           <EntitySet Name="ElectricEngines" EntityType="Self.ElectricEngine" />
           <EntitySet Name="ElectricMotors" EntityType="Self.ElectricMotor" />
           <EntitySet Name="EngineLocations" EntityType="Self.EngineLocation" />
@@ -1017,17 +925,9 @@
           <EntitySet Name="TransmissionTypes" EntityType="Self.TransmissionType" />
           <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="ValvesArrangements" EntityType="Self.ValvesArrangement" />
-          <AssociationSet Name="FK_Batteries_ToTable" Association="Self.FK_Batteries_ToTable">
-            <End Role="BatteryTypes" EntitySet="BatteryTypes" />
-            <End Role="Batteries" EntitySet="Batteries" />
-          </AssociationSet>
           <AssociationSet Name="FK_ElectricMotors_ToTable" Association="Self.FK_ElectricMotors_ToTable">
             <End Role="BatteryTypes" EntitySet="BatteryTypes" />
             <End Role="ElectricEngines" EntitySet="ElectricEngines" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BodyTypes_ToTable" Association="Self.FK_BodyTypes_ToTable">
-            <End Role="BodyClasses" EntitySet="BodyClasses" />
-            <End Role="BodyTypes" EntitySet="BodyTypes" />
           </AssociationSet>
           <AssociationSet Name="FK_CarModels_ToTable_1" Association="Self.FK_CarModels_ToTable_1">
             <End Role="BodyTypes" EntitySet="BodyTypes" />
@@ -1047,11 +947,11 @@
           </AssociationSet>
           <AssociationSet Name="FK_Comments_ToTable" Association="Self.FK_Comments_ToTable">
             <End Role="Users" EntitySet="Users" />
-            <End Role="CommentsToNews" EntitySet="CommentsToNews" />
+            <End Role="Comments" EntitySet="Comments" />
           </AssociationSet>
           <AssociationSet Name="FK_Comments_ToTable_1" Association="Self.FK_Comments_ToTable_1">
             <End Role="News" EntitySet="News" />
-            <End Role="CommentsToNews" EntitySet="CommentsToNews" />
+            <End Role="Comments" EntitySet="Comments" />
           </AssociationSet>
           <AssociationSet Name="FK_ElectricEngines_ToTable_1" Association="Self.FK_ElectricEngines_ToTable_1">
             <End Role="ElectricMotors" EntitySet="ElectricMotors" />
@@ -1096,26 +996,9 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="DatabaseModelStoreContainer" CdmEntityContainer="DatabaseEntities">
-          <EntitySetMapping Name="Batteries">
-            <EntityTypeMapping TypeName="DatabaseModel.Battery">
-              <MappingFragment StoreEntitySet="Batteries">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
-                <ScalarProperty Name="NominalVoltage" ColumnName="NominalVoltage" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="BatteryTypes">
             <EntityTypeMapping TypeName="DatabaseModel.BatteryType">
               <MappingFragment StoreEntitySet="BatteryTypes">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="BodyClasses">
-            <EntityTypeMapping TypeName="DatabaseModel.BodyClass">
-              <MappingFragment StoreEntitySet="BodyClasses">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
               </MappingFragment>
@@ -1154,12 +1037,11 @@
                 <ScalarProperty Name="Image" ColumnName="Image" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="TColor" ColumnName="TColor" />
-                <ScalarProperty Name="TPositiveTrait" ColumnName="TPositiveTrait" />
-                <ScalarProperty Name="TNegativeTrait" ColumnName="TNegativeTrait" />
                 <ScalarProperty Name="TMainFeature" ColumnName="TMainFeature" />
-                <ScalarProperty Name="TElectric" ColumnName="TElectric" />
+                <ScalarProperty Name="TEngine" ColumnName="TEngine" />
                 <ScalarProperty Name="TAge" ColumnName="TAge" />
                 <ScalarProperty Name="TSpeed" ColumnName="TSpeed" />
+                <ScalarProperty Name="TSize" ColumnName="TSize" />
                 <ScalarProperty Name="TOutLand" ColumnName="TOutLand" />
                 <ScalarProperty Name="TPassengers" ColumnName="TPassengers" />
                 <ScalarProperty Name="TDistance" ColumnName="TDistance" />
@@ -1167,9 +1049,9 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CommentsToNews">
-            <EntityTypeMapping TypeName="DatabaseModel.CommentsToNew">
-              <MappingFragment StoreEntitySet="CommentsToNews">
+          <EntitySetMapping Name="Comments">
+            <EntityTypeMapping TypeName="DatabaseModel.Comment">
+              <MappingFragment StoreEntitySet="Comments">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="NewsId" ColumnName="NewsId" />
@@ -1238,6 +1120,7 @@
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="BrandId" ColumnName="BrandId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1310,6 +1193,7 @@
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -49,7 +49,7 @@ namespace SearchAvto.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetResult(TestModel results)
+        public ActionResult GetResult(int[] results)
         {
             return View(DataManager.Cars.FindCarModel(results));
         }

@@ -25,13 +25,11 @@ namespace SearchAvto.Models.DataModels
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Battery> Batteries { get; set; }
         public virtual DbSet<BatteryType> BatteryTypes { get; set; }
-        public virtual DbSet<BodyClass> BodyClasses { get; set; }
         public virtual DbSet<BodyType> BodyTypes { get; set; }
         public virtual DbSet<Brand> Brands { get; set; }
         public virtual DbSet<CarModel> CarModels { get; set; }
-        public virtual DbSet<CommentsToNew> CommentsToNews { get; set; }
+        public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<ElectricEngine> ElectricEngines { get; set; }
         public virtual DbSet<ElectricMotor> ElectricMotors { get; set; }
         public virtual DbSet<EngineLocation> EngineLocations { get; set; }

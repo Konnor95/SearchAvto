@@ -252,7 +252,18 @@
                         <a href="@Url.Action("AllNews","Dashboard")"><i class="fa im icon-news fa-fw"></i>Новости</a>
                     </li>
                     <li>
-                        <a href="@Url.Action("Brands","Dashboard")"><i class="fa im icon-car fa-fw"></i>Автомобили</a>
+                        <a href="#"><i class="fa im icon-car fa-fw"></i>Автомобили<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                @Html.ActionLink("Бренды","Brands","Dashboard")
+                            </li>
+                            <li>
+                                @Html.ActionLink("Модельные линии", "ModelLines", "Dashboard")
+                            </li>
+                            <li>
+                                @Html.ActionLink("Модели", "Models", "Dashboard")
+                            </li>
+                        </ul>
                     </li>
                     <li>
                         <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Статистика</a>

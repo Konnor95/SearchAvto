@@ -16,14 +16,12 @@ namespace SearchAvto.Models.DataModels
     {
         public BatteryType()
         {
-            this.Batteries = new HashSet<Battery>();
             this.ElectricEngines = new HashSet<ElectricEngine>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
     
-        public virtual ICollection<Battery> Batteries { get; set; }
         public virtual ICollection<ElectricEngine> ElectricEngines { get; set; }
     }
 }

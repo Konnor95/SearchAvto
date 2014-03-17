@@ -3,16 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using SearchAvto.Models.DataModels;
-using SearchAvto.Models.ViewModels;
 
 namespace SearchAvto.Models.LogicModels
 {
     public class CarManager : Manager
     {
+        private readonly BodyClass[] classes;
         public CarManager(DatabaseEntities data)
             : base(data)
         {
+            classes = new[]
+            {
+                new BodyClass(1,"Закрытый",Data.BodyTypes.Where(x=>x.BodyClassId==1)), 
+                new BodyClass(2, "Открытый",Data.BodyTypes.Where(x=>x.BodyClassId==2)), 
+                new BodyClass(3, "Другой",Data.BodyTypes.Where(x=>x.BodyClassId==3))
+            };
         }
+
 
         public IEnumerable<Brand> Brands()
         {
@@ -78,7 +85,7 @@ namespace SearchAvto.Models.LogicModels
                 return ProcessResults.SuchBrandExists;
             }
             b.Name = name;
-            if (deleteImage)
+            if (deleteImage && imageUpload == null)
             {
                 DeleteImage(b.Image, server);
                 b.Image = null;
@@ -223,7 +230,7 @@ namespace SearchAvto.Models.LogicModels
              return Data.CarModels.FirstOrDefault(x => x.Name == name);
          }*/
 
-        public ProcessResult AddCarModel(int modelLineId, string name, int type, int? startYear, int? endYear,
+        public ProcessResult AddCarModel(int modelLineId, int[] results, string name, int type, int? startYear, int? endYear,
             HttpPostedFileBase imageUpload, HttpServerUtilityBase server)
         {
             ModelLine modelLine = GetModelLine(modelLineId);
@@ -247,6 +254,12 @@ namespace SearchAvto.Models.LogicModels
                 ProductionStarted = GetYear(startYear),
                 ProductionEnded = GetYear(endYear)
             };
+            var res = new byte[results.Length];
+            for (int i = 0; i < res.Length; i++)
+            {
+                res[i] = (byte)results[i];
+            }
+            newModel.TestValues = res;
             newModel = Data.CarModels.Add(newModel);
             Data.SaveChanges();
             if (imageUpload != null)
@@ -255,15 +268,15 @@ namespace SearchAvto.Models.LogicModels
                 {
                     return ProcessResults.InvalidImageFormat;
                 }
-                newModel.Image = SaveImage(newModel.Id, StaticSettings.BrandsUploadFolderPath, imageUpload, server);
+                newModel.Image = SaveImage(newModel.Id, StaticSettings.CarsUploadFolderPath, imageUpload, server);
                 Data.SaveChanges();
             }
-            ProcessResult result = ProcessResults.BrandAdded;
+            ProcessResult result = ProcessResults.ModelAdded;
             result.AffectedObjectId = newModel.Id;
             return result;
         }
 
-        public ProcessResult EditCarModel(int id, string name, int type, int? startYear, int? endYear,
+        public ProcessResult EditCarModel(int id, int[] results, string name, int type, int? startYear, int? endYear,
             HttpPostedFileBase imageUpload, bool deleteImage, HttpServerUtilityBase server)
         {
             CarModel model = GetCarModel(id);
@@ -283,8 +296,14 @@ namespace SearchAvto.Models.LogicModels
             model.BodyTypeId = type;
             model.ProductionStarted = GetYear(startYear);
             model.ProductionEnded = GetYear(endYear);
+            var res = new byte[results.Length];
+            for (int i = 0; i < res.Length; i++)
+            {
+                res[i] = (byte)results[i];
+            }
+            model.TestValues = res;
             Data.SaveChanges();
-            if (deleteImage)
+            if (deleteImage && imageUpload == null)
             {
                 DeleteImage(model.Image, server);
                 model.Image = null;
@@ -296,7 +315,7 @@ namespace SearchAvto.Models.LogicModels
                 {
                     return ProcessResults.InvalidImageFormat;
                 }
-                model.Image = SaveImage(model.Id, StaticSettings.BrandsUploadFolderPath, imageUpload, server);
+                model.Image = SaveImage(model.Id, StaticSettings.CarsUploadFolderPath, imageUpload, server);
                 Data.SaveChanges();
             }
             return ProcessResults.ModelChanged;
@@ -496,10 +515,15 @@ namespace SearchAvto.Models.LogicModels
         {
             get
             {
-                return Data.BodyClasses;
+                return classes;
             }
         }
 
+
+        public BodyClass DefineBodyClass(int id)
+        {
+            return id < 1 ? null : classes[id];
+        }
 
         public IEnumerable<EngineLocation> EngineLocations
         {
@@ -559,32 +583,27 @@ namespace SearchAvto.Models.LogicModels
             return new DateTime(year.Value, 1, 1);
         }
 
-        public CarModel FindCarModel(TestModel results)
+        public CarModel FindCarModel(int[] results)
         {
             int max = 0;
-            int id = 1;
+            var ids = new List<int>();
             foreach (var model in Data.CarModels)
             {
-                int counter = 0;
-                if (results.Age > 0 && results.Age == model.TAge) ++counter;
-                if (model.BodyTypeId.HasValue && results.BodyType > 0 && results.BodyType == (byte)model.BodyType.BodyClassId) ++counter;
-                if (results.Color > 0 && results.Color == model.TColor) ++counter;
-                if (results.Distance > 0 && results.Distance == model.TDistance) ++counter;
-                if (results.Electric > 0 && results.Electric != 2 && results.Electric == model.TElectric) ++counter;
-                if (results.MainFeature > 0 && results.MainFeature == model.TMainFeature) ++counter;
-                if (results.NegativeTrait > 0 && results.NegativeTrait == model.TNegativeTrait) ++counter;
-                if (results.OutLand > 0 && results.OutLand == model.TOutLand) ++counter;
-                if (results.Passengers > 0 && results.Passengers == model.TPassengers) ++counter;
-                if (results.PositiveTrait > 0 && results.PositiveTrait == model.TPositiveTrait) ++counter;
-                if (results.Price > 0 && results.Price == model.TPrice) ++counter;
-                if (results.Speed > 0 && results.Speed == model.TSpeed) ++counter;
+                int counter = model.TestValues.Where((t, i) => (byte)results[i] == t).Count();
                 if (counter > max)
                 {
+                    ids.Clear();
                     max = counter;
-                    id = model.Id;
+                    ids.Add(model.Id);
+                }
+                else if (counter == max)
+                {
+                    ids.Add(model.Id);
                 }
             }
-            return GetCarModel(id);
+            var r = new Random();
+            int id = r.Next(0, ids.Count());
+            return GetCarModel(ids[id]);
         }
     }
 }

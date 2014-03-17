@@ -14,9 +14,11 @@ namespace SearchAvto.Models.LogicModels
         {
         }
 
-        public IEnumerable<News> All()
+        public IEnumerable<News> All(int? count = null,int offeset = 0)
         {
+            if(count==null)
             return Data.News.OrderByDescending(x => x.Date);
+            return Data.News.OrderByDescending(x => x.Date).Take(4);
         }
 
         public IEnumerable<News> Search(string search)
@@ -100,16 +102,16 @@ namespace SearchAvto.Models.LogicModels
                 return ProcessResults.NoSuchNews;
             }
             string img = n.Image;
-            Data.CommentsToNews.RemoveRange(GetComments(id));
+            Data.Comments.RemoveRange(GetComments(id));
             Data.News.Remove(n);
             Data.SaveChanges();
             DeleteImage(img, server);
             return ProcessResults.NewsDeleted;
         }
 
-        public IEnumerable<CommentsToNew> GetComments(int id)
+        public IEnumerable<Comment> GetComments(int id)
         {
-            return Data.CommentsToNews.Where(x => x.NewsId == id);
+            return Data.Comments.Where(x => x.NewsId == id);
         }
     }
 }

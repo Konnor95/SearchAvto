@@ -8,8 +8,12 @@ namespace SearchAvto.Models.DataModels
         {
             get
             {
-                if (String.IsNullOrWhiteSpace(Name)) return ModelLine.FullName;
-                return ModelLine.FullName + " " + Name;
+                if (!String.IsNullOrWhiteSpace(Name)) return ModelLine.FullName + " " + Name;
+                if (StartYearOfProduction != null)
+                {
+                    return ModelLine.FullName +" " +  StartYearOfProduction;
+                }
+                return ModelLine.FullName;
             }
         }
 
@@ -60,6 +64,65 @@ namespace SearchAvto.Models.DataModels
             }
         }
 
-        
+        public byte GetTestVaue(string id)
+        {
+            switch (id)
+            {
+                case "TMainFeature":
+                    return TMainFeature;
+                case "TColor":
+                    return TColor;
+                case "TAge":
+                    return TAge;
+                case "TSpeed":
+                    return TSpeed;
+                case "TSize":
+                    return TSize;
+                case "TEngine":
+                    return TEngine;
+                case "TPassengers":
+                    return TPassengers;
+                case "TDistance":
+                    return TDistance;
+                case "TOutLand":
+                    return TOutLand;
+                case "TPrice":
+                    return TPrice;
+            }
+            return 0;
+        }
+
+        public byte[] TestValues
+        {
+            get
+            {
+                return new[]
+                {
+                    TMainFeature,
+                    TColor,
+                    TAge,
+                    TSpeed,
+                    TSize,
+                    TEngine,
+                    TPassengers,
+                    TDistance,
+                    TOutLand,
+                    TPrice
+                };
+            }
+            set
+            {
+                TMainFeature = value[0];
+                TColor = value[1];
+                TAge = value[2];
+                TSpeed = value[3];
+                TSize = value[4];
+                TEngine = value[5];
+                TPassengers = value[6];
+                TDistance = value[7];
+                TOutLand = value[8];
+                TPrice = value[9];
+            }
+        }
     }
 }

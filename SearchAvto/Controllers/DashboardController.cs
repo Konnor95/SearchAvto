@@ -30,7 +30,7 @@ namespace SearchAvto.Controllers
         public ActionResult Users()
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (!user.HasAdminAccess) return NoPermission();
             ViewBag.User = user;
             return View(DataManager.Users.GetAll());
         }
@@ -101,7 +101,7 @@ namespace SearchAvto.Controllers
         {
             var user = DefineUser();
             if (HasNoAccess(user)) return NoPermission();
-            ProcessResult result = DataManager.Cars.EditBrand(id, name, imageUpload, deleteImage,Server);
+            ProcessResult result = DataManager.Cars.EditBrand(id, name, imageUpload, deleteImage, Server);
             if (result.Succeeded)
             {
                 return RedirectToAction("Brand", new { id, result = result.Id });
@@ -124,6 +124,13 @@ namespace SearchAvto.Controllers
         #endregion
 
         #region ModelLine
+
+        public ActionResult ModelLines()
+        {
+            var user = DefineUser();
+            if (HasNoAccess(user)) return NoPermission();
+            return View(DataManager.Cars.ModelLines());
+        }
 
         public ActionResult ModelLine(int? result, int id)
         {
@@ -198,6 +205,13 @@ namespace SearchAvto.Controllers
         #endregion
 
         #region Model
+
+        public ActionResult Models()
+        {
+            var user = DefineUser();
+            if (HasNoAccess(user)) return NoPermission();
+            return View(DataManager.Cars.CarModels());
+        }
         public ActionResult Model(int? result, int id)
         {
             var user = DefineUser();
@@ -218,11 +232,11 @@ namespace SearchAvto.Controllers
         }
 
         [HttpPost]
-        public ActionResult ManageModelAdding(int id, string name, int bodyType, int? start, int? end, HttpPostedFileBase imageUpload)
+        public ActionResult ManageModelAdding(int id, int[] results, string name, int bodyType, int? start, int? end, HttpPostedFileBase imageUpload)
         {
             var user = DefineUser();
             if (HasNoAccess(user)) return NoPermission();
-            ProcessResult result = DataManager.Cars.AddCarModel(id, name, bodyType, start, end, imageUpload, Server);
+            ProcessResult result = DataManager.Cars.AddCarModel(id, results, name, bodyType, start, end, imageUpload, Server);
             if (result.Succeeded && result.AffectedObjectId.HasValue)
             {
                 return RedirectToAction("Model", new { id = result.AffectedObjectId.Value, result = result.Id });
@@ -240,11 +254,11 @@ namespace SearchAvto.Controllers
         }
 
         [HttpPost]
-        public ActionResult ManageModelEditing(int id, string name, int bodyType, int? start, int? end, HttpPostedFileBase imageUpload, bool deleteImage = false)
+        public ActionResult ManageModelEditing(int id, int[] results, string name, int bodyType, int? start, int? end, HttpPostedFileBase imageUpload, bool deleteImage = false)
         {
             var user = DefineUser();
             if (HasNoAccess(user)) return NoPermission();
-            ProcessResult result = DataManager.Cars.EditCarModel(id, name, bodyType, start, end, imageUpload, deleteImage, Server);
+            ProcessResult result = DataManager.Cars.EditCarModel(id, results, name, bodyType, start, end, imageUpload, deleteImage, Server);
             if (result.Succeeded)
             {
                 return RedirectToAction("Model", new { id, result = result.Id });
@@ -276,6 +290,7 @@ namespace SearchAvto.Controllers
         #endregion
 
         #region Modification
+
         public ActionResult Modification(int id, int? result)
         {
             var user = DefineUser();
@@ -380,6 +395,7 @@ namespace SearchAvto.Controllers
             if (HasNoAccess(user)) return NoPermission();
             return View(DataManager.News.GetNews(id));
         }
+
         public ActionResult AddNews(int? result)
         {
             var user = DefineUser();
@@ -388,8 +404,9 @@ namespace SearchAvto.Controllers
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View();
         }
-
+        
         [HttpPost]
+        [ValidateInput(false)]
         public ActionResult ManageNewsAdding(News news, HttpPostedFileBase imageUpload)
         {
             var user = DefineUser();
@@ -401,7 +418,8 @@ namespace SearchAvto.Controllers
             }
             return RedirectToAction("AddNews", new { id = news.Id, result = result.Id });
         }
-        public ActionResult EditNews(int id,int? result)
+
+        public ActionResult EditNews(int id, int? result)
         {
             var user = DefineUser();
             if (HasNoAccess(user)) return NoPermission();
@@ -409,9 +427,9 @@ namespace SearchAvto.Controllers
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(DataManager.News.GetNews(id));
         }
-    
+
         [HttpPost]
-        
+        [ValidateInput(false)]
         public ActionResult ManageNewsEditing(News news, HttpPostedFileBase imageUpload)
         {
             var user = DefineUser();
@@ -436,7 +454,7 @@ namespace SearchAvto.Controllers
         {
             var user = DefineUser();
             if (HasNoAccess(user)) return NoPermission();
-            ProcessResult result = DataManager.News.DeleteNews(id,Server);
+            ProcessResult result = DataManager.News.DeleteNews(id, Server);
             if (result.Succeeded)
             {
                 return RedirectToAction("AllNews");

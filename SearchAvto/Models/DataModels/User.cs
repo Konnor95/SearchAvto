@@ -16,7 +16,7 @@ namespace SearchAvto.Models.DataModels
     {
         public User()
         {
-            this.CommentsToNews = new HashSet<CommentsToNew>();
+            this.Comments = new HashSet<Comment>();
         }
     
         public int Id { get; set; }
@@ -24,7 +24,8 @@ namespace SearchAvto.Models.DataModels
         public string Email { get; set; }
         public string Password { get; set; }
         public short Status { get; set; }
+        public string Avatar { get; set; }
     
-        public virtual ICollection<CommentsToNew> CommentsToNews { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }

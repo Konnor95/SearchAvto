@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Tuple<IEnumerable<News>>
+@{
     ViewBag.Title = "Главная";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -63,77 +64,21 @@
             <div class="container">
                 <div class="row">
                     <article class="span12">
-                        <h4>From blog</h4>
+                        <h4>@Html.ActionLink("Новости", "Index", "News")</h4>
                     </article>
-                    <ul class="thumbnails thumbnails-1">
-                        <li class="span3">
-                            <div class="thumbnail thumbnail-1">
-                                <h3>Web Design</h3>
-                                <img src="~/Images/blog-featured-01.jpg" alt="">
-                                <section>
-                                    <a href="#"><h3>At vero eos et accusamus et iusto </h3></a>
-                                    <div class="meta">
-                                        <time datetime="2012-11-09" class="date-1"><i class="icon-calendar"></i> 9.11.2012</time>
-                                        <div class="name-author"><i class="icon-user"></i> <a href="#">Admin</a></div>
-                                        <a href="#" class="comments"><i class="icon-comment"></i> 7 comments</a>
+                    <ul class="news-list">
+                        @foreach (News news in Model.Item1)
+                        {
+                            <li>
+                                <div class="news-thumb">
+                                    <img src="@(news.Image + "?w=250&h=155")">
+                                    <div class="comments-counter">
+                                        <a title="Перейти к комментариям" href="@Url.Action( "News", "News", new { id = news.Id })#comments"><i class="fa fa-comment"></i> @news.CommentsToNews.Count</a>
                                     </div>
-                                    <div class="clear"></div>
-                                    <p>Vivamus sollicitudin libero auctor arcu pulvinar commodo.</p>
-                                    <a href="#" class="btn btn-1">Read More</a>
-                                </section>
-                            </div>
-                        </li>
-                        <li class="span3">
-                            <div class="thumbnail thumbnail-1">
-                                <h3>Graphics</h3>
-                                <img src="~/Images/blog-featured-02.jpg" alt="">
-                                <section>
-                                    <a href="#"><h3>Deleniti atque corrupti quos</h3></a>
-                                    <div class="meta">
-                                        <time datetime="2012-11-09" class="date-1"><i class="icon-calendar"></i> 9.11.2012</time>
-                                        <div class="name-author"><i class="icon-user"></i> <a href="#">Admin</a></div>
-                                        <a href="#" class="comments"><i class="icon-comment"></i> 4 comments</a>
-                                    </div>
-                                    <div class="clear"></div>
-                                    <p>Vestibulum volutpat urna sed sapien vehicula varius.</p>
-                                    <a href="#" class="btn btn-1">Read More</a>
-                                </section>
-                            </div>
-                        </li>
-                        <li class="span3">
-                            <div class="thumbnail thumbnail-1">
-                                <h3>Social Media</h3>
-                                <img src="~/Images/blog-featured-03.jpg" alt="">
-                                <section>
-                                    <a href="#"><h3>Similique sunt in culpa qui officia</h3></a>
-                                    <div class="meta">
-                                        <time datetime="2012-11-09" class="date-1"><i class="icon-calendar"></i> 9.11.2012</time>
-                                        <div class="name-author"><i class="icon-user"></i> <a href="#">Admin</a></div>
-                                        <a href="#" class="comments"><i class="icon-comment"></i> 9 comments</a>
-                                    </div>
-                                    <div class="clear"></div>
-                                    <p>Pellentesque mi justo, laoreet non bibendum non, auctor imperdiet eros.</p>
-                                    <a href="#" class="btn btn-1">Read More</a>
-                                </section>
-                            </div>
-                        </li>
-                        <li class="span3">
-                            <div class="thumbnail thumbnail-1">
-                                <h3 class="extra">Photography</h3>
-                                <img src="~/Images/blog-featured-04.jpg" alt="">
-                                <section>
-                                    <a href="#"><h3>Similique sunt in culpa qui officia</h3></a>
-                                    <div class="meta">
-                                        <time datetime="2012-11-09" class="date-1"><i class="icon-calendar"></i> 9.11.2012</time>
-                                        <div class="name-author"><i class="icon-user"></i> <a href="#">Admin</a></div>
-                                        <a href="#" class="comments"><i class="icon-comment"></i> 1 comment</a>
-                                    </div>
-                                    <div class="clear"></div>
-                                    <p>Vestibulum volutpat urna sed sapien vehicula varius.</p>
-                                    <a href="#" class="btn btn-1">Read More</a>
-                                </section>
-                            </div>
-                        </li>
+                                </div>
+                                <a href="@Url.Action("News","News",new{id=news.Id})">@news.ShortTitle</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

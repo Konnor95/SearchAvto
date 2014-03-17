@@ -49,6 +49,12 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="ImageResizer">
+      <HintPath>..\packages\ImageResizer.3.4.2\lib\ImageResizer.dll</HintPath>
+    </Reference>
+    <Reference Include="ImageResizer.Mvc">
+      <HintPath>..\packages\ImageResizer.Mvc.3.4.2\lib\ImageResizer.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -133,18 +139,14 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\DataModels\Battery.cs">
-      <DependentUpon>DataModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\DataModels\BatteryType.cs">
-      <DependentUpon>DataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\DataModels\BodyClass.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DataModels\BodyType.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DataModels\BodyType.Extensions.cs" />
+    <Compile Include="Models\DataModels\BodyClass.cs" />
     <Compile Include="Models\DataModels\Brand.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
@@ -152,7 +154,7 @@
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DataModels\CarModel.Extensions.cs" />
-    <Compile Include="Models\DataModels\CommentsToNew.cs">
+    <Compile Include="Models\DataModels\Comment.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DataModels\DataModel.Context.cs">
@@ -228,7 +230,6 @@
     <Compile Include="Models\ViewModels\LogInModel.cs" />
     <Compile Include="Models\ViewModels\ModificationModel.cs" />
     <Compile Include="Models\ViewModels\RegistrationModel.cs" />
-    <Compile Include="Models\ViewModels\TestModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -270,7 +271,6 @@
     <Content Include="Fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Images\Test\BodyType1.jpg" />
     <Content Include="Images\Icons\404.jpg" />
     <Content Include="Images\Icons\arrows-ffffff.png" />
     <Content Include="Images\Icons\arrows.png" />
@@ -324,11 +324,15 @@
     <Content Include="Images\Slider\4.jpg" />
     <Content Include="Images\Slider\5.jpg" />
     <Content Include="Images\Icons\x.png" />
-    <Content Include="Images\Test\Age2.jpg" />
-    <Content Include="Images\Test\Age1.jpg" />
-    <Content Include="Images\Test\BodyType2.jpg" />
-    <Content Include="Images\Test\Speed1.jpg" />
+    <Content Include="Images\Test\Size2.jpg" />
     <Content Include="Images\Test\Speed2.jpg" />
+    <Content Include="Images\Test\Age1.jpg" />
+    <Content Include="Images\Test\Age3.jpg" />
+    <Content Include="Images\Test\Age2.jpg" />
+    <Content Include="Images\Test\Size1.jpg" />
+    <Content Include="Images\Test\Size3.jpg" />
+    <Content Include="Images\Test\Speed1.jpg" />
+    <Content Include="Images\Test\Speed3.jpg" />
     <Content Include="Plugins\CKEditor\adapters\jquery.js" />
     <Content Include="Plugins\CKEditor\build-config.js" />
     <Content Include="Plugins\CKEditor\ckeditor.js" />
@@ -591,8 +595,6 @@
     <Content Include="Plugins\CKEditor\skins\moono\images\refresh.png" />
     <Content Include="Plugins\CKEditor\styles.js" />
     <Content Include="Scripts\bootstrap.min.js.map" />
-    <Content Include="Scripts\ckeditor\lang\si.js" />
-    <Content Include="Scripts\ckeditor\lang\sq.js" />
     <Content Include="Scripts\Dashboard\jquery-2.1.0.min.map" />
     <Content Include="Plugins\CKEditor\CHANGES.md" />
     <Content Include="Plugins\CKEditor\LICENSE.md" />
@@ -620,6 +622,7 @@
       <DependentUpon>DataModel.edmx</DependentUpon>
       <LastGenOutput>DataModel.cs</LastGenOutput>
     </Content>
+    <Content Include="1 АНАЛІЗ ТА КОНЦЕПТУАЛЬНЕ МОДЕЛЮВАННЯ ПРЕДМЕТНОЇ ОБЛАСТІ.docx" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Plugins\DataTables\dataTables.bootstrap.css" />
     <Content Include="Plugins\DataTables\dataTables.bootstrap.js" />
@@ -677,7 +680,9 @@
     <Content Include="Scripts\supersubs.js" />
     <Content Include="Scripts\touchTouch.jquery.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -735,6 +740,8 @@
     <Content Include="Views\News\News.cshtml" />
     <Content Include="Views\Search\TestPage.cshtml" />
     <Content Include="Views\Search\GetResult.cshtml" />
+    <Content Include="Views\Dashboard\ModelLines.cshtml" />
+    <Content Include="Views\Dashboard\Models.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

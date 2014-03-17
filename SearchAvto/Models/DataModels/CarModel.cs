@@ -28,12 +28,11 @@ namespace SearchAvto.Models.DataModels
         public string Image { get; set; }
         public string Description { get; set; }
         public byte TColor { get; set; }
-        public byte TPositiveTrait { get; set; }
-        public byte TNegativeTrait { get; set; }
         public byte TMainFeature { get; set; }
-        public byte TElectric { get; set; }
+        public byte TEngine { get; set; }
         public byte TAge { get; set; }
         public byte TSpeed { get; set; }
+        public byte TSize { get; set; }
         public byte TOutLand { get; set; }
         public byte TPassengers { get; set; }
         public byte TDistance { get; set; }

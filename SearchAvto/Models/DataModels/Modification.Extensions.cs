@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace SearchAvto.Models.DataModels
 {
@@ -13,9 +12,9 @@ namespace SearchAvto.Models.DataModels
                 {
                     if (HasInternalCombustionEngine)
                     {
-                        if (InternalCombustionEngine.Volume != null)
+                        if (InternalCombustionEngine.Power != null)
                             return CarModel.FullName + " " +
-                                   String.Format("{0:#.##} л", Math.Round((double)InternalCombustionEngine.Volume / 1000, 1));
+                                   String.Format("{0:#.##} л.с.", InternalCombustionEngine.Power);
                         return CarModel.FullName;
                     }
                     if (HasElectricEngine)
