@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Profile;
 using SearchAvto.Models.DataModels;
 using SearchAvto.Models.LogicModels;
 using SearchAvto.Models.ViewModels;
@@ -463,7 +464,16 @@ namespace SearchAvto.Controllers
         }
         #endregion
 
+        #region Setting
 
+        public ActionResult Settings()
+        {
+            var user = DefineUser();
+            if (HasNoAccess(user)) return NoPermission();
+            return View();
+        }
+
+        #endregion
 
 
 

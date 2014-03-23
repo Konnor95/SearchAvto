@@ -3,28 +3,62 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="container">
-    <h2>@Model.Title</h2>
-    @HtmlManager.Image(Model.Image)
-    <div class="news-text">
-        @Html.Raw(Model.Text)
-    </div>
-    <div class="meta">
-        <time datetime="@String.Format("{0:yyyy-MM-dd}", Model.Date)" class="date-1"><i class="icon-calendar icon-white"></i> @String.Format("{0:dd-MM-yyyy}", Model.Date)</time>
-    </div>
-    <div class="comments-container" id="comments">
-        @{
-            var comments = Model.CommentsToNews;
-            if (comments != null)
-            {
-                foreach (CommentsToNew comment in comments)
-                {
-               
-                    <div class="comment">@comment.Text</div>
-                }
 
-            }
-        }
+<div id="content">
+    <div class="ic"></div>
+    <div class="container">
+        <div class="row">
+            <article class="span8">
+                <h2>@Model.Title</h2>
+                @HtmlManager.Image(Model.Image)
+                <div class="news-text">
+                    @Html.Raw(Model.Text)
+                </div>
+                <div class="meta">
+                    <time datetime="@String.Format("{0:yyyy-MM-dd}", Model.Date)" class="date-1"><i class="icon-calendar"></i> @String.Format("{0:dd-MM-yyyy}", Model.Date)</time>
+                </div>
+                <div id="comments-container">
+                    @Html.Action("Comments", new { comments = Model.Comments })
+                </div>
+                <div id="add-comment">
+                    <div class="form-group">
+                        <div id="enter-comment" style="color: firebrick; font-size:110%;display: none">Введите комметарий!</div>
+                        <textarea id="comment-text"class="form-control" rows="3"></textarea>
+                    </div>
+                    <button id="add"class="btn btn-1">Добавить комментарий</button>
+                </div>
+            </article>
+            <article class="span4">
+                <h3 class="extra">Search</h3>
+                <form id="search" action="@Url.Action("Index","News")" method="GET" accept-charset="utf-8">
+                    <div class="clearfix">
+                        <input type="text" name="search" onblur="if (this.value == '') this.value = '';" onfocus="if (this.value == '') this.value = '';">
+                        <a href="#" onclick="document.getElementById('search').submit()" class="btn btn-1">Search</a>
+                    </div>
+                </form>
+            </article>
+        </div>
     </div>
 </div>
 
+
+
+@section Scripts{
+    <script>
+        $(document).ready(function() {
+            $("#comment-text").focus(function() {
+                $("#enter-comment").hide('slow');
+            });
+            $("#add").click(function() {
+                var comment = $("#comment-text").val();
+                if (comment) {
+                    $.post('@Url.Action("AddComment", "News", new {id = Model.Id})', { text: comment }, function(data) {
+                        $("#comments-container").html(data);
+                    });
+                } else {
+                    $("#enter-comment").show('slow');
+                }
+            });
+        })
+    </script>
+}

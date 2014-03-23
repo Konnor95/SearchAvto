@@ -742,6 +742,8 @@
     <Content Include="Views\Search\GetResult.cshtml" />
     <Content Include="Views\Dashboard\ModelLines.cshtml" />
     <Content Include="Views\Dashboard\Models.cshtml" />
+    <Content Include="Views\News\Comments.cshtml" />
+    <Content Include="Views\Dashboard\Settings.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

@@ -113,5 +113,17 @@ namespace SearchAvto.Models.LogicModels
         {
             return Data.Comments.Where(x => x.NewsId == id);
         }
+
+        public ProcessResult AddComment(int newsId, int userId, string text)
+        {
+            if (String.IsNullOrWhiteSpace(text))
+                return ProcessResults.CommentCannotBeEmpty;
+            News news = Data.News.FirstOrDefault(x => x.Id == newsId);
+            if (news == null) 
+                return ProcessResults.NoSuchNews;
+            Data.Comments.Add(new Comment {NewsId = newsId, UserId = userId, Text = text});
+            Data.SaveChanges();
+            return ProcessResults.CommentAddedSuccessfully;
+        } 
     }
 }

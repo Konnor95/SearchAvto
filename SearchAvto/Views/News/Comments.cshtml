@@ -1,0 +1,15 @@
+﻿@model IEnumerable<Comment>
+<p>@ViewBag.Result</p>
+<div class="comments-container" id="comments">
+    @{
+        if (Model != null)
+        {
+            foreach (Comment comment in Model)
+            {
+
+                <div class="comment">@comment.Text</div>
+            }
+
+        }
+    }
+</div>

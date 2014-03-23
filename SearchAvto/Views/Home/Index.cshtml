@@ -73,7 +73,7 @@
                                 <div class="news-thumb">
                                     <img src="@(news.Image + "?w=250&h=155")">
                                     <div class="comments-counter">
-                                        <a title="Перейти к комментариям" href="@Url.Action( "News", "News", new { id = news.Id })#comments"><i class="fa fa-comment"></i> @news.CommentsToNews.Count</a>
+                                        <a title="Перейти к комментариям" href="@Url.Action( "News", "News", new { id = news.Id })#comments"><i class="fa fa-comment"></i> @news.Comments.Count</a>
                                     </div>
                                 </div>
                                 <a href="@Url.Action("News","News",new{id=news.Id})">@news.ShortTitle</a>

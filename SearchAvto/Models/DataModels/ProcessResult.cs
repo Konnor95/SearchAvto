@@ -52,13 +52,14 @@
             new ProcessResult(24,true, "Модификация успешно удалена"),
             new ProcessResult(25,false, "Такая модификация уже существует"),
             new ProcessResult(26,false, "Такой модификации не существует"),
-             new ProcessResult(27,false, "Текст не может быть пустым"),
-             new ProcessResult(28,true, "Новость успешно добавлена"),
+            new ProcessResult(27,false, "Текст не может быть пустым"),
+            new ProcessResult(28,true, "Новость успешно добавлена"),
             new ProcessResult(29,true, "Новость успешно изменена"),
             new ProcessResult(30,true, "Новость успешно удалена"),
             new ProcessResult(31,false, "Такая новость уже существует"),
             new ProcessResult(32,false, "Такой новости не существует"),
-
+            new ProcessResult(33,false, "Комметарий не может быть пустым"),
+            new ProcessResult(34,true, "Комментарий успешно добалвен")
         };
 
         public static ProcessResult GetById(int id = -1)
@@ -228,6 +229,16 @@
         public static ProcessResult NoSuchNews
         {
             get { return Results[32]; }
+        }
+
+        public static ProcessResult CommentCannotBeEmpty
+        {
+            get { return Results[33]; }
+        }
+
+        public static ProcessResult CommentAddedSuccessfully
+        {
+            get { return Results[34]; }
         }
     }
 }
