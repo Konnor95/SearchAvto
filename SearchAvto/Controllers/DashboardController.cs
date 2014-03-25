@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Profile;
 using SearchAvto.Models.DataModels;
 using SearchAvto.Models.LogicModels;
 using SearchAvto.Models.ViewModels;
@@ -466,11 +465,475 @@ namespace SearchAvto.Controllers
 
         #region Setting
 
-        public ActionResult Settings()
+        private bool HasNoAdminAccess(User user)
+        {
+            return (user == null || !user.HasAdminAccess);
+        }
+        public ActionResult Settings(int? result)
+        {
+            var user = DefineUser();
+            if (HasNoAdminAccess(user)) return NoPermission();
+            if (result.HasValue)
+                ViewBag.Result = ProcessResults.GetById(result.Value);
+            return View(new SettingsModel(DataManager.Cars.BatteryTypes,
+                                          DataManager.Cars.BodyTypes,
+                                          DataManager.Cars.FuelTypes,
+                                          DataManager.Cars.TireCarcassTypes,
+                                          DataManager.Cars.TransmissionTypes,
+                                          DataManager.Cars.EngineLocations,
+                                          DataManager.Cars.ValvesArrangements));
+        }
+
+        public ActionResult AddBatteryType(int? result)
+        {
+            var user = DefineUser();
+            if (HasNoAdminAccess(user)) return NoPermission();
+            if (result.HasValue)
+                ViewBag.Result = ProcessResults.GetById(result.Value);
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ManageBatteryTypeAdding(BatteryType batteryType)
+        {
+            var user = DefineUser();
+            if (HasNoAdminAccess(user)) return NoPermission();
+            ProcessResult result = DataManager.Settings.AddBatteryType(batteryType);
+            return RedirectToAction(result.Succeeded ? "Settings" : "AddBatteryType", new { result = result.Id });
+        }
+
+        public ActionResult EditBatteryType(int id, int? result)
+        {
+            var user = DefineUser();
+            if (HasNoAdminAccess(user)) return NoPermission();
+            if (result.HasValue)
+                ViewBag.Result = ProcessResults.GetById(result.Value);
+            return View(DataManager.Settings.GetBatteryType(id));
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult ManageBatteryTypeEditing(BatteryType batteryType)
+        {
+            var user = DefineUser();
+            if (HasNoAdminAccess(user)) return NoPermission();
+            ProcessResult result = DataManager.Settings.EditBatteryType(batteryType);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Settings");
+            }
+            return RedirectToAction("EditBatteryType", new { id = batteryType.Id, result = result.Id });
+        }
+
+        public ActionResult DeleteBatteryType(int id, int? result)
         {
             var user = DefineUser();
             if (HasNoAccess(user)) return NoPermission();
+            if (result.HasValue)
+                ViewBag.Result = ProcessResults.GetById(result.Value);
+            return View(DataManager.Settings.GetBatteryType(id));
+        }
+        [HttpPost]
+        public ActionResult ManageBatteryTypeDeleting(int id)
+        {
+            var user = DefineUser();
+            if (HasNoAccess(user)) return NoPermission();
+            ProcessResult result = DataManager.Settings.DeleteBatteryType(id);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Settings");
+            }
+            return RedirectToAction("DeleteBatteryType", new { id, result = result.Id });
+        }
+
+
+
+
+
+
+
+
+        public ActionResult AddBodyType(int? result)
+        {
+            var user = DefineUser();
+            if (HasNoAdminAccess(user)) return NoPermission();
+            if (result.HasValue)
+                ViewBag.Result = ProcessResults.GetById(result.Value);
+            return View(Tuple.Create(DataManager.Cars.BodyClasses,DataManager.Cars.GetBaseBodyTypes()));
+        }
+
+        [HttpPost]
+        public ActionResult ManageBodyTypeAdding(BodyType bodyType)
+        {
+            var user = DefineUser();
+            if (HasNoAdminAccess(user)) return NoPermission();
+            ProcessResult result = DataManager.Settings.AddBodyType(bodyType);
+            return RedirectToAction(result.Succeeded ? "Settings" : "AddBodyType", new { result = result.Id });
+        }
+
+        public ActionResult EditBodyType(int id, int? result)
+        {
+            var user = DefineUser();
+            if (HasNoAdminAccess(user)) return NoPermission();
+            if (result.HasValue)
+                ViewBag.Result = ProcessResults.GetById(result.Value);
+            return View(Tuple.Create(DataManager.Settings.GetBodyType(id),DataManager.Cars.BodyClasses,DataManager.Cars.GetBaseBodyTypes()));
+        }
+
+        [HttpPost]
+        public ActionResult ManageBodyTypeEditing(BodyType bodyType)
+        {
+            var user = DefineUser();
+            if (HasNoAdminAccess(user)) return NoPermission();
+            ProcessResult result = DataManager.Settings.EditBodyType(bodyType);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Settings", new { result = result.Id });
+            }
+            return RedirectToAction("EditBodyType", new { id = bodyType.Id, result = result.Id });
+        }
+
+        public ActionResult DeleteBodyType(int id, int? result)
+        {
+            var user = DefineUser();
+            if (HasNoAccess(user)) return NoPermission();
+            if (result.HasValue)
+                ViewBag.Result = ProcessResults.GetById(result.Value);
+            return View(DataManager.Settings.GetBodyType(id));
+        }
+        [HttpPost]
+        public ActionResult ManageBodyTypeDeleting(int id)
+        {
+            var user = DefineUser();
+            if (HasNoAccess(user)) return NoPermission();
+            ProcessResult result = DataManager.Settings.DeleteBodyType(id);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Settings", new { result = result.Id });
+            }
+            return RedirectToAction("DeleteBodyType", new { id, result = result.Id });
+        }
+
+
+
+
+
+        public ActionResult AddFuelType(int? result)
+        {
+            var user = DefineUser();
+            if (HasNoAdminAccess(user)) return NoPermission();
+            if (result.HasValue)
+                ViewBag.Result = ProcessResults.GetById(result.Value);
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult ManageFuelTypeAdding(FuelType fuelType)
+        {
+            var user = DefineUser();
+            if (HasNoAdminAccess(user)) return NoPermission();
+            ProcessResult result = DataManager.Settings.AddFuelType(fuelType);
+            return RedirectToAction(result.Succeeded ? "Settings" : "AddFuelType", new { result = result.Id });
+        }
+
+        public ActionResult EditFuelType(int id, int? result)
+        {
+            var user = DefineUser();
+            if (HasNoAdminAccess(user)) return NoPermission();
+            if (result.HasValue)
+                ViewBag.Result = ProcessResults.GetById(result.Value);
+            return View(DataManager.Settings.GetFuelType(id));
+        }
+
+        [HttpPost]
+        public ActionResult ManageFuelTypeEditing(FuelType fuelType)
+        {
+            var user = DefineUser();
+            if (HasNoAdminAccess(user)) return NoPermission();
+            ProcessResult result = DataManager.Settings.EditFuelType(fuelType);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Settings", new { result = result.Id });
+            }
+            return RedirectToAction("EditFuelType", new { id = fuelType.Id, result = result.Id });
+        }
+
+        public ActionResult DeleteFuelType(int id, int? result)
+        {
+            var user = DefineUser();
+            if (HasNoAccess(user)) return NoPermission();
+            if (result.HasValue)
+                ViewBag.Result = ProcessResults.GetById(result.Value);
+            return View(DataManager.Settings.GetFuelType(id));
+        }
+        [HttpPost]
+        public ActionResult ManageFuelTypeDeleting(int id)
+        {
+            var user = DefineUser();
+            if (HasNoAccess(user)) return NoPermission();
+            ProcessResult result = DataManager.Settings.DeleteFuelType(id);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Settings", new { result = result.Id });
+            }
+            return RedirectToAction("DeleteFuelType", new { id, result = result.Id });
+        }
+
+
+
+
+
+
+        public ActionResult AddTireCarcassType(int? result)
+        {
+            var user = DefineUser();
+            if (HasNoAdminAccess(user)) return NoPermission();
+            if (result.HasValue)
+                ViewBag.Result = ProcessResults.GetById(result.Value);
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ManageTireCarcassTypeAdding(TireCarcassType type)
+        {
+            var user = DefineUser();
+            if (HasNoAdminAccess(user)) return NoPermission();
+            ProcessResult result = DataManager.Settings.AddTireCarcassType(type);
+            return RedirectToAction(result.Succeeded ? "Settings" : "AddTireCarcassType", new { result = result.Id });
+        }
+
+        public ActionResult EditTireCarcassType(int id, int? result)
+        {
+            var user = DefineUser();
+            if (HasNoAdminAccess(user)) return NoPermission();
+            if (result.HasValue)
+                ViewBag.Result = ProcessResults.GetById(result.Value);
+            return View(DataManager.Settings.GetTireCarcassType(id));
+        }
+
+        [HttpPost]
+        public ActionResult ManageTireCarcassTypeEditing(TireCarcassType type)
+        {
+            var user = DefineUser();
+            if (HasNoAdminAccess(user)) return NoPermission();
+            ProcessResult result = DataManager.Settings.EditTireCarcassType(type);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Settings", new { result = result.Id });
+            }
+            return RedirectToAction("EditTireCarcassType", new { id = type.Id, result = result.Id });
+        }
+
+        public ActionResult DeleteTireCarcassType(int id, int? result)
+        {
+            var user = DefineUser();
+            if (HasNoAccess(user)) return NoPermission();
+            if (result.HasValue)
+                ViewBag.Result = ProcessResults.GetById(result.Value);
+            return View(DataManager.Settings.GetTireCarcassType(id));
+        }
+        [HttpPost]
+        public ActionResult ManageTireCarcassTypeDeleting(int id)
+        {
+            var user = DefineUser();
+            if (HasNoAccess(user)) return NoPermission();
+            ProcessResult result = DataManager.Settings.DeleteTireCarcassType(id);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Settings", new { result = result.Id });
+            }
+            return RedirectToAction("DeleteTireCarcassType", new { id, result = result.Id });
+        }
+
+
+
+
+
+        public ActionResult AddTransmissionType(int? result)
+        {
+            var user = DefineUser();
+            if (HasNoAdminAccess(user)) return NoPermission();
+            if (result.HasValue)
+                ViewBag.Result = ProcessResults.GetById(result.Value);
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ManageTransmissionTypeAdding(TransmissionType type)
+        {
+            var user = DefineUser();
+            if (HasNoAdminAccess(user)) return NoPermission();
+            ProcessResult result = DataManager.Settings.AddTransmissionType(type);
+            return RedirectToAction(result.Succeeded ? "Settings" : "AddTransmissionType", new { result = result.Id });
+        }
+
+        public ActionResult EditTransmissionType(int id, int? result)
+        {
+            var user = DefineUser();
+            if (HasNoAdminAccess(user)) return NoPermission();
+            if (result.HasValue)
+                ViewBag.Result = ProcessResults.GetById(result.Value);
+            return View(DataManager.Settings.GetTransmissionType(id));
+        }
+
+        [HttpPost]
+        public ActionResult ManageTransmissionTypeEditing(TransmissionType type)
+        {
+            var user = DefineUser();
+            if (HasNoAdminAccess(user)) return NoPermission();
+            ProcessResult result = DataManager.Settings.EditTransmissionType(type);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Settings", new { result = result.Id });
+            }
+            return RedirectToAction("EditTransmissionType", new { id = type.Id, result = result.Id });
+        }
+
+        public ActionResult DeleteTransmissionType(int id, int? result)
+        {
+            var user = DefineUser();
+            if (HasNoAccess(user)) return NoPermission();
+            if (result.HasValue)
+                ViewBag.Result = ProcessResults.GetById(result.Value);
+            return View(DataManager.Settings.GetTransmissionType(id));
+        }
+        [HttpPost]
+        public ActionResult ManageTransmissionTypeDeleting(int id)
+        {
+            var user = DefineUser();
+            if (HasNoAccess(user)) return NoPermission();
+            ProcessResult result = DataManager.Settings.DeleteTransmissionType(id);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Settings", new { result = result.Id });
+            }
+            return RedirectToAction("DeleteTransmissionType", new { id, result = result.Id });
+        }
+
+
+        public ActionResult AddEngineLocation(int? result)
+        {
+            var user = DefineUser();
+            if (HasNoAdminAccess(user)) return NoPermission();
+            if (result.HasValue)
+                ViewBag.Result = ProcessResults.GetById(result.Value);
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ManageEngineLocationAdding(EngineLocation type)
+        {
+            var user = DefineUser();
+            if (HasNoAdminAccess(user)) return NoPermission();
+            ProcessResult result = DataManager.Settings.AddEngineLocation(type);
+            return RedirectToAction(result.Succeeded ? "Settings" : "AddEngineLocation", new { result = result.Id });
+        }
+
+        public ActionResult EditEngineLocation(int id, int? result)
+        {
+            var user = DefineUser();
+            if (HasNoAdminAccess(user)) return NoPermission();
+            if (result.HasValue)
+                ViewBag.Result = ProcessResults.GetById(result.Value);
+            return View(DataManager.Settings.GetEngineLocation(id));
+        }
+
+        [HttpPost]
+        public ActionResult ManageEngineLocationEditing(EngineLocation type)
+        {
+            var user = DefineUser();
+            if (HasNoAdminAccess(user)) return NoPermission();
+            ProcessResult result = DataManager.Settings.EditEngineLocation(type);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Settings", new { result = result.Id });
+            }
+            return RedirectToAction("EditEngineLocation", new { id = type.Id, result = result.Id });
+        }
+
+        public ActionResult DeleteEngineLocation(int id, int? result)
+        {
+            var user = DefineUser();
+            if (HasNoAccess(user)) return NoPermission();
+            if (result.HasValue)
+                ViewBag.Result = ProcessResults.GetById(result.Value);
+            return View(DataManager.Settings.GetEngineLocation(id));
+        }
+        [HttpPost]
+        public ActionResult ManageEngineLocationDeleting(int id)
+        {
+            var user = DefineUser();
+            if (HasNoAccess(user)) return NoPermission();
+            ProcessResult result = DataManager.Settings.DeleteEngineLocation(id);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Settings", new { result = result.Id });
+            }
+            return RedirectToAction("DeleteEngineLocation", new { id, result = result.Id });
+        }
+
+
+
+
+        public ActionResult AddValvesArrangement(int? result)
+        {
+            var user = DefineUser();
+            if (HasNoAdminAccess(user)) return NoPermission();
+            if (result.HasValue)
+                ViewBag.Result = ProcessResults.GetById(result.Value);
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ManageValvesArrangementAdding(ValvesArrangement type)
+        {
+            var user = DefineUser();
+            if (HasNoAdminAccess(user)) return NoPermission();
+            ProcessResult result = DataManager.Settings.AddValvesArrangement(type);
+            return RedirectToAction(result.Succeeded ? "Settings" : "AddValvesArrangement", new { result = result.Id });
+        }
+
+        public ActionResult EditValvesArrangement(int id, int? result)
+        {
+            var user = DefineUser();
+            if (HasNoAdminAccess(user)) return NoPermission();
+            if (result.HasValue)
+                ViewBag.Result = ProcessResults.GetById(result.Value);
+            return View(DataManager.Settings.GetValvesArrangement(id));
+        }
+
+        [HttpPost]
+        public ActionResult ManageValvesArrangementEditing(ValvesArrangement type)
+        {
+            var user = DefineUser();
+            if (HasNoAdminAccess(user)) return NoPermission();
+            ProcessResult result = DataManager.Settings.EditValvesArrangement(type);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Settings", new { result = result.Id });
+            }
+            return RedirectToAction("EditTransmissionType", new { id = type.Id, result = result.Id });
+        }
+
+        public ActionResult DeleteValvesArrangement(int id, int? result)
+        {
+            var user = DefineUser();
+            if (HasNoAccess(user)) return NoPermission();
+            if (result.HasValue)
+                ViewBag.Result = ProcessResults.GetById(result.Value);
+            return View(DataManager.Settings.GetValvesArrangement(id));
+        }
+        [HttpPost]
+        public ActionResult ManageValvesArrangementDeleting(int id)
+        {
+            var user = DefineUser();
+            if (HasNoAccess(user)) return NoPermission();
+            ProcessResult result = DataManager.Settings.DeleteValvesArrangement(id);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Settings", new { result = result.Id });
+            }
+            return RedirectToAction("DeleteValvesArrangement", new { id, result = result.Id });
         }
 
         #endregion

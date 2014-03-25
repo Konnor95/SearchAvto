@@ -556,7 +556,13 @@ namespace SearchAvto.Models.LogicModels
                 return Data.BatteryTypes;
             }
         }
-
+        public IEnumerable<BodyType> BodyTypes
+        {
+            get
+            {
+                return Data.BodyTypes;
+            }
+        }
         public IEnumerable<TransmissionType> TransmissionTypes
         {
             get
@@ -577,6 +583,10 @@ namespace SearchAvto.Models.LogicModels
             return Data.BodyTypes.FirstOrDefault(x => x.Id == id);
         }
 
+        public IEnumerable<BodyType> GetBaseBodyTypes()
+        {
+            return Data.BodyTypes.Where(x => x.BaseBodyTypeId == 0);
+        } 
         private DateTime? GetYear(int? year)
         {
             if (!year.HasValue) return null;

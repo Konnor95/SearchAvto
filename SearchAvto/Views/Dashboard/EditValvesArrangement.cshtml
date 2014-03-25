@@ -1,0 +1,54 @@
+﻿@model ValvesArrangement
+@{
+    ViewBag.Title = "Изменить тип компоновки цилиндров";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+@if (Model == null)
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header fleft">Тип компоновки цилиндров не найден</h1>
+        </div>
+    </div>
+    return;
+}
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header fleft">Изменить тип компоновки цилиндров</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        @HtmlManager.ProccessResultContainer(ViewBag.Result)
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        @using (Html.BeginForm("ManageValvesArrangementEditing", "Dashboard", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(id => Model.Id)
+                <div class="form-group">
+                    <label class="control-label col-md-2" for="Name">Название</label>
+                    <div class="col-md-2">
+                        <input class="form-control" id="Name" name="Name" type="text" placeholder="Название" value="@Model.Name" required="required">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-2" for="CodeName">Обозначение</label>
+                    <div class="col-md-2">
+                        <input maxlength="50" class="form-control" id="CodeName" name="CodeName" type="text" placeholder="Обозначение" required="required" value="@Model.CodeName">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @HtmlManager.SubmitButton()
+                        @HtmlManager.DefaultButton(Html.ActionLink("Назад", "Settings", "Dashboard"))
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

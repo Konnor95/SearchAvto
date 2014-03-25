@@ -1,0 +1,41 @@
+﻿@model ValvesArrangement
+@{
+    ViewBag.Title = "Удалить тип компоновки цилиндров";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+@if (Model == null)
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header fleft">Тип компоновки цилиндров не найден</h1>
+        </div>
+    </div>
+    return;
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header fleft">Удалить тип компоновки цилиндров @Model.Name</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <p>Вы уверены, что хотите удалить тип компоновки цилиндров @Model.Name ? Все автомобили, имеющие этот тип компоновки цилиндров, потеряют информацию об этом типе.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        @HtmlManager.ProccessResultContainer(ViewBag.Result)
+        @using (Html.BeginForm("ManageValvesArrangementDeleting", "Dashboard", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(id => Model.Id)
+            <div class="form-group">
+                @HtmlManager.SubmitButton()
+                @HtmlManager.DefaultButton(Html.ActionLink("Назад", "Setting", "Dashboard"))
+            </div>
+        }
+    </div>
+</div>

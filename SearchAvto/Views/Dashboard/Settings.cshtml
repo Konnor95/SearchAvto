@@ -1,7 +1,259 @@
-﻿@{
+﻿@model SettingsModel
+@{
     ViewBag.Title = "Настройки";
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header fleft">Настройки</h1>
+    </div>
+</div>
 
-<h2>Settings</h2>
+<div class="row">
+    @HtmlManager.ProccessResultContainer(ViewBag.Result)
 
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Типы батерей
+            <a style="display: inline-block" title="Добавить новый" href="@Url.Action("AddBatteryType", "Dashboard")"><i class="fa im fa-plus-circle fa-fw"></i></a>
+        </div>
+        <div class="panel-body">
+            <table class="table table-striped table-bordered table-hover" style="width: 100%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Название</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (BatteryType type in Model.BatteryTypes)
+                    {
+                    <tr>
+                        <td>@type.Id</td>
+                        <td>@type.Name</td>
+                        <td>
+                            @HtmlManager.EditIconLink(Url.Action("EditBatteryType", "Dashboard", new { id = type.Id }))
+                            @HtmlManager.DeleteIconLink(Url.Action("DeleteBatteryType", "Dashboard", new { id = type.Id }))
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Типы кузовов
+            <a style="display: inline-block" title="Добавить новый" href="@Url.Action("AddBodyType", "Dashboard")"><i class="fa im fa-plus-circle fa-fw"></i></a>
+        </div>
+        <div class="panel-body">
+            <table class="table table-striped table-bordered table-hover" style="width: 100%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Название</th>
+                        <th>Базовый тип</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (BodyType type in Model.BodyTypes)
+                    {
+                    <tr>
+                        <td>@type.Id</td>
+                        <td>@type.Name</td>
+                        <td>@type.BaseBodyType</td>
+                        <td>
+                            @if (!type.IsBase)
+                                {
+                                @HtmlManager.EditIconLink(Url.Action("EditBodyType", "Dashboard", new { id = type.Id }))
+                                @HtmlManager.DeleteIconLink(Url.Action("DeleteBodyType", "Dashboard", new { id = type.Id }))
+                                }
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Типы топлива
+            <a style="display: inline-block" title="Добавить новый" href="@Url.Action("AddFuelType", "Dashboard")"><i class="fa im fa-plus-circle fa-fw"></i></a>
+        </div>
+        <div class="panel-body">
+            <table class="table table-striped table-bordered table-hover" style="width: 100%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Название</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (FuelType type in Model.FuelTypes)
+                    {
+                    <tr>
+                        <td>@type.Id</td>
+                        <td>@type.Name</td>
+                        <td>
+                            @HtmlManager.EditIconLink(Url.Action("EditFuelType", "Dashboard", new { id = type.Id }))
+                            @HtmlManager.DeleteIconLink(Url.Action("DeleteFuelType", "Dashboard", new { id = type.Id }))
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Типы каркасса шин
+            <a style="display: inline-block" title="Добавить новый" href="@Url.Action("AddTireCarcassType", "Dashboard")"><i class="fa im fa-plus-circle fa-fw"></i></a>
+        </div>
+        <div class="panel-body">
+            <table class="table table-striped table-bordered table-hover" style="width: 100%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Название</th>
+                        <th>Обозначение</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (TireCarcassType type in Model.TireCarcassTypes)
+                    {
+                    <tr>
+                        <td>@type.Id</td>
+                        <td>@type.FullName</td>
+                        <td>@type.ShortName</td>
+                        <td>
+                            @HtmlManager.EditIconLink(Url.Action("EditTireCarcassType", "Dashboard", new { id = type.Id }))
+                            @HtmlManager.DeleteIconLink(Url.Action("DeleteTireCarcassType", "Dashboard", new { id = type.Id }))
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Типы трансмиссии
+            <a style="display: inline-block" title="Добавить новый" href="@Url.Action("AddTransmissionType", "Dashboard")"><i class="fa im fa-plus-circle fa-fw"></i></a>
+        </div>
+        <div class="panel-body">
+            <table class="table table-striped table-bordered table-hover" style="width: 100%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Название</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (TransmissionType type in Model.TransmissionTypes)
+                    {
+                    <tr>
+                        <td>@type.Id</td>
+                        <td>@type.Name</td>
+                        <td>
+                            @HtmlManager.EditIconLink(Url.Action("EditTransmissionType", "Dashboard", new { id = type.Id }))
+                            @HtmlManager.DeleteIconLink(Url.Action("DeleteTransmissionType", "Dashboard", new { id = type.Id }))
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Типы расположения двигателя
+            <a style="display: inline-block" title="Добавить новый" href="@Url.Action("AddEngineLocation", "Dashboard")"><i class="fa im fa-plus-circle fa-fw"></i></a>
+        </div>
+        <div class="panel-body">
+            <table class="table table-striped table-bordered table-hover" style="width: 100%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Название</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (EngineLocation type in Model.EngineLocations)
+                    {
+                    <tr>
+                        <td>@type.Id</td>
+                        <td>@type.Name</td>
+                        <td>
+                            @HtmlManager.EditIconLink(Url.Action("EditEngineLocation", "Dashboard", new { id = type.Id }))
+                            @HtmlManager.DeleteIconLink(Url.Action("DeleteEngineLocation", "Dashboard", new { id = type.Id }))
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Типы компоновки цилиндров
+            <a style="display: inline-block" title="Добавить новый" href="@Url.Action("AddValvesArrangement", "Dashboard")"><i class="fa im fa-plus-circle fa-fw"></i></a>
+        </div>
+        <div class="panel-body">
+            <table class="table table-striped table-bordered table-hover" style="width: 100%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Название</th>
+                        <th>Обозначение</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (ValvesArrangement type in Model.ValvesArrangements)
+                    {
+                    <tr>
+                        <td>@type.Id</td>
+                        <td>@type.Name</td>
+                        <td>@type.CodeName</td>
+                        <td>
+                            @HtmlManager.EditIconLink(Url.Action("EditValvesArrangement", "Dashboard", new { id = type.Id }))
+                            @HtmlManager.DeleteIconLink(Url.Action("DeleteValvesArrangement", "Dashboard", new { id = type.Id }))
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+@section Styles
+{
+    @Styles.Render("~/bundles/DataTablesStyles")
+}
+@section Scripts
+{
+    @Scripts.Render("~/bundles/DataTablesScripts")
+    <script>
+        $(document).ready(function () {
+            $('table').dataTable();
+        });
+    </script>
+}

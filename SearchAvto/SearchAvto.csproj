@@ -225,11 +225,13 @@
     <Compile Include="Models\LogicModels\Manager.cs" />
     <Compile Include="Models\LogicModels\NewsManger.cs" />
     <Compile Include="Models\LogicModels\SecurityManager.cs" />
+    <Compile Include="Models\LogicModels\SettingsManager.cs" />
     <Compile Include="Models\LogicModels\StaticSettings.cs" />
     <Compile Include="Models\LogicModels\UserManager.cs" />
     <Compile Include="Models\ViewModels\LogInModel.cs" />
     <Compile Include="Models\ViewModels\ModificationModel.cs" />
     <Compile Include="Models\ViewModels\RegistrationModel.cs" />
+    <Compile Include="Models\ViewModels\SettingsModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -605,6 +607,7 @@
     <Content Include="Plugins\CKEditor\README.md" />
     <Content Include="Plugins\CKEditor\samples\plugins\htmlwriter\assets\outputforflash\outputforflash.fla" />
     <Content Include="Plugins\CKEditor\skins\moono\readme.md" />
+    <Content Include="1 АНАЛІЗ ТА КОНЦЕПТУАЛЬНЕ МОДЕЛЮВАННЯ ПРЕДМЕТНОЇ ОБЛАСТІ.docx" />
     <EntityDeploy Include="Models\DataModels\DataModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>DataModel.Designer.cs</LastGenOutput>
@@ -622,7 +625,6 @@
       <DependentUpon>DataModel.edmx</DependentUpon>
       <LastGenOutput>DataModel.cs</LastGenOutput>
     </Content>
-    <Content Include="1 АНАЛІЗ ТА КОНЦЕПТУАЛЬНЕ МОДЕЛЮВАННЯ ПРЕДМЕТНОЇ ОБЛАСТІ.docx" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Plugins\DataTables\dataTables.bootstrap.css" />
     <Content Include="Plugins\DataTables\dataTables.bootstrap.js" />
@@ -744,6 +746,27 @@
     <Content Include="Views\Dashboard\Models.cshtml" />
     <Content Include="Views\News\Comments.cshtml" />
     <Content Include="Views\Dashboard\Settings.cshtml" />
+    <Content Include="Views\Dashboard\AddBatteryType.cshtml" />
+    <Content Include="Views\Dashboard\EditBatteryType.cshtml" />
+    <Content Include="Views\Dashboard\DeleteBatteryType.cshtml" />
+    <Content Include="Views\Dashboard\AddBodyType.cshtml" />
+    <Content Include="Views\Dashboard\EditBodyType.cshtml" />
+    <Content Include="Views\Dashboard\DeleteBodyType.cshtml" />
+    <Content Include="Views\Dashboard\AddFuelType.cshtml" />
+    <Content Include="Views\Dashboard\EditFuelType.cshtml" />
+    <Content Include="Views\Dashboard\DeleteFuelType.cshtml" />
+    <Content Include="Views\Dashboard\AddTireCarcassType.cshtml" />
+    <Content Include="Views\Dashboard\EditTireCarcassType.cshtml" />
+    <Content Include="Views\Dashboard\DeleteTireCarcassType.cshtml" />
+    <Content Include="Views\Dashboard\AddTransmissionType.cshtml" />
+    <Content Include="Views\Dashboard\EditTransmissionType.cshtml" />
+    <Content Include="Views\Dashboard\DeleteTransmissionType.cshtml" />
+    <Content Include="Views\Dashboard\AddEngineLocation.cshtml" />
+    <Content Include="Views\Dashboard\EditEngineLocation.cshtml" />
+    <Content Include="Views\Dashboard\DeleteEngineLocation.cshtml" />
+    <Content Include="Views\Dashboard\AddValvesArrangement.cshtml" />
+    <Content Include="Views\Dashboard\EditValvesArrangement.cshtml" />
+    <Content Include="Views\Dashboard\DeleteValvesArrangement.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

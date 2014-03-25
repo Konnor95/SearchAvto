@@ -52,6 +52,7 @@
             $("#add").click(function() {
                 var comment = $("#comment-text").val();
                 if (comment) {
+                    $("#comment-text").val("");
                     $.post('@Url.Action("AddComment", "News", new {id = Model.Id})', { text: comment }, function(data) {
                         $("#comments-container").html(data);
                     });

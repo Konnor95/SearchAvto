@@ -59,7 +59,37 @@
             new ProcessResult(31,false, "Такая новость уже существует"),
             new ProcessResult(32,false, "Такой новости не существует"),
             new ProcessResult(33,false, "Комметарий не может быть пустым"),
-            new ProcessResult(34,true, "Комментарий успешно добалвен")
+            new ProcessResult(34,true, "Комментарий успешно добалвен"),
+            new ProcessResult(35,true, "Тип батареи успешно добавлен"),
+            new ProcessResult(36,true, "Тип батареи успешно изменен"),
+            new ProcessResult(37,true, "Тип батареи успешно удален"),
+            new ProcessResult(38,false, "Такой тип батареи уже существует"),
+            new ProcessResult(39,false, "Такого типа батареи не существует"),
+            new ProcessResult(40,true, "Тип топлива успешно добавлен"),
+            new ProcessResult(41,true, "Тип топлива успешно изменен"),
+            new ProcessResult(42,true, "Тип топлива успешно удален"),
+            new ProcessResult(43,false, "Такой тип топлива уже существует"),
+            new ProcessResult(44,false, "Такого типа топлива не существует"),
+            new ProcessResult(45,true, "Тип каркасса шины успешно добавлен"),
+            new ProcessResult(46,true, "Тип каркасса шины успешно изменен"),
+            new ProcessResult(47,true, "Тип каркасса шины успешно удален"),
+            new ProcessResult(48,false, "Такой тип каркасса шины уже существует"),
+            new ProcessResult(49,false, "Такого типа каркасса шины не существует"),
+            new ProcessResult(50,true, "Тип трансмиссии успешно добавлен"),
+            new ProcessResult(51,true, "Тип трансмиссии успешно изменен"),
+            new ProcessResult(52,true, "Тип трансмиссии успешно удален"),
+            new ProcessResult(53,false, "Такой тип трансмиссии уже существует"),
+            new ProcessResult(54,false, "Такого типа трансмиссии не существует"),
+            new ProcessResult(55,true, "Тип расположения двигателя успешно добавлен"),
+            new ProcessResult(56,true, "Тип расположения двигателя успешно изменен"),
+            new ProcessResult(57,true, "Тип расположения двигателя успешно удален"),
+            new ProcessResult(58,false, "Такой тип расположения двигателя уже существует"),
+            new ProcessResult(59,false, "Такого типа расположения двигателя не существует"),
+            new ProcessResult(60,true, "Тип компоновки цилиндров успешно добавлен"),
+            new ProcessResult(61,true, "Тип компоновки цилиндров успешно изменен"),
+            new ProcessResult(62,true, "Тип компоновки цилиндров успешно удален"),
+            new ProcessResult(63,false, "Такой тип компоновки цилиндров уже существует"),
+            new ProcessResult(64,false, "Такого типа компоновки цилиндров не существует")
         };
 
         public static ProcessResult GetById(int id = -1)
@@ -239,6 +269,157 @@
         public static ProcessResult CommentAddedSuccessfully
         {
             get { return Results[34]; }
+        }
+
+        public static ProcessResult BatteryTypeAdded
+        {
+            get { return Results[35]; }
+        }
+
+        public static ProcessResult BatteryTypeChanged
+        {
+            get { return Results[36]; }
+        }
+
+        public static ProcessResult BatteryTypeDeleted
+        {
+            get { return Results[37]; }
+        }
+
+        public static ProcessResult SuchBatteryTypeExists
+        {
+            get { return Results[38]; }
+        }
+
+        public static ProcessResult NoSuchBatteryType
+        {
+            get { return Results[39]; }
+        }
+
+        public static ProcessResult FuelTypeAdded
+        {
+            get { return Results[40]; }
+        }
+
+        public static ProcessResult FuelTypeChanged
+        {
+            get { return Results[41]; }
+        }
+
+        public static ProcessResult FuelTypeDeleted
+        {
+            get { return Results[42]; }
+        }
+
+        public static ProcessResult SuchFuelTypeExists
+        {
+            get { return Results[43]; }
+        }
+
+        public static ProcessResult NoSuchFuelType
+        {
+            get { return Results[44]; }
+        }
+
+        public static ProcessResult TireCarcassTypeAdded
+        {
+            get { return Results[45]; }
+        }
+
+        public static ProcessResult TireCarcassTypeChanged
+        {
+            get { return Results[46]; }
+        }
+
+        public static ProcessResult TireCarcassTypeDeleted
+        {
+            get { return Results[47]; }
+        }
+
+        public static ProcessResult SuchTireCarcassTypeExists
+        {
+            get { return Results[48]; }
+        }
+
+        public static ProcessResult NoSuchTireCarcassType
+        {
+            get { return Results[49]; }
+        }
+
+        public static ProcessResult TransmissionTypeAdded
+        {
+            get { return Results[50]; }
+        }
+
+        public static ProcessResult TransmissionTypeChanged
+        {
+            get { return Results[51]; }
+        }
+
+        public static ProcessResult TransmissionTypeDeleted
+        {
+            get { return Results[52]; }
+        }
+
+        public static ProcessResult SuchTransmissionTypeExists
+        {
+            get { return Results[53]; }
+        }
+
+        public static ProcessResult NoSuchTransmissionType
+        {
+            get { return Results[54]; }
+        }
+
+
+        public static ProcessResult EngineLocationAdded
+        {
+            get { return Results[55]; }
+        }
+
+        public static ProcessResult EngineLocationChanged
+        {
+            get { return Results[56]; }
+        }
+
+        public static ProcessResult EngineLocationDeleted
+        {
+            get { return Results[57]; }
+        }
+
+        public static ProcessResult SuchEngineLocationExists
+        {
+            get { return Results[58]; }
+        }
+
+        public static ProcessResult NoSuchEngineLocation
+        {
+            get { return Results[59]; }
+        }
+
+        public static ProcessResult ValvesArrangementAdded
+        {
+            get { return Results[60]; }
+        }
+
+        public static ProcessResult ValvesArrangementChanged
+        {
+            get { return Results[61]; }
+        }
+
+        public static ProcessResult ValvesArrangementDeleted
+        {
+            get { return Results[62]; }
+        }
+
+        public static ProcessResult SuchValvesArrangementExists
+        {
+            get { return Results[63]; }
+        }
+
+        public static ProcessResult NoSuchValvesArrangement
+        {
+            get { return Results[64]; }
         }
     }
 }
