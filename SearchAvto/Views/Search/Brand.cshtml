@@ -3,6 +3,7 @@
     ViewBag.Title = Model != null ? Model.Name : "Бренд не найден";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 @if (Model == null)
 {
     <div class="row">
@@ -13,18 +14,22 @@
 @{
     IEnumerable<ModelLine> modelLines = Model.ModelLines.OrderBy(x=>x.FullName);
 }
+
 <div class="breadcrumbs flat">
     @HtmlManager.BreadCrumbs(Html, Model)
 </div>
-<div class="container">
-    <h2>@Model.Name</h2>
-    <div>@HtmlManager.Image(Model.Image,Model.Name)</div>
-    <ul class="list">
-        @foreach (var item in modelLines)
-        {
-            <li>
-                @Html.ActionLink(item.Name, "ModelLine", new { id = item.Id })
-            </li>
-        }
-    </ul>
+<div id="content">
+    <div class="container">
+        <h2>@Model.Name</h2>
+        <div>@HtmlManager.Image(Model.Image, Model.Name)</div>
+        <h3>Модельные линии</h3>
+        <ul class="list">
+            @foreach (var item in modelLines)
+            {
+                <li>
+                    @Html.ActionLink(item.Name, "ModelLine", new { id = item.Id })
+                </li>
+            }
+        </ul>
+    </div>
 </div>

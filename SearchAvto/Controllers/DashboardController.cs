@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using SearchAvto.Models.DataModels;
 using SearchAvto.Models.LogicModels;
 using SearchAvto.Models.ViewModels;
@@ -9,6 +12,12 @@ namespace SearchAvto.Controllers
 {
     public class DashboardController : Controller
     {
+        private static readonly JavaScriptSerializer Serializer = new JavaScriptSerializer();
+
+        private string ToJsonString(object data)
+        {
+            return Serializer.Serialize(data);
+        }
         private User DefineUser()
         {
             return DataManager.Users.Define(HttpContext);
@@ -404,7 +413,7 @@ namespace SearchAvto.Controllers
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View();
         }
-        
+
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult ManageNewsAdding(News news, HttpPostedFileBase imageUpload)
@@ -463,7 +472,7 @@ namespace SearchAvto.Controllers
         }
         #endregion
 
-        #region Setting
+        #region Settings
 
         private bool HasNoAdminAccess(User user)
         {
@@ -559,7 +568,7 @@ namespace SearchAvto.Controllers
             if (HasNoAdminAccess(user)) return NoPermission();
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
-            return View(Tuple.Create(DataManager.Cars.BodyClasses,DataManager.Cars.GetBaseBodyTypes()));
+            return View(Tuple.Create(DataManager.Cars.BodyClasses, DataManager.Cars.GetBaseBodyTypes()));
         }
 
         [HttpPost]
@@ -577,7 +586,7 @@ namespace SearchAvto.Controllers
             if (HasNoAdminAccess(user)) return NoPermission();
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
-            return View(Tuple.Create(DataManager.Settings.GetBodyType(id),DataManager.Cars.BodyClasses,DataManager.Cars.GetBaseBodyTypes()));
+            return View(Tuple.Create(DataManager.Settings.GetBodyType(id), DataManager.Cars.BodyClasses, DataManager.Cars.GetBaseBodyTypes()));
         }
 
         [HttpPost]
@@ -939,7 +948,84 @@ namespace SearchAvto.Controllers
         #endregion
 
 
+        #region Statistics
 
+        public ActionResult Statistics()
+        {
+            ViewBag.BodyTypes = ToJsonString(BodyTypesStatistics());
+            ViewBag.Brands = ToJsonString(BrandsStatistics());
+            ViewBag.News = ToJsonString(NewsStatistics());
+            ViewBag.Engines = ToJsonString(EnginesStatistics());
+            return View();
+        }
+
+        public IEnumerable BodyTypesStatistics()
+        {
+            var bodyTypes = new ArrayList();
+            var bodys = DataManager.Cars.BodyTypes;
+            foreach (BodyType bodyType in bodys)
+            {
+                int c = bodyType.CarModels.Count;
+                if (c > 0)
+                    bodyTypes.Add(new { label = bodyType.Name, value = c });
+            }
+            return bodyTypes;
+        }
+
+        private IEnumerable BrandsStatistics()
+        {
+            var res = new ArrayList();
+            var brands = DataManager.Cars.Brands();
+            foreach (Brand brand in brands)
+            {
+                int c = brand.ModelLines.Sum(m => m.CarModels.Count);
+                if (c > 0)
+                    res.Add(new { y = brand.Name, a = c });
+            }
+            return res;
+        }
+
+        // { y: '2006', a: 100 },
+
+        public IEnumerable NewsStatistics()
+        {
+            var res = new ArrayList();
+            var months = new int[12];
+            string[] monthNames =
+            {
+                "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь",
+                "Декабрь"
+            };
+            var news = DataManager.News.NewsOfTheLastYear();
+            foreach (News n in news)
+            {
+                months[n.Date.Month]++;
+            }
+            for (int i = 0; i < months.Length; i++)
+            {
+                if (months[i] > 0)
+                    res.Add(new { y = monthNames[i-1], a = months[i] });
+            }
+            return res;
+        }
+        public IEnumerable EnginesStatistics()
+        {
+            var res = new ArrayList();
+            var engines = new int[3];
+            var engineNames = new[]{"ДВС", "Электрокары", "Гибриды"};
+            var models = DataManager.Cars.CarModels();
+            foreach (CarModel m in models)
+            {
+                engines[m.TEngine]++;
+            }
+            for (int i = 0; i < engines.Length; i++)
+            {
+                int e = engines[i];
+                if (e > 0) res.Add(new { label = engineNames[i], value = e });
+            }
+            return res;
+        }
+        #endregion
 
 
     }

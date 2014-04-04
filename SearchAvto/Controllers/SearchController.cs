@@ -1,7 +1,6 @@
 ﻿using System.Web.Mvc;
 using SearchAvto.Models.DataModels;
 using SearchAvto.Models.LogicModels;
-using SearchAvto.Models.ViewModels;
 
 namespace SearchAvto.Controllers
 {

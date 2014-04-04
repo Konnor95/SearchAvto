@@ -1,4 +1,4 @@
-﻿@model Tuple<IEnumerable<News>>
+﻿@model Tuple<IEnumerable<News>,IEnumerable<CarModel>>
 @{
     ViewBag.Title = "Главная";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -37,18 +37,20 @@
             <div class="container">
                 <div class="row">
                     <article class="span12">
-                        <h4>Our Work</h4>
+                        <h4>@Html.ActionLink("Автомобили", "Index", "Search")</h4>
                     </article>
-                    <div class="clear"></div>
-                    <ul class="portfolio clearfix">
-                        <li><a href="~/Images/image-blank.png" class="magnifier"><img alt="" src="~/Images/work/1.jpg"></a></li>
-                        <li><a href="~/Images/image-blank.png" class="magnifier"><img alt="" src="~/Images/work/2.jpg"></a></li>
-                        <li><a href="~/Images/image-blank.png" class="magnifier"><img alt="" src="~/Images/work/3.jpg"></a></li>
-                        <li><a href="~/Images/image-blank.png" class="magnifier"><img alt="" src="~/Images/work/4.jpg"></a></li>
-                        <li><a href="~/Images/image-blank.png" class="magnifier"><img alt="" src="~/Images/work/5.jpg"></a></li>
-                        <li><a href="~/Images/image-blank.png" class="magnifier"><img alt="" src="~/Images/work/6.jpg"></a></li>
-                        <li><a href="~/Images/image-blank.png" class="magnifier"><img alt="" src="~/Images/work/7.jpg"></a></li>
-                        <li><a href="~/Images/image-blank.png" class="magnifier"><img alt="" src="~/Images/work/8.jpg"></a></li>
+                    <ul class="news-list">
+                        @foreach (CarModel m in Model.Item2)
+                        {
+                            <li>
+                                <div class="thumb">
+                                    <a href="@Url.Action("Model", "Search", new { id = m.Id })">
+                                        <img src="@(m.Image + "?w=250&h=155")" />
+                                    </a>
+                                </div>
+                                <a style="text-align: center; display: block;" href="@Url.Action("Model", "Search", new { id = m.Id })">@m.FullName</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -81,50 +83,6 @@
                         }
                     </ul>
                 </div>
-            </div>
-        </div>
-
-        <div class="container">
-            <div class="row">
-                <article class="span6">
-                    <h3>Shortly about us</h3>
-                    <div class="wrapper">
-                        <figure class="img-indent"><img src="~/Images/15.jpg" alt="" /></figure>
-                        <div class="inner-1 overflow extra">
-                            <div class="txt-1">Mauris scelerisque odio quis leo viverra ac porttitor sem blandit. Sed tincidunt mattis varius. Nunc sodales ipsum nisl, eget lacinia nibh.</div>
-                            Cras lacus tortor, tempus vitae porta nec, hendrerit id dolor. Nam volutpat gravida porta. Suspendisse turpis nibh, volutpat.
-                        </div>
-                    </div>
-                </article>
-                <article class="span6">
-                    <h3>Some quick links</h3>
-                    <div class="wrapper">
-                        <ul class="list list-pad">
-                            <li><a href="#">Campaigns</a></li>
-                            <li><a href="#">Portraits</a></li>
-                            <li><a href="#">Fashion</a></li>
-                            <li><a href="#">Fine Art</a></li>
-                        </ul>
-                        <ul class="list list-pad">
-                            <li><a href="#">Campaigns</a></li>
-                            <li><a href="#">Portraits</a></li>
-                            <li><a href="#">Fashion</a></li>
-                            <li><a href="#">Fine Art</a></li>
-                        </ul>
-                        <ul class="list list-pad">
-                            <li><a href="#">Campaigns</a></li>
-                            <li><a href="#">Portraits</a></li>
-                            <li><a href="#">Fashion</a></li>
-                            <li><a href="#">Fine Art</a></li>
-                        </ul>
-                        <ul class="list">
-                            <li><a href="#">Advertising</a></li>
-                            <li><a href="#">Lifestyle</a></li>
-                            <li><a href="#">Love story</a></li>
-                            <li><a href="#">Landscapes</a></li>
-                        </ul>
-                    </div>
-                </article>
             </div>
         </div>
     </div>

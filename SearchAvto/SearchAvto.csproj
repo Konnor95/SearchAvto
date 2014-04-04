@@ -767,6 +767,7 @@
     <Content Include="Views\Dashboard\AddValvesArrangement.cshtml" />
     <Content Include="Views\Dashboard\EditValvesArrangement.cshtml" />
     <Content Include="Views\Dashboard\DeleteValvesArrangement.cshtml" />
+    <Content Include="Views\Dashboard\Statistics.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

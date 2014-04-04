@@ -14,23 +14,49 @@ namespace SearchAvto.Models.LogicModels
         {
         }
 
-        public IEnumerable<News> All(int? count = null,int offeset = 0)
+        public int MaxPage(int newsPerPages)
         {
-            if(count==null)
-            return Data.News.OrderByDescending(x => x.Date);
-            return Data.News.OrderByDescending(x => x.Date).Take(4);
+            return (int)Math.Ceiling(((decimal)Data.News.Count() / newsPerPages));
+        }
+        public IEnumerable<News> All(out int? max, int page = 1, int? newsPerPages = null)
+        {
+            if (newsPerPages == null)
+            {
+                var n2 = Data.News.OrderByDescending(x => x.Date);
+                max = n2.Count();
+                return n2.Take(4);
+            }
+            var n3 = Data.News.OrderByDescending(x => x.Date);
+            max = (int)Math.Ceiling((decimal)n3.Count()/newsPerPages.Value);
+            return n3.Skip((page - 1) * newsPerPages.Value).Take(newsPerPages.Value);
         }
 
-        public IEnumerable<News> Search(string search)
+        public IEnumerable<News> All(int? count = null)
+        {
+            if (count.HasValue)
+                return Data.News.OrderByDescending(x => x.Date).Take(count.Value);
+            return Data.News.OrderByDescending(x => x.Date);
+        }
+
+        public IEnumerable<News> NewsOfTheLastYear()
+        {
+            DateTime lastYear = DateTime.Now.AddMonths(-12);
+            return Data.News.Where(x => x.Date >= lastYear);
+        }
+
+        public IEnumerable<News> Search(string search, int page, int newsPerPages, out int? max)
         {
             search = search.ToUpper();
             string[] keys = search.Split(' ');
+            var n = new List<News>();
             // ReSharper disable once LoopCanBeConvertedToQuery
-            foreach (News news in All())
+            foreach (News news in Data.News)
             {
                 if (news.Contains(keys))
-                    yield return news;
+                    n.Add(news);
             }
+            max = (int)Math.Ceiling((decimal)n.Count()/newsPerPages);
+            return n.Skip((page - 1) * newsPerPages).Take(newsPerPages);
         }
 
         public News GetNews(int id)
@@ -119,11 +145,11 @@ namespace SearchAvto.Models.LogicModels
             if (String.IsNullOrWhiteSpace(text))
                 return ProcessResults.CommentCannotBeEmpty;
             News news = Data.News.FirstOrDefault(x => x.Id == newsId);
-            if (news == null) 
+            if (news == null)
                 return ProcessResults.NoSuchNews;
-            Data.Comments.Add(new Comment {NewsId = newsId, UserId = userId, Text = text});
+            Data.Comments.Add(new Comment { NewsId = newsId, UserId = userId, Text = text });
             Data.SaveChanges();
             return ProcessResults.CommentAddedSuccessfully;
-        } 
+        }
     }
 }

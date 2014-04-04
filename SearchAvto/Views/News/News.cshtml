@@ -17,6 +17,8 @@
                 <div class="meta">
                     <time datetime="@String.Format("{0:yyyy-MM-dd}", Model.Date)" class="date-1"><i class="icon-calendar"></i> @String.Format("{0:dd-MM-yyyy}", Model.Date)</time>
                 </div>
+                <i>Комментарии</i>
+                <hr style="margin: 0"/>
                 <div id="comments-container">
                     @Html.Action("Comments", new { comments = Model.Comments })
                 </div>

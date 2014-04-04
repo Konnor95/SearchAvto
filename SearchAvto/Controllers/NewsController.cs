@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using SearchAvto.Models.DataModels;
 using SearchAvto.Models.LogicModels;
@@ -10,10 +8,20 @@ namespace SearchAvto.Controllers
 {
     public class NewsController : Controller
     {
+        private const int NewsPerPages = 3;
+
         [Route("News")]
-        public ActionResult Index(string search = null)
+        public ActionResult Index(int page = 1, string search = null)
         {
-            return View(String.IsNullOrWhiteSpace(search) ? DataManager.News.All() : DataManager.News.Search(search));
+            int? max;
+            ViewBag.Current = page;
+            var news = String.IsNullOrWhiteSpace(search)
+                ? DataManager.News.All(out max, page, NewsPerPages)
+                : DataManager.News.Search(search, page, NewsPerPages, out max);
+            if (max.HasValue)
+                ViewBag.Max = max.Value;
+            ViewBag.Search = search;
+            return View(news);
         }
 
         [Route("News/{id}")]
@@ -37,7 +45,7 @@ namespace SearchAvto.Controllers
             return user == null || user.HasNoAccess;
         }
 
-       
+
         public PartialViewResult AddComment(int id, string text)
         {
             var user = DefineUser();

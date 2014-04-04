@@ -4,7 +4,7 @@
 @using System.Web.Mvc.Html
 @using SearchAvto.Models.DataModels
 @using HtmlHelper = System.Web.Mvc.HtmlHelper
-@helper Image(string path, string alt = "",string styles = "")
+@helper Image(string path, string alt = "", string styles = "")
 {
     if (String.IsNullOrWhiteSpace(path))
     {
@@ -21,10 +21,10 @@
     if (!String.IsNullOrWhiteSpace(path))
     {
         path = "/" + path;
-        <input type="hidden" name="DeleteImage" id="DeleteImage" value="false"/>
+        <input type="hidden" name="DeleteImage" id="DeleteImage" value="false" />
         <div class="removable-image">
             <img class="thumb" src="@path" alt="@alt" title="@alt" />
-            <img class="cross" onclick="HideImage();"src="/Images/Icons/x.png" title="Удалить"  alt="Удалить"/>
+            <img class="cross" onclick="HideImage();" src="/Images/Icons/x.png" title="Удалить" alt="Удалить" />
         </div>
         <script>
             //TODO: fix with multiple
@@ -55,7 +55,7 @@
 }
 @helper BreadCrumbs(HtmlHelper html, ModelLine modelLine)
 {
-   @BreadCrumbs(html, modelLine.Brand)
+    @BreadCrumbs(html, modelLine.Brand)
     @html.ActionLink(modelLine.FullName, "ModelLine", "Search", new { id = modelLine.Id }, null)
 }
 @helper BreadCrumbs(HtmlHelper html, CarModel carModel)
@@ -298,7 +298,7 @@
 {
     string placeholder = placeHolder == null ? "Неизвестно" : ToString(placeHolder);
     <div class="form-group">
-        
+
         <label class="control-label col-md-3" for="@id">
             @if (html != null)
             {
@@ -333,13 +333,50 @@
         <div class="col-md-3">
             <select id="@id" name="@id" class="form-control">
                 @*if (value == 0)
-                {
-                    <option value="0">Отсутствует</option>
-                }*@
+                    {
+                        <option value="0">Отсутствует</option>
+                    }*@
                 <option value="0">Отсутствует</option>
                 <option value="1">Присутствует</option>
                 <option value="2">Выбрать из существующих</option>
             </select>
         </div>
     </div>
+}
+
+@helper Pagination(UrlHelper url, string actionName, string controllerName, int max, int current,string s = null)
+{
+    string link;
+    <ul class="pagination">
+        @if (current == 1)
+        {
+            <li class="disabled"><a href="#">&larr;</a></li>
+        }
+        else
+        {
+            link = url.Action(actionName, controllerName, new {page = current - 1, search = s});
+            <li><a href="@link">&larr;</a></li>
+        }
+        @for (int i = 1; i <= max; i++)
+        {
+            link = url.Action(actionName, controllerName, new { page = i, search = s });
+            if (i == current)
+            {
+                <li class="active"><a href="@link">@i</a></li>
+            }
+            else
+            {
+                <li><a href="@link">@i</a></li>
+            }
+        }
+        @if (current == max)
+        {
+            <li class="disabled"><a href="#">&rarr;</a></li>
+        }
+        else
+        {
+            link = url.Action(actionName, controllerName, new { page = current + 1, search = s });
+            <li><a href="@link">&rarr;</a></li>
+        }
+    </ul>
 }

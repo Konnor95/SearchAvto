@@ -1,0 +1,100 @@
+﻿@{
+    ViewBag.Title = "Статистика";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<div id="bodyTypesSource" style="display: none">
+    @Html.Raw(ViewBag.BodyTypes)
+</div>
+<div id="brandsSource" style="display: none">
+    @Html.Raw(ViewBag.Brands)
+</div>
+<div id="newsSource" style="display: none">
+    @Html.Raw(ViewBag.News)
+</div>
+<div id="enginesSource" style="display: none">
+    @Html.Raw(ViewBag.Engines)
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Статистика</h1>
+    </div>
+</div>
+<div class="row">
+    <div id="donut-example"></div>
+
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Бренды
+            </div>
+            <div class="panel-body">
+                <div id="brands"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Типы кузова
+            </div>
+            <div class="panel-body">
+                <div id="bodyTypes"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Соотношение типов двигателей
+            </div>
+            <div class="panel-body">
+                <div id="engines"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Новости за последний год
+            </div>
+            <div class="panel-body">
+                <div id="news"></div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Styles
+{
+    @Styles.Render("~/bundles/MorrisStyles")
+}
+@section Scripts
+{
+    @Scripts.Render("~/bundles/MorrisScripts")
+    <script>
+        $(document).ready(function () {
+            Morris.Bar({
+                element: 'brands',
+                data: $.parseJSON($("#brandsSource").html()),
+                xkey: 'y',
+                ykeys: ['a'],
+                labels: ['Моделей']
+            });
+            Morris.Bar({
+                element: 'news',
+                data: $.parseJSON($("#newsSource").html()),
+                xkey: 'y',
+                ykeys: ['a'],
+                labels: ['Новостей']
+            });
+            Morris.Donut({
+                element: 'engines',
+                data: $.parseJSON($("#enginesSource").html())
+            });
+            Morris.Donut({
+                element: 'bodyTypes',
+                data: $.parseJSON($("#bodyTypesSource").html())
+            });
+        });
+    </script>
+}

@@ -7,7 +7,10 @@
             foreach (Comment comment in Model)
             {
 
-                <div class="comment">@comment.Text</div>
+                <div class="comment">
+                    <span style="font-weight: bold">@comment.User.Name </span>
+                    @comment.Text
+                </div>
             }
 
         }

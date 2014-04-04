@@ -2,16 +2,53 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    if (Model == null)
+    {
+        return;
+    }
+    bool b = !Model.Any();
 }
-
+@helper SearchAndPagination()
+{
+    <div>
+        <div style="display: inline-block;width: 50%">
+            @HtmlManager.Pagination(Url, "Index", "News", ViewBag.Max, ViewBag.Current, ViewBag.Search)
+        </div>
+        <div style="display: inline-block; width: 49%;float: right;margin: 10px 0">
+            <form style="float: right" id="search" action="@Url.Action("Index","News")" method="GET" accept-charset="utf-8">
+                <div class="clearfix">
+                    <input type="text" name="search" onblur="if (this.value == '') this.value = '';" onfocus="if (this.value == '') this.value = '';">
+                    <a href="#" onclick="document.getElementById('search').submit()" class="btn btn-1">Search</a>
+                </div>
+            </form>
+        </div>
+    </div>
+}
 
 <!--  content  -->
 <div id="content">
     <div class="ic"></div>
     <div class="container">
         <div class="row">
-            <article class="span8">
+            <article class="span12">
+
+                @if (!b)
+                {
+                    @SearchAndPagination()
+                }
                 <div class="inner-1">
+                    @if (ViewBag.Search != null)
+                    {
+                        if (b)
+                        {
+                            <div style="font-style: italic; margin-top: 40px; font-size: 150%;">По запросу "@ViewBag.Search" ниче не найдено</div>
+                        }
+                        else
+                        {
+                            <div style="font-style: italic; margin-top: 40px; font-size: 150%;">Результаты поиска по запросу: "@ViewBag.Search"</div>
+                        }
+                    }
+
                     <ul class="list-blog">
                         @foreach (News news in Model)
                         {
@@ -26,16 +63,12 @@
 
                     </ul>
                 </div>
+                @if (!b)
+                {
+                    @SearchAndPagination()
+                }
             </article>
-            <article class="span4">
-                <h3 class="extra">Search</h3>
-                <form id="search" action="@Url.Action("Index","News")" method="GET" accept-charset="utf-8">
-                    <div class="clearfix">
-                        <input type="text" name="search" onblur="if (this.value == '') this.value = '';" onfocus="if (this.value == '') this.value = '';">
-                        <a href="#" onclick="document.getElementById('search').submit()" class="btn btn-1">Search</a>
-                    </div>
-                </form>
-            </article>
+
         </div>
     </div>
 </div>

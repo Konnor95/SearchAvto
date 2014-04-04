@@ -34,6 +34,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Имя</th>
+                                <th>Дата</th>
                                 <th>Действия</th>
                             </tr>
                         </thead>
@@ -43,6 +44,7 @@
                                 <tr>
                                     <td>@news.Id</td>
                                     <td>@Html.ActionLink(news.Title, "News", new { id = news.Id })</td>
+                                    <td><time datetime="@String.Format("{0:yyyy-MM-dd}", news.Date)" class="date-1"> @String.Format("{0:yyyy.MM.dd}", news.Date)</time></td>
                                     <td>
                                         @HtmlManager.EditIconLink(Url.Action("EditNews", "Dashboard", new { id = news.Id }))
                                         @HtmlManager.DeleteIconLink(Url.Action("DeleteNews", "Dashboard", new { id = news.Id }))

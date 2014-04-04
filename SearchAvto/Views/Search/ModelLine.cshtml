@@ -19,24 +19,31 @@
 <div class="breadcrumbs flat">
     @HtmlManager.BreadCrumbs(Html, Model)
 </div>
-<div class="container">
-    <div class="row">
-        <h2>Выберите модель</h2>
-        <ul class="thumbnails thumbnails-1">
-            @foreach (CarModel carModel in models)
+<div id="content">
+    <div class="container">
+        <div class="row">
+            <h3>@Model.FullName</h3>
+            @if (Model.Description != null)
             {
-                <li class="span3">
-                    <div class="thumbnail thumbnail-1">
-                        <span>@Html.ActionLink(carModel.FullName, "Model", new { id = carModel.Id })</span>
-                        <div><a href="@Url.Action("Model", new { id = carModel.Id })">@HtmlManager.Image(carModel.Image, carModel.Name)</a></div>
-                    </div>
-                    <section>
-                        <div class="meta">
-                            <i title="Годы производства" class="calendar icon20"></i><span>@carModel.YearsOfProduction</span>
-                        </div>
-                    </section>
-                </li>
+                <div>@Model.Description</div>
             }
-        </ul>
+            <h5>Модели</h5>
+            <ul class="thumbnails thumbnails-1">
+                @foreach (CarModel carModel in models)
+                {
+                    <li class="span3">
+                        <div class="thumbnail thumbnail-1">
+                            <span>@Html.ActionLink(carModel.FullName, "Model", new { id = carModel.Id })</span>
+                            <div><a href="@Url.Action("Model", new { id = carModel.Id })">@HtmlManager.Image(carModel.Image, carModel.Name)</a></div>
+                        </div>
+                        <section>
+                            <div class="meta">
+                                <i title="Годы производства" class="calendar icon20"></i><span>@carModel.YearsOfProduction</span>
+                            </div>
+                        </section>
+                    </li>
+                }
+            </ul>
+        </div>
     </div>
 </div>

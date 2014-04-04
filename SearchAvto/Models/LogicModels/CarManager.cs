@@ -23,7 +23,7 @@ namespace SearchAvto.Models.LogicModels
 
         public IEnumerable<Brand> Brands()
         {
-            return Data.Brands;
+            return Data.Brands.OrderBy(x=>x.Name);
         }
 
         public Brand GetBrand(int id)
@@ -212,10 +212,31 @@ namespace SearchAvto.Models.LogicModels
             return Data.CarModels.Where(x => x.ModelLineId == modelLineId);
         }
 
+        public IEnumerable<CarModel> RandomCarModels(int count)
+        {
+            var r = new Random();
+            int max = Data.CarModels.Count();
+            int start = r.Next(0, max);
+            List<CarModel> models = Data.CarModels.ToList();
+            int prev = start;
+            for (int j = 0; j < count; j++)
+            {
+                int next = (start + j);
+                while (next==prev)
+                {
+                    next++;
+                }
+                prev = next;
+                yield return models[next % max];
+            }
+        }
+
         public CarModel GetCarModel(int id)
         {
             return Data.CarModels.FirstOrDefault(x => x.Id == id);
         }
+
+
 
         /* public CarModel GetCarModel(string name,int? start,int? end)
          {
@@ -586,7 +607,7 @@ namespace SearchAvto.Models.LogicModels
         public IEnumerable<BodyType> GetBaseBodyTypes()
         {
             return Data.BodyTypes.Where(x => x.BaseBodyTypeId == 0);
-        } 
+        }
         private DateTime? GetYear(int? year)
         {
             if (!year.HasValue) return null;

@@ -12,6 +12,7 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/bundles/ControlPanelStyles")
     @RenderSection("Styles", false)
+    <meta name="description" content="Dashboard" />
 </head>
 <body>
     <div id="wrapper">
@@ -59,11 +60,11 @@
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Статистика</a>
-                    </li>
                     @if (user != null && user.HasAdminAccess)
                     {
+                        <li>
+                            <a href="@Url.Action("Statistics","Dashboard")"><i class="fa fa-bar-chart-o fa-fw"></i> Статистика</a>
+                        </li>
                         <li>
                             <a href="@Url.Action("Settings","Dashboard")"><i class="fa fa-gears fa-fw"></i> Настройки</a>
                         </li>

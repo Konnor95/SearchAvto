@@ -6,24 +6,26 @@
 <div class="breadcrumbs flat">
     @HtmlManager.BreadCrumbs(Html)
 </div>
-<div class="container">
-    <div class="row">
-        <div>
-            <h2>Выберите бренд</h2>
+<div id="content">
+    <div class="container">
+        <div class="row">
+            <div>
+                <h2>Выберите бренд</h2>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <ul class="thumbnails thumbnails-1">
-            @foreach (Brand brand in Model)
-            { 
-                <li class="span3">
-                    <div class="thumbnail thumbnail-1">
-                        <span>@Html.ActionLink(brand.Name, "Brand", new { id = brand.Id })</span>
-                        <div class="image"><a href="@Url.Action("Brand", new { id = brand.Id })">@HtmlManager.Image(brand.Image,brand.Name)</a></div>
-                    </div>
-                </li>
-            }
-        </ul>
+        <div class="row">
+            <ul class="thumbnails thumbnails-1">
+                @foreach (Brand brand in Model)
+                {
+                    <li class="span3">
+                        <div class="thumbnail thumbnail-1">
+                            <span>@Html.ActionLink(brand.Name, "Brand", new { id = brand.Id })</span>
+                            <div class="image"><a href="@Url.Action("Brand", new { id = brand.Id })">@HtmlManager.Image(brand.Image, brand.Name)</a></div>
+                        </div>
+                    </li>
+                }
+            </ul>
 
+        </div>
     </div>
 </div>

@@ -18,13 +18,15 @@
 <div class="breadcrumbs flat">
     @HtmlManager.BreadCrumbs(Html, Model)
 </div>
-<div class="container">
-    <h2>@Model.FullName</h2>
-    <div class="col-lg-12">@HtmlManager.Image(Model.Image, Model.Name)</div>
-    <ul class="list">
-        @foreach (Modification modification in modifications)
-        {
-            <li>@Html.ActionLink(modification.FullName, "Modification", new { id = modification.Id })</li>
-        }
-    </ul>
+<div id="content">
+    <div class="container">
+        <h2>@Model.FullName</h2>
+        <div class="col-lg-12">@HtmlManager.Image(Model.Image, Model.Name)</div>
+        <ul class="list">
+            @foreach (Modification modification in modifications)
+            {
+                <li>@Html.ActionLink(modification.FullName, "Modification", new { id = modification.Id })</li>
+            }
+        </ul>
+    </div>
 </div>
