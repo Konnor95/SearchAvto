@@ -1,0 +1,41 @@
+﻿@model TireCarcassType
+@{
+    ViewBag.Title = "Удалить тип каркасса шины";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+@if (Model == null)
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header fleft">Тип каркасса шины не найден</h1>
+        </div>
+    </div>
+    return;
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header fleft">Удалить тип каркасса шины @Model.FullName</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <p>Вы уверены, что хотите удалить тип каркасса шины @Model.FullName ? Все автомобили, имеющие этот тип каркасса шины, потеряют информацию об этом типе.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        @HtmlManager.ProccessResultContainer(ViewBag.Result)
+        @using (Html.BeginForm("ManageTireCarcassTypeDeleting", "Dashboard", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(id => Model.Id)
+            <div class="form-group">
+                @HtmlManager.SubmitButton()
+                @HtmlManager.DefaultButton(Html.ActionLink("Назад", "Setting", "Dashboard"))
+            </div>
+        }
+    </div>
+</div>
