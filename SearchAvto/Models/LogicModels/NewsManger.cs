@@ -140,6 +140,11 @@ namespace SearchAvto.Models.LogicModels
             return Data.Comments.Where(x => x.NewsId == id);
         }
 
+        public Comment GetComment(int id)
+        {
+            return Data.Comments.FirstOrDefault(x => x.Id == id);
+        }
+
         public ProcessResult AddComment(int newsId, int userId, string text)
         {
             if (String.IsNullOrWhiteSpace(text))
@@ -150,6 +155,16 @@ namespace SearchAvto.Models.LogicModels
             Data.Comments.Add(new Comment { NewsId = newsId, UserId = userId, Text = text });
             Data.SaveChanges();
             return ProcessResults.CommentAddedSuccessfully;
+        }
+
+        public ProcessResult DeleteComment(int id)
+        {
+            Comment comment = Data.Comments.FirstOrDefault(x => x.Id == id);
+            if (comment == null)
+                return ProcessResults.NoSuchComment;
+            Data.Comments.Remove(comment);
+            Data.SaveChanges();
+            return ProcessResults.CommentDeleted;
         }
     }
 }

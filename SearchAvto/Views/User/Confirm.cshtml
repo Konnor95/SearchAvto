@@ -1,7 +1,16 @@
 ﻿@{
-    ViewBag.Title = "Confirm";
+    ViewBag.Title = "Подтверждение регистрации";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@ViewBag.Message</h2>
+<div id="content">
+    <div class="container">
+        <h2>Поздравляем!</h2>
+        <div style="font-size: 120%">
+            Регистрация успешно завершена
+        </div>
+        <br/>
+        @Html.ActionLink("На главную", "Index","Home",null,new{@class = "btn btn-1"})
+    </div>
+</div>
 

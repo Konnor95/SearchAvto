@@ -116,7 +116,7 @@
         {
             <div class="sub-heading">Прочее</div>
             <table class="table table-2">
-                @HtmlManager.TableRow("Шины", String.Format("{0}/{1}{2}{3}", Model.TireProfileWidth, Model.TireProfileHeight, Model.TireCarcassType.ShortName, Model.TireMountingDiameter))
+                @HtmlManager.TableRow("Шины", Model.TireFormula))
                 @HtmlManager.TableRow("Объем багажника, л", Model.CargoVolume)
                 @HtmlManager.TableRow("Максимальный объем багажника, л", Model.MaxCargoVolume)
                 @if (hasFuelTank)

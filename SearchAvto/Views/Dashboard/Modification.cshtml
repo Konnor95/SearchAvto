@@ -127,13 +127,13 @@
                     @HtmlManager.TableRow("Полная масса, кг", Model.TotalWeight)
                 </table>
             }
-            @if (Model.HasAnyTireInfo() || hasFuelTank)
+            @if (Model.HasAnyTireInfo || hasFuelTank)
             {
                 <div class="panel-heading">Прочее</div>
                 <table class="table table-bordered">
-                    @if (Model.HasAnyTireInfo())
+                    @if (Model.HasAnyTireInfo)
                     {
-                        @HtmlManager.TableRow("Шины", String.Format("{0}/{1}{2}{3}", Model.TireProfileWidth, Model.TireProfileHeight, Model.TireCarcassType.ShortName, Model.TireMountingDiameter))
+                        @HtmlManager.TableRow("Шины", Model.TireFormula)
                     }
                     @HtmlManager.TableRow("Объем багажника, л", Model.CargoVolume)
                     @HtmlManager.TableRow("Максимальный объем багажника, л", Model.MaxCargoVolume)

@@ -79,34 +79,7 @@ namespace SearchAvto.Models.DataModels
                     "Images/Test/Age3.jpg"
                 }
             ), 
-            new Question("TSpeed", "Какой автомобиль вам больше нравится?","Скоростная характеристика",
-                new[]
-                {
-                    new Answer(0,"Первый","Очень быстрый (свыше 300 км/ч)"), 
-                    new Answer(1,"Второй","Быстрый (От 200 до 300 км/ч)"),
-                    new Answer(2,"Третий","Не очень быстрый (до 200 км/ч)")
-                },
-                new[]
-                {
-                    "Images/Test/Speed1.jpg",
-                    "Images/Test/Speed2.jpg",
-                    "Images/Test/Speed3.jpg"
-                }
-            ), 
-            new Question("TSize", "Какой автомобиль вам больше нравится?","Относительный размер",
-                new[]
-                {
-                    new Answer(0,"Первый","Большой"), 
-                    new Answer(1,"Второй", "Средний"),
-                    new Answer(2,"Третий","Маленький")
-                },
-                new[]
-                {
-                    "Images/Test/Size1.jpg",
-                    "Images/Test/Size2.jpg",
-                    "Images/Test/Size3.jpg"
-                }
-            ), 
+
             new Question("TEngine","Какие автомобили Вы предпочитаете?","Тип двигателя",new[]
             {
                 new Answer(0,"С двигателем внутреннего сгорания","Внутреннего сгорания"),
@@ -119,18 +92,47 @@ namespace SearchAvto.Models.DataModels
                 new Answer(1, "С друзьми","Друзья"), 
                 new Answer(2, "Я езжу один","Нет пассажиров")
             }), 
+            new Question("TSpeed", "Какой автомобиль вам больше нравится?","Скоростная характеристика",
+                new[]
+                {
+                    new Answer(0,"Первый (Bugatti Veyron Supersport)","Очень быстрый (свыше 300 км/ч)"), 
+                    new Answer(1,"Второй (BMW M6 Convertible)","Быстрый (От 200 до 300 км/ч)"),
+                    new Answer(2,"Третий (Toyota Corolla)","Не очень быстрый (до 200 км/ч)")
+                },
+                new[]
+                {
+                    "Images/Test/Speed1.jpg",
+                    "Images/Test/Speed2.jpg",
+                    "Images/Test/Speed3.jpg"
+                }
+            ), 
             new Question("TDistance","Часто ли Вы ездите на большие расстояния?","Подходит ли для езды на расстояния",new[]
             {
                 new Answer(0,"Часто","Большие"),
                 new Answer(1, "Иногда","Средние"), 
                 new Answer(2, "Никогда", "Небольшие")
             }),
+
             new Question("TOutLand","Часто ли Вам приходится ездить по внедорожью?","Подходит ли для внедорожья", new[]
             {
                 new Answer(0, "Довольно редко","Слабо подходит"), 
                 new Answer(1, "Когда как (50:50)", "Подходит"),
                 new Answer(2, "Довольно часто","Очень подходит")
             }), 
+            new Question("TSize", "Какой автомобиль вам больше нравится?","Относительный размер",
+                new[]
+                {
+                    new Answer(0,"Первый (Toyota Sequoia)","Большой"), 
+                    new Answer(1,"Второй (Honda Accord)", "Средний"),
+                    new Answer(2,"Третий (Volkswagen Golf GTI)","Маленький")
+                },
+                new[]
+                {
+                    "Images/Test/Size1.jpg",
+                    "Images/Test/Size2.jpg",
+                    "Images/Test/Size3.jpg"
+                }
+            ), 
             new Question("TPrice","Какие автомобили Вы предпочитаете?","Ценовая категория",new[]
             {
                 new Answer(0,"Простые"),
@@ -139,19 +141,6 @@ namespace SearchAvto.Models.DataModels
                 new Answer(3, "Престижные")
             })
         };
-
-        public static Question MainFeature { get { return Questions[0]; } }
-        public static Question Color { get { return Questions[1]; } }
-        public static Question PositiveTrait { get { return Questions[2]; } }
-        public static Question NegativeTrait { get { return Questions[3]; } }
-        public static Question Age { get { return Questions[4]; } }
-        public static Question Speed { get { return Questions[5]; } }
-        public static Question BodyType { get { return Questions[6]; } }
-        public static Question Electric { get { return Questions[7]; } }
-        public static Question Passengers { get { return Questions[8]; } }
-        public static Question Distance { get { return Questions[9]; } }
-        public static Question OutLand { get { return Questions[10]; } }
-        public static Question Price { get { return Questions[11]; } }
 
         public static IEnumerable<Question> GetAllQuestions()
         {

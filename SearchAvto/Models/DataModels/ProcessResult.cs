@@ -59,7 +59,7 @@
             new ProcessResult(31,false, "Такая новость уже существует"),
             new ProcessResult(32,false, "Такой новости не существует"),
             new ProcessResult(33,false, "Комметарий не может быть пустым"),
-            new ProcessResult(34,true, "Комментарий успешно добалвен"),
+            new ProcessResult(34,true, "Комментарий успешно добавлен"),
             new ProcessResult(35,true, "Тип батареи успешно добавлен"),
             new ProcessResult(36,true, "Тип батареи успешно изменен"),
             new ProcessResult(37,true, "Тип батареи успешно удален"),
@@ -89,7 +89,18 @@
             new ProcessResult(61,true, "Тип компоновки цилиндров успешно изменен"),
             new ProcessResult(62,true, "Тип компоновки цилиндров успешно удален"),
             new ProcessResult(63,false, "Такой тип компоновки цилиндров уже существует"),
-            new ProcessResult(64,false, "Такого типа компоновки цилиндров не существует")
+            new ProcessResult(64,false, "Такого типа компоновки цилиндров не существует"),
+            new ProcessResult(65, false, "Такого комменатрия не существует"),
+            new ProcessResult(66, true, "Комментарий успешно удален") ,
+            new ProcessResult(67, false, "Пользователь с таким адресом электронной почты уже существует"),
+            new ProcessResult(68, false, "Пользователь с таким именем уже существует"),
+            new ProcessResult(69, false, "Ошибка при регистрации"),
+            new ProcessResult(70, true, "Пользователь зарегестрирован"),
+            new ProcessResult(71, false, "Такого пользователя не существует"),
+            new ProcessResult(72, true, "Статус пользователя успешно изменен"),
+            new ProcessResult(73, false, "Неверный пароль"),
+            new ProcessResult(74, false, "Неверный логин или email"),
+            new ProcessResult(75, true, "Пользователь вошел в систему")
         };
 
         public static ProcessResult GetById(int id = -1)
@@ -420,6 +431,59 @@
         public static ProcessResult NoSuchValvesArrangement
         {
             get { return Results[64]; }
+        }
+
+        public static ProcessResult NoSuchComment
+        {
+            get { return Results[65]; }
+        }
+
+        public static ProcessResult CommentDeleted
+        {
+            get { return Results[66]; }
+        }
+
+        public static ProcessResult UserWithSuchEmailExists
+        {
+            get { return Results[67]; }
+        }
+
+        public static ProcessResult UserWithSuchNameExists
+        {
+            get { return Results[68]; }
+        }
+
+        public static ProcessResult RegistrationError
+        {
+            get { return Results[69]; }
+        }
+
+        public static ProcessResult UserRegistered
+        {
+            get { return Results[70]; }
+        }
+
+        public static ProcessResult NoSuchUser
+        {
+            get { return Results[71]; }
+        }
+
+        public static ProcessResult UserStatusChanged
+        {
+            get { return Results[72]; }
+        }
+
+        public static ProcessResult InvalidPassword
+        {
+            get { return Results[73]; }
+        }
+        public static ProcessResult InvalidLoginOrEmail
+        {
+            get { return Results[74]; }
+        }
+        public static ProcessResult UserLogedIn
+        {
+            get { return Results[75]; }
         }
     }
 }

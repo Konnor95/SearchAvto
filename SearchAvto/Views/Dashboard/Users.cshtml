@@ -23,6 +23,7 @@
 </div>
 <div class="row">
     <div class="col-lg-12">
+        @HtmlManager.ProccessResultContainer(ViewBag.Result)
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="table-responsive">
@@ -57,8 +58,11 @@
                                     }
                                     <td>@user.StatusName</td>
                                     <td>
-                                        <a title="Редактировать" href="#"><i class="fa fa-pencil fa-fw"></i>Редактировать</a>
-                                        <a title="Удалить" href="#"><i class="fa fa-trash-o fa-fw"></i>Удалить</a>
+                                        @if (!user.HasRootAccess)
+                                        {
+                                            <a title="Изменить статус" href="@Url.Action("ChangeUserStatus","Dashboard",new{id=user.Id})"><i class="fa fa-pencil fa-fw"></i>Изменить статус</a>
+                                            <a title="Удалить" href="@Url.Action("DeleteUser", "Dashboard", new { id = user.Id })"><i class="fa fa-trash-o fa-fw"></i>Удалить</a>
+                                        }
                                     </td>
                                 </tr>
                             }

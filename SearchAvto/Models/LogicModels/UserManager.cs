@@ -33,30 +33,39 @@ namespace SearchAvto.Models.LogicModels
             return null;
         }
 
-        public User Find(int userId)
-        {
-            return Data.Users.FirstOrDefault(x => x.Id == userId);
-        }
-
         public User Find(string userEmail)
         {
             return Data.Users.FirstOrDefault(x => x.Email == userEmail);
         }
 
-        public bool RegistrateUser(RegistrationModel registrationModel)
+        public User Find(int userId)
         {
-            User existingUser;
-            try
-            {
-                existingUser = Find(registrationModel.Email);
-            }
-            catch
-            {
-                existingUser = null;
-            }
+            return Data.Users.FirstOrDefault(x => x.Id == userId);
+        }
 
+        public User FindByEmail(string email)
+        {
+            return Data.Users.FirstOrDefault(x => x.Email == email);
+        }
+
+        public User FindByName(string name)
+        {
+            return Data.Users.FirstOrDefault(x => x.Name == name);
+        }
+
+        public User FindByNameOrEmail(string login)
+        {
+            return Data.Users.FirstOrDefault(x => x.Name == login || x.Email == login);
+        }
+
+        public ProcessResult RegistrateUser(HttpContextBase context, RegistrationModel registrationModel, HttpServerUtilityBase server, HttpPostedFileBase imageUpload)
+        {
+            User existingUser = Find(registrationModel.Email);
             if (existingUser != null)
-                return false;
+                return ProcessResults.UserWithSuchEmailExists;
+            existingUser = Find(registrationModel.Name);
+            if (existingUser != null)
+                return ProcessResults.UserWithSuchNameExists;
             var user = new User
             {
                 Name = registrationModel.Name,
@@ -70,34 +79,43 @@ namespace SearchAvto.Models.LogicModels
             {
                 Data.Users.Add(user);
                 Data.SaveChanges();
-                SendConfirmationMail(user);
+                if (imageUpload != null)
+                {
+                    if (imageUpload.ContentLength <= 0 || !SecurityManager.IsImage(imageUpload))
+                    {
+                        return ProcessResults.InvalidImageFormat;
+                    }
+                    user.Avatar = SaveImage(user.Id, StaticSettings.AvatarsUploadFolderPath, imageUpload, server);
+                    Data.SaveChanges();
+                }
+                SendConfirmationMail(context, user);
             }
             catch
             {
                 Data.Users.Remove(user);
-                return false;
+                return ProcessResults.RegistrationError;
             }
 
-            return true;
+            return ProcessResults.UserRegistered;
         }
 
-        private void SendConfirmationMail(User user)
+        private void SendConfirmationMail(HttpContextBase context, User user)
         {
-            ISender confirmationMessageSender = new ConfirmationMailSender();
+            var confirmationMessageSender = new ConfirmationMailSender();
             string token = SecurityManager.GetHashString(user.Email + user.Password);
-            string method = ConfigurationManager.AppSettings["method"] + "/Confirm?hash=" + token;
-
-            string message = String.Format(
-                "Подтвердите, пожалуйста регистрацию. Для подтверждения перейдите по ссылке : {0}",
-                method);
-            confirmationMessageSender.Send("Подтверждение регистрации", message, user.Email);
+            if (context.Request.Url != null)
+            {
+                string path = context.Request.Url.GetLeftPart(UriPartial.Authority) + "/User/Confirm?hash=" + token;
+                string message = String.Format("Для подтверждения регистрации перейдите по ссылке : {0}", path);
+                confirmationMessageSender.Send("Подтверждение регистрации", message, user.Email);
+            }
         }
 
 
         public bool ConfirmRegistration(string hash)
         {
             User user = Enumerable.FirstOrDefault(Data.Users, x => (hash == SecurityManager.GetHashString(x.Email + x.Password)) && x.HasNoAccess);
-            if (user!=null)
+            if (user != null)
             {
                 user.Status = UserStatus.User;
                 Data.SaveChanges();
@@ -106,17 +124,25 @@ namespace SearchAvto.Models.LogicModels
             return false;
         }
 
-        public User LogInUser(LogInModel model)
+        public ProcessResult LogInUser(LogInModel model,out User user)
         {
-            var email = model.Email;
-            var password = model.Password;
-            User user = Find(email);
-            if (user == null) return null;
-            if (user.Password == SecurityManager.GetHashString(password))
+            user = FindByNameOrEmail(model.Login);
+            if (user == null) return ProcessResults.InvalidLoginOrEmail;
+            if (user.Password == SecurityManager.GetHashString(model.Password))
             {
-                return user;
+                return ProcessResults.UserLogedIn;
             }
-            return null;
+            return ProcessResults.InvalidPassword;
+        }
+
+        public ProcessResult ChangeUserStatus(int id, int status)
+        {
+            User user = Find(id);
+            if (user == null)
+                return ProcessResults.NoSuchUser;
+            user.Status = (short)status;
+            Data.SaveChanges();
+            return ProcessResults.UserStatusChanged;
         }
     }
 }

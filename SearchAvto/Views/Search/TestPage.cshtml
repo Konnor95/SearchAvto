@@ -1,15 +1,28 @@
-﻿@{
-    ViewBag.Title = "Test";
+﻿@using SearchAvto.Models.LogicModels
+@{
+    ViewBag.Title = "Тест";
     Layout = "~/Views/Shared/_Layout.cshtml";
     byte length = ViewBag.Length;
     double segment = 100.0 / length;
     var questions = Test.GetAllQuestions();
     int count = 0;
     int total = Test.Length;
+    var user = DataManager.Users.Define(Context);
+}
+
+@if (user==null)
+{
+    <div id="content">
+        <div class="container">
+            <h2>Необходима авторизация</h2>
+            <p style="font-size: 140%">Для прохождения теста необходимо @Html.ActionLink("войти","Login","User") на сайт </p>
+        </div>
+    </div>
+    return;
 }
 <div id="content">
     <div class="container">
-        <h2>Test</h2>
+        <h2>Тест</h2>
         <input type="hidden" value="@segment" />
         @using (Html.BeginForm("GetResult", "Search", FormMethod.Post, new { @id = "Values" }))
         {

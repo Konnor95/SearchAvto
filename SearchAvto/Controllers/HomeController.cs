@@ -9,13 +9,8 @@ namespace SearchAvto.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Temp = ConfigurationManager.AppSettings["Temp"];
             return View(Tuple.Create(DataManager.News.All(4),DataManager.Cars.RandomCarModels(4)));
         }
 
-        public ActionResult About()
-        {
-            return View();
-        }
     }
 }

@@ -2,17 +2,20 @@
 <p>@ViewBag.Result</p>
 <div class="comments-container" id="comments">
     @{
-        if (Model != null)
+    if (Model != null)
+    {
+        foreach (Comment comment in Model)
         {
-            foreach (Comment comment in Model)
-            {
 
-                <div class="comment">
-                    <span style="font-weight: bold">@comment.User.Name </span>
+            <div class="comment" style="float: none; min-height: 100px">
+                @HtmlManager.Image(comment.User.Avatar, comment.User.Name, "float: left; padding-right:7px;")
+                <span style="font-weight: bold;float:none">@comment.User.Name </span>
+                <div>
                     @comment.Text
                 </div>
-            }
-
+            </div>
         }
+
     }
+}
 </div>

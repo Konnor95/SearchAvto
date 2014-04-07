@@ -17,21 +17,42 @@ namespace SearchAvto.Controllers
 			return View(user);
 		}
 
-		public ActionResult LogIn()
+		public ActionResult LogIn(int? result)
 		{
+            if (result.HasValue)
+                ViewBag.Result = ProcessResults.GetById(result.Value);
 			return View(new LogInModel());
 		}
 
+	    public ActionResult Logout()
+	    {
+            var userCookie = new HttpCookie("UserId")
+            {
+                Expires = DateTime.Now.AddDays(-1)
+            };
+
+            var keyCookie = new HttpCookie("Key")
+            {
+                Expires = DateTime.Now.AddDays(-1)
+            };
+
+            HttpContext.Response.Cookies.Set(userCookie);
+            HttpContext.Response.Cookies.Set(keyCookie);
+
+            return RedirectToAction("Index", "Home");
+	    }
+
 		public ActionResult ManageLogIn(LogInModel model)
 		{
-			var curUser = DataManager.Users.LogInUser(model);
-			if (curUser != null)
-			{
-				SetUser(curUser.Id, curUser.Password);
-				return RedirectToAction("Index", "Home");
-			}
+		    User user;
+			ProcessResult result = DataManager.Users.LogInUser(model,out user);
+		    if (result.Succeeded && user != null)
+		    {
+                SetUser(user.Id, user.Password);
+                return RedirectToAction("Index", "Home");
+		    }
 
-			return RedirectToAction("LogIn");
+			return RedirectToAction("LogIn","User",new{result = result.Id});
 		}
 
 		public ActionResult Confirm(string hash)
@@ -62,20 +83,18 @@ namespace SearchAvto.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult RegistrateUser(RegistrationModel registrationModel)
+        public ActionResult RegistrateUser(RegistrationModel registrationModel, HttpPostedFileBase imageUpload)
 		{
-			if (!DataManager.Users.RegistrateUser(registrationModel))
-				return RedirectToAction("Registrate", "User", new { message = "Пользователь с таким адресом электронной почты уже существует."});
+		    ProcessResult result = DataManager.Users.RegistrateUser(HttpContext, registrationModel,Server,imageUpload);
+			if (!result.Succeeded)
+				return RedirectToAction("Registrate", "User", new { result = result.Id });
 			return View();
 		}
 
-		public ActionResult Registrate(string message = "")
+		public ActionResult Registrate(int? result )
 		{
-			if (String.IsNullOrEmpty(message))
-				message = "Регистрация";
-
-			ViewBag.Message = message;
-
+            if (result.HasValue)
+                ViewBag.Result = ProcessResults.GetById(result.Value);
 			return View();
 		}
 	}

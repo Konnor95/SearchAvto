@@ -23,6 +23,22 @@
         <h2>@Model.FullName</h2>
         <div class="col-lg-12">@HtmlManager.Image(Model.Image, Model.Name)</div>
         <ul class="list">
+            <li>
+                Начало производства: @Model.StartYearOfProduction.ToLower()
+            </li>
+            <li>
+                Окончание производства: @Model.EndYearOfProduction.ToLower()
+            </li>
+            @if (Model.BodyTypeId != null)
+            {
+                <li>
+                    Тип кузова: @Model.BodyType.Name.ToLower()
+                </li>
+            }
+        </ul>
+        <br />
+        <h3>Модификации</h3>
+        <ul class="list">
             @foreach (Modification modification in modifications)
             {
                 <li>@Html.ActionLink(modification.FullName, "Modification", new { id = modification.Id })</li>

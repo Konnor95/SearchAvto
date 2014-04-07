@@ -17,5 +17,10 @@ namespace SearchAvto.Models.DataModels
         {
             return keys.All(key => Title.ToUpper().Contains(key));
         }
+
+        public bool HasComments
+        {
+            get { return Comments.Any(); }
+        }
     }
 }

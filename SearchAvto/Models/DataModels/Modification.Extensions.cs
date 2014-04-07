@@ -98,10 +98,25 @@ namespace SearchAvto.Models.DataModels
             }
         }
 
-        public bool HasAnyTireInfo()
+        public bool HasAnyTireInfo
         {
-            return TireCarcassTypeId != null && TireMountingDiameter != null && TireProfileHeight != null && TireProfileWidth != null;
+            get
+            {
+                return TireCarcassTypeId != null && TireMountingDiameter != null && TireProfileHeight != null && TireProfileWidth != null;
+            }
         }
+
+        public string TireFormula
+        {
+            get
+            {
+                if (!HasAnyTireInfo)
+                    return "";
+                return String.Format("{0}/{1}{2}{3}", TireProfileWidth, TireProfileHeight, TireCarcassType.ShortName,
+                    TireMountingDiameter);
+            }
+        }
+
         public bool HasAnyOtherInfo
         {
             get { return CargoVolume != null || MaxCargoVolume != null; }

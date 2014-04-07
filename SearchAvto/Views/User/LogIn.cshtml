@@ -1,12 +1,13 @@
-﻿@model SearchAvto.Models.ViewModels.LogInModel
+﻿@model LogInModel
 
 @{
     ViewBag.Title = "LogIn";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div id="content">
     <div class="container">
         <h2>Войти</h2>
-
+        @HtmlManager.ProccessResultContainer(ViewBag.Result)
         @using (Html.BeginForm("ManageLogin", "User"))
         {
             <p>
@@ -19,10 +20,10 @@
                 @Html.ValidationSummary(true)
 
                 <div>
-                    @Html.LabelFor(model => model.Email, "Email")
-                    <div >
-                        @Html.TextBoxFor(model => model.Email, new { name = "email" })
-                        @Html.ValidationMessageFor(model => model.Email)
+                    @Html.LabelFor(model => model.Login, "Логин или email")
+                    <div>
+                        @Html.TextBoxFor(model => model.Login, new { name = "login" })
+                        @Html.ValidationMessageFor(model => model.Login)
                     </div>
                 </div>
 
@@ -41,3 +42,4 @@
 
         }
     </div>
+</div>

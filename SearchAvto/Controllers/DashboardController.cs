@@ -30,18 +30,7 @@ namespace SearchAvto.Controllers
 
         public ActionResult Index()
         {
-            var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
-            ViewBag.User = user;
-            return View();
-        }
-
-        public ActionResult Users()
-        {
-            var user = DefineUser();
-            if (!user.HasAdminAccess) return NoPermission();
-            ViewBag.User = user;
-            return View(DataManager.Users.GetAll());
+            return RedirectToAction("Brands", "Dashboard");
         }
 
         public ActionResult NoPermission()
@@ -49,12 +38,47 @@ namespace SearchAvto.Controllers
             return View();
         }
 
+        #region Users
+
+        public ActionResult Users(int? result)
+        {
+            var user = DefineUser();
+            if (!user.HasAdminAccess) return RedirectToAction("NoPermission");
+            ViewBag.User = user;
+            if (result.HasValue)
+                ViewBag.Result = ProcessResults.GetById(result.Value);
+            return View(DataManager.Users.GetAll());
+        }
+
+        public ActionResult ChangeUserStatus(int id,int? result)
+        {
+            var user = DefineUser();
+            if (!user.HasAdminAccess) return RedirectToAction("NoPermission");
+            ViewBag.Statuses = UserStatus.GetAll();
+            if (result.HasValue)
+                ViewBag.Result = ProcessResults.GetById(result.Value);
+            return View(DataManager.Users.Find(id));
+        }
+
+        [HttpPost]
+        public ActionResult ManageUserStatus(int id, int status)
+        {
+            var user = DefineUser();
+            if (!user.HasAdminAccess) return RedirectToAction("NoPermission");
+            ProcessResult result = DataManager.Users.ChangeUserStatus(id,status);
+            if (!result.Succeeded)
+                return RedirectToAction("ChangeUserStatus", "Dashboard", new {id, result = result.Id});
+            return RedirectToAction("Users", "Dashboard", new {result = result.Id});
+        }
+
+        #endregion
+
         #region Brand
 
         public ActionResult Brands(int? result)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(DataManager.Cars.Brands());
@@ -63,7 +87,7 @@ namespace SearchAvto.Controllers
         public ActionResult Brand(int? result, int id)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(DataManager.Cars.GetBrand(id));
@@ -71,7 +95,7 @@ namespace SearchAvto.Controllers
         public ActionResult AddBrand(int? result)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View();
@@ -79,7 +103,7 @@ namespace SearchAvto.Controllers
         public ActionResult EditBrand(int id, int? result)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(DataManager.Cars.GetBrand(id));
@@ -88,7 +112,7 @@ namespace SearchAvto.Controllers
         public ActionResult DeleteBrand(int id, int? result)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(DataManager.Cars.GetBrand(id));
@@ -97,7 +121,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageBrandAdding(string name, HttpPostedFileBase imageUpload)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Cars.AddBrand(name, imageUpload, Server);
             if (result.Succeeded && result.AffectedObjectId.HasValue)
             {
@@ -109,7 +133,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageBrandEditing(int id, string name, HttpPostedFileBase imageUpload, bool deleteImage = false)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Cars.EditBrand(id, name, imageUpload, deleteImage, Server);
             if (result.Succeeded)
             {
@@ -122,7 +146,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageBrandDeleting(int id)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Cars.DeleteBrand(id, Server);
             if (result.Succeeded)
             {
@@ -137,14 +161,14 @@ namespace SearchAvto.Controllers
         public ActionResult ModelLines()
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             return View(DataManager.Cars.ModelLines());
         }
 
         public ActionResult ModelLine(int? result, int id)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(DataManager.Cars.GetModelLine(id));
@@ -153,7 +177,7 @@ namespace SearchAvto.Controllers
         public ActionResult AddModelLine(int id, int? result)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(DataManager.Cars.GetBrand(id));
@@ -163,7 +187,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageModelLineAdding(int id, string name)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Cars.AddModelLine(id, name);
             if (result.Succeeded && result.AffectedObjectId.HasValue)
             {
@@ -174,7 +198,7 @@ namespace SearchAvto.Controllers
         public ActionResult EditModelLine(int id, int? result)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(DataManager.Cars.GetModelLine(id));
@@ -183,7 +207,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageModelLineEditing(int id, string name)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Cars.EditModelLine(id, name);
             if (result.Succeeded)
             {
@@ -194,7 +218,7 @@ namespace SearchAvto.Controllers
         public ActionResult DeleteModelLine(int id, int? result)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(DataManager.Cars.GetModelLine(id));
@@ -203,7 +227,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageModelLineDeleting(int id)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Cars.DeleteModelLine(id);
             if (result.Succeeded && result.AffectedObjectId.HasValue)
             {
@@ -218,13 +242,13 @@ namespace SearchAvto.Controllers
         public ActionResult Models()
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             return View(DataManager.Cars.CarModels());
         }
         public ActionResult Model(int? result, int id)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             //if (id <= 0) return View(DataManager.Cars.Modifications());
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
@@ -234,7 +258,7 @@ namespace SearchAvto.Controllers
         public ActionResult AddModel(int? result, int id)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(Tuple.Create(DataManager.Cars.GetModelLine(id), DataManager.Cars.BodyClasses));
@@ -244,7 +268,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageModelAdding(int id, int[] results, string name, int bodyType, int? start, int? end, HttpPostedFileBase imageUpload)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Cars.AddCarModel(id, results, name, bodyType, start, end, imageUpload, Server);
             if (result.Succeeded && result.AffectedObjectId.HasValue)
             {
@@ -256,7 +280,7 @@ namespace SearchAvto.Controllers
         public ActionResult EditModel(int? result, int id)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(Tuple.Create(DataManager.Cars.GetCarModel(id), DataManager.Cars.BodyClasses));
@@ -266,7 +290,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageModelEditing(int id, int[] results, string name, int bodyType, int? start, int? end, HttpPostedFileBase imageUpload, bool deleteImage = false)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Cars.EditCarModel(id, results, name, bodyType, start, end, imageUpload, deleteImage, Server);
             if (result.Succeeded)
             {
@@ -278,7 +302,7 @@ namespace SearchAvto.Controllers
         public ActionResult DeleteModel(int id, int? result)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(DataManager.Cars.GetCarModel(id));
@@ -288,7 +312,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageModelDeleting(int id)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Cars.DeleteCarModel(id, Server);
             if (result.Succeeded && result.AffectedObjectId.HasValue)
             {
@@ -303,7 +327,7 @@ namespace SearchAvto.Controllers
         public ActionResult Modification(int id, int? result)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(DataManager.Cars.GetModification(id));
@@ -312,7 +336,7 @@ namespace SearchAvto.Controllers
         public ActionResult AddModification(int? result, int id)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(new AddModificationModel(
@@ -329,7 +353,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageModificationAdding(Modification modification, int ice, int ee)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Cars.AddModification(modification, ice, ee);
             if (result.Succeeded && result.AffectedObjectId.HasValue)
             {
@@ -341,7 +365,7 @@ namespace SearchAvto.Controllers
         public ActionResult EditModification(int? result, int id)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(new EditModificationModel(
@@ -358,7 +382,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageModificationEditing(Modification modification, int ice, int ee)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Cars.EditModification(modification, ice, ee);
             if (result.Succeeded)
             {
@@ -370,7 +394,7 @@ namespace SearchAvto.Controllers
         public ActionResult DeleteModification(int id, int? result)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(DataManager.Cars.GetModification(id));
@@ -380,7 +404,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageModificationDeleting(int id)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Cars.DeleteModification(id);
             if (result.Succeeded && result.AffectedObjectId.HasValue)
             {
@@ -395,20 +419,22 @@ namespace SearchAvto.Controllers
         public ActionResult AllNews()
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             return View(DataManager.News.All());
         }
-        public ActionResult News(int id)
+        public ActionResult News(int id, int? result)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
+            if (result.HasValue)
+                ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(DataManager.News.GetNews(id));
         }
 
         public ActionResult AddNews(int? result)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View();
@@ -419,7 +445,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageNewsAdding(News news, HttpPostedFileBase imageUpload)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.News.AddNews(news, imageUpload, Server);
             if (result.Succeeded && result.AffectedObjectId.HasValue)
             {
@@ -431,7 +457,7 @@ namespace SearchAvto.Controllers
         public ActionResult EditNews(int id, int? result)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(DataManager.News.GetNews(id));
@@ -442,7 +468,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageNewsEditing(News news, HttpPostedFileBase imageUpload)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.News.EditNews(news, imageUpload, Server);
             if (result.Succeeded)
             {
@@ -453,7 +479,7 @@ namespace SearchAvto.Controllers
         public ActionResult DeleteNews(int id, int? result)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(DataManager.News.GetNews(id));
@@ -462,13 +488,28 @@ namespace SearchAvto.Controllers
         public ActionResult ManageNewsDeleting(int id)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.News.DeleteNews(id, Server);
             if (result.Succeeded)
             {
                 return RedirectToAction("AllNews");
             }
             return RedirectToAction("DeleteNews", new { id, result = result.Id });
+        }
+
+        public ActionResult DeleteComment(int id)
+        {
+            var user = DefineUser();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
+            return View(DataManager.News.GetComment(id));
+        }
+        [HttpPost]
+        public ActionResult ManageCommentDeleting(int id, int newsId)
+        {
+            var user = DefineUser();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
+            ProcessResult result = DataManager.News.DeleteComment(id);
+            return RedirectToAction("News", new { id = newsId, result = result.Id });
         }
         #endregion
 
@@ -481,7 +522,7 @@ namespace SearchAvto.Controllers
         public ActionResult Settings(int? result)
         {
             var user = DefineUser();
-            if (HasNoAdminAccess(user)) return NoPermission();
+            if (HasNoAdminAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(new SettingsModel(DataManager.Cars.BatteryTypes,
@@ -496,7 +537,7 @@ namespace SearchAvto.Controllers
         public ActionResult AddBatteryType(int? result)
         {
             var user = DefineUser();
-            if (HasNoAdminAccess(user)) return NoPermission();
+            if (HasNoAdminAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View();
@@ -506,7 +547,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageBatteryTypeAdding(BatteryType batteryType)
         {
             var user = DefineUser();
-            if (HasNoAdminAccess(user)) return NoPermission();
+            if (HasNoAdminAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Settings.AddBatteryType(batteryType);
             return RedirectToAction(result.Succeeded ? "Settings" : "AddBatteryType", new { result = result.Id });
         }
@@ -514,7 +555,7 @@ namespace SearchAvto.Controllers
         public ActionResult EditBatteryType(int id, int? result)
         {
             var user = DefineUser();
-            if (HasNoAdminAccess(user)) return NoPermission();
+            if (HasNoAdminAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(DataManager.Settings.GetBatteryType(id));
@@ -525,7 +566,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageBatteryTypeEditing(BatteryType batteryType)
         {
             var user = DefineUser();
-            if (HasNoAdminAccess(user)) return NoPermission();
+            if (HasNoAdminAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Settings.EditBatteryType(batteryType);
             if (result.Succeeded)
             {
@@ -537,7 +578,7 @@ namespace SearchAvto.Controllers
         public ActionResult DeleteBatteryType(int id, int? result)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(DataManager.Settings.GetBatteryType(id));
@@ -546,7 +587,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageBatteryTypeDeleting(int id)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Settings.DeleteBatteryType(id);
             if (result.Succeeded)
             {
@@ -565,7 +606,7 @@ namespace SearchAvto.Controllers
         public ActionResult AddBodyType(int? result)
         {
             var user = DefineUser();
-            if (HasNoAdminAccess(user)) return NoPermission();
+            if (HasNoAdminAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(Tuple.Create(DataManager.Cars.BodyClasses, DataManager.Cars.GetBaseBodyTypes()));
@@ -575,7 +616,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageBodyTypeAdding(BodyType bodyType)
         {
             var user = DefineUser();
-            if (HasNoAdminAccess(user)) return NoPermission();
+            if (HasNoAdminAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Settings.AddBodyType(bodyType);
             return RedirectToAction(result.Succeeded ? "Settings" : "AddBodyType", new { result = result.Id });
         }
@@ -583,7 +624,7 @@ namespace SearchAvto.Controllers
         public ActionResult EditBodyType(int id, int? result)
         {
             var user = DefineUser();
-            if (HasNoAdminAccess(user)) return NoPermission();
+            if (HasNoAdminAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(Tuple.Create(DataManager.Settings.GetBodyType(id), DataManager.Cars.BodyClasses, DataManager.Cars.GetBaseBodyTypes()));
@@ -593,7 +634,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageBodyTypeEditing(BodyType bodyType)
         {
             var user = DefineUser();
-            if (HasNoAdminAccess(user)) return NoPermission();
+            if (HasNoAdminAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Settings.EditBodyType(bodyType);
             if (result.Succeeded)
             {
@@ -605,7 +646,7 @@ namespace SearchAvto.Controllers
         public ActionResult DeleteBodyType(int id, int? result)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(DataManager.Settings.GetBodyType(id));
@@ -614,7 +655,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageBodyTypeDeleting(int id)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Settings.DeleteBodyType(id);
             if (result.Succeeded)
             {
@@ -630,7 +671,7 @@ namespace SearchAvto.Controllers
         public ActionResult AddFuelType(int? result)
         {
             var user = DefineUser();
-            if (HasNoAdminAccess(user)) return NoPermission();
+            if (HasNoAdminAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View();
@@ -640,7 +681,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageFuelTypeAdding(FuelType fuelType)
         {
             var user = DefineUser();
-            if (HasNoAdminAccess(user)) return NoPermission();
+            if (HasNoAdminAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Settings.AddFuelType(fuelType);
             return RedirectToAction(result.Succeeded ? "Settings" : "AddFuelType", new { result = result.Id });
         }
@@ -648,7 +689,7 @@ namespace SearchAvto.Controllers
         public ActionResult EditFuelType(int id, int? result)
         {
             var user = DefineUser();
-            if (HasNoAdminAccess(user)) return NoPermission();
+            if (HasNoAdminAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(DataManager.Settings.GetFuelType(id));
@@ -658,7 +699,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageFuelTypeEditing(FuelType fuelType)
         {
             var user = DefineUser();
-            if (HasNoAdminAccess(user)) return NoPermission();
+            if (HasNoAdminAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Settings.EditFuelType(fuelType);
             if (result.Succeeded)
             {
@@ -670,7 +711,7 @@ namespace SearchAvto.Controllers
         public ActionResult DeleteFuelType(int id, int? result)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(DataManager.Settings.GetFuelType(id));
@@ -679,7 +720,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageFuelTypeDeleting(int id)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Settings.DeleteFuelType(id);
             if (result.Succeeded)
             {
@@ -696,7 +737,7 @@ namespace SearchAvto.Controllers
         public ActionResult AddTireCarcassType(int? result)
         {
             var user = DefineUser();
-            if (HasNoAdminAccess(user)) return NoPermission();
+            if (HasNoAdminAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View();
@@ -706,7 +747,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageTireCarcassTypeAdding(TireCarcassType type)
         {
             var user = DefineUser();
-            if (HasNoAdminAccess(user)) return NoPermission();
+            if (HasNoAdminAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Settings.AddTireCarcassType(type);
             return RedirectToAction(result.Succeeded ? "Settings" : "AddTireCarcassType", new { result = result.Id });
         }
@@ -714,7 +755,7 @@ namespace SearchAvto.Controllers
         public ActionResult EditTireCarcassType(int id, int? result)
         {
             var user = DefineUser();
-            if (HasNoAdminAccess(user)) return NoPermission();
+            if (HasNoAdminAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(DataManager.Settings.GetTireCarcassType(id));
@@ -724,7 +765,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageTireCarcassTypeEditing(TireCarcassType type)
         {
             var user = DefineUser();
-            if (HasNoAdminAccess(user)) return NoPermission();
+            if (HasNoAdminAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Settings.EditTireCarcassType(type);
             if (result.Succeeded)
             {
@@ -736,7 +777,7 @@ namespace SearchAvto.Controllers
         public ActionResult DeleteTireCarcassType(int id, int? result)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(DataManager.Settings.GetTireCarcassType(id));
@@ -745,7 +786,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageTireCarcassTypeDeleting(int id)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Settings.DeleteTireCarcassType(id);
             if (result.Succeeded)
             {
@@ -761,7 +802,7 @@ namespace SearchAvto.Controllers
         public ActionResult AddTransmissionType(int? result)
         {
             var user = DefineUser();
-            if (HasNoAdminAccess(user)) return NoPermission();
+            if (HasNoAdminAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View();
@@ -771,7 +812,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageTransmissionTypeAdding(TransmissionType type)
         {
             var user = DefineUser();
-            if (HasNoAdminAccess(user)) return NoPermission();
+            if (HasNoAdminAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Settings.AddTransmissionType(type);
             return RedirectToAction(result.Succeeded ? "Settings" : "AddTransmissionType", new { result = result.Id });
         }
@@ -779,7 +820,7 @@ namespace SearchAvto.Controllers
         public ActionResult EditTransmissionType(int id, int? result)
         {
             var user = DefineUser();
-            if (HasNoAdminAccess(user)) return NoPermission();
+            if (HasNoAdminAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(DataManager.Settings.GetTransmissionType(id));
@@ -789,7 +830,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageTransmissionTypeEditing(TransmissionType type)
         {
             var user = DefineUser();
-            if (HasNoAdminAccess(user)) return NoPermission();
+            if (HasNoAdminAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Settings.EditTransmissionType(type);
             if (result.Succeeded)
             {
@@ -801,7 +842,7 @@ namespace SearchAvto.Controllers
         public ActionResult DeleteTransmissionType(int id, int? result)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(DataManager.Settings.GetTransmissionType(id));
@@ -810,7 +851,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageTransmissionTypeDeleting(int id)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Settings.DeleteTransmissionType(id);
             if (result.Succeeded)
             {
@@ -823,7 +864,7 @@ namespace SearchAvto.Controllers
         public ActionResult AddEngineLocation(int? result)
         {
             var user = DefineUser();
-            if (HasNoAdminAccess(user)) return NoPermission();
+            if (HasNoAdminAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View();
@@ -833,7 +874,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageEngineLocationAdding(EngineLocation type)
         {
             var user = DefineUser();
-            if (HasNoAdminAccess(user)) return NoPermission();
+            if (HasNoAdminAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Settings.AddEngineLocation(type);
             return RedirectToAction(result.Succeeded ? "Settings" : "AddEngineLocation", new { result = result.Id });
         }
@@ -841,7 +882,7 @@ namespace SearchAvto.Controllers
         public ActionResult EditEngineLocation(int id, int? result)
         {
             var user = DefineUser();
-            if (HasNoAdminAccess(user)) return NoPermission();
+            if (HasNoAdminAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(DataManager.Settings.GetEngineLocation(id));
@@ -851,7 +892,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageEngineLocationEditing(EngineLocation type)
         {
             var user = DefineUser();
-            if (HasNoAdminAccess(user)) return NoPermission();
+            if (HasNoAdminAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Settings.EditEngineLocation(type);
             if (result.Succeeded)
             {
@@ -863,7 +904,7 @@ namespace SearchAvto.Controllers
         public ActionResult DeleteEngineLocation(int id, int? result)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(DataManager.Settings.GetEngineLocation(id));
@@ -872,7 +913,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageEngineLocationDeleting(int id)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Settings.DeleteEngineLocation(id);
             if (result.Succeeded)
             {
@@ -887,7 +928,7 @@ namespace SearchAvto.Controllers
         public ActionResult AddValvesArrangement(int? result)
         {
             var user = DefineUser();
-            if (HasNoAdminAccess(user)) return NoPermission();
+            if (HasNoAdminAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View();
@@ -897,7 +938,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageValvesArrangementAdding(ValvesArrangement type)
         {
             var user = DefineUser();
-            if (HasNoAdminAccess(user)) return NoPermission();
+            if (HasNoAdminAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Settings.AddValvesArrangement(type);
             return RedirectToAction(result.Succeeded ? "Settings" : "AddValvesArrangement", new { result = result.Id });
         }
@@ -905,7 +946,7 @@ namespace SearchAvto.Controllers
         public ActionResult EditValvesArrangement(int id, int? result)
         {
             var user = DefineUser();
-            if (HasNoAdminAccess(user)) return NoPermission();
+            if (HasNoAdminAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(DataManager.Settings.GetValvesArrangement(id));
@@ -915,7 +956,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageValvesArrangementEditing(ValvesArrangement type)
         {
             var user = DefineUser();
-            if (HasNoAdminAccess(user)) return NoPermission();
+            if (HasNoAdminAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Settings.EditValvesArrangement(type);
             if (result.Succeeded)
             {
@@ -927,7 +968,7 @@ namespace SearchAvto.Controllers
         public ActionResult DeleteValvesArrangement(int id, int? result)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             if (result.HasValue)
                 ViewBag.Result = ProcessResults.GetById(result.Value);
             return View(DataManager.Settings.GetValvesArrangement(id));
@@ -936,7 +977,7 @@ namespace SearchAvto.Controllers
         public ActionResult ManageValvesArrangementDeleting(int id)
         {
             var user = DefineUser();
-            if (HasNoAccess(user)) return NoPermission();
+            if (HasNoAccess(user)) return RedirectToAction("NoPermission");
             ProcessResult result = DataManager.Settings.DeleteValvesArrangement(id);
             if (result.Succeeded)
             {
