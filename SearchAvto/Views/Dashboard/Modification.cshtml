@@ -54,12 +54,24 @@
                 hasFuelTank = true;
                 <div class="panel-heading">Двигатель</div>
                 <table class="table table-bordered">
-                    @HtmlManager.TableRow("Расположение", Model.InternalCombustionEngine.EngineLocation.Name)
+                    @if (Model.InternalCombustionEngine.Location != null)
+                    {
+                        @HtmlManager.TableRow("Расположение", Model.InternalCombustionEngine.EngineLocation.Name)
+                    }
+
                     @HtmlManager.TableRow("Объем, см<sup>3</sup>", Model.InternalCombustionEngine.Volume, Html)
-                    @HtmlManager.TableRow("Тип компоновки", Model.InternalCombustionEngine.ValvesArrangement.Name)
+                    @if (Model.InternalCombustionEngine.ValvesArrangementId != null)
+                    {
+                        @HtmlManager.TableRow("Тип компоновки", Model.InternalCombustionEngine.ValvesArrangement.Name)
+                    }
+
                     @HtmlManager.TableRow("Количество цилиндров", Model.InternalCombustionEngine.NumberOfValves)
                     @HtmlManager.TableRow("Мощность, л.с.", Model.InternalCombustionEngine.Power)
-                    @HtmlManager.TableRow("Тип топлива", Model.InternalCombustionEngine.FuelType.Name)
+                    @if (Model.InternalCombustionEngine.FuelTypeId != null)
+                    {
+                        @HtmlManager.TableRow("Тип топлива", Model.InternalCombustionEngine.FuelType.Name)
+                    }
+
                     @HtmlManager.TableRow("Крутящий момент, Н&middot;м/об. в мин.", String.Format("{0}/{1}", Model.InternalCombustionEngine.Torque, Model.InternalCombustionEngine.TorqueRotations), Html)
 
                 </table>

@@ -219,7 +219,7 @@ namespace SearchAvto.Models.LogicModels
             int start = r.Next(0, max);
             List<CarModel> models = Data.CarModels.ToList();
             int prev = start;
-            for (int j = 0; j < count; j++)
+            for (int j = 0; j < count*2; j+=2)
             {
                 int next = (start + j);
                 while (next==prev)

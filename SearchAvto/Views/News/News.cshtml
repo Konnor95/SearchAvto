@@ -1,9 +1,9 @@
-﻿@model News
+﻿@using SearchAvto.Models.LogicModels
+@model News
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <div id="content">
     <div class="ic"></div>
     <div class="container">
@@ -17,18 +17,29 @@
                 <div class="meta">
                     <time datetime="@String.Format("{0:yyyy-MM-dd}", Model.Date)" class="date-1"><i class="icon-calendar"></i> @String.Format("{0:dd-MM-yyyy}", Model.Date)</time>
                 </div>
+
                 <i>Комментарии</i>
-                <hr style="margin: 0"/>
+                <hr style="margin: 0" />
                 <div id="comments-container">
-                    @Html.Action("Comments", new { comments = Model.Comments })
+                    @Html.Action("Comments", new {comments = Model.Comments})
                 </div>
+
                 <div id="add-comment">
-                    <div class="form-group">
-                        <div id="enter-comment" style="color: firebrick; font-size:110%;display: none">Введите комметарий!</div>
-                        <textarea id="comment-text"class="form-control" rows="3"></textarea>
-                    </div>
-                    <button id="add"class="btn btn-1">Добавить комментарий</button>
+                    @if (DataManager.Users.Define(Context) != null)
+{
+                        <div class="form-group">
+                            <div id="enter-comment" style="color: firebrick; font-size: 110%; display: none">Введите комметарий!</div>
+                            <textarea id="comment-text" class="form-control" rows="3"></textarea>
+                        </div>
+                        <button id="add" class="btn btn-1">Добавить комментарий</button>
+                    }
+                    else
+                    {
+                    <p>Войдите, чтобы оставить комментарий</p>
+                    }
                 </div>
+
+
             </article>
             <article class="span4">
                 <h3 class="extra">Search</h3>
@@ -43,19 +54,17 @@
     </div>
 </div>
 
-
-
 @section Scripts{
     <script>
-        $(document).ready(function() {
-            $("#comment-text").focus(function() {
+        $(document).ready(function () {
+            $("#comment-text").focus(function () {
                 $("#enter-comment").hide('slow');
             });
-            $("#add").click(function() {
+            $("#add").click(function () {
                 var comment = $("#comment-text").val();
                 if (comment) {
                     $("#comment-text").val("");
-                    $.post('@Url.Action("AddComment", "News", new {id = Model.Id})', { text: comment }, function(data) {
+                    $.post('@Url.Action("AddComment", "News", new {id = Model.Id})', { text: comment }, function (data) {
                         $("#comments-container").html(data);
                     });
                 } else {

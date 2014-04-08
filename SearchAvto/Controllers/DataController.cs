@@ -173,8 +173,8 @@ namespace SearchAvto.Controllers
                 ModelLine = model.ModelLine.Name,
                 Brand = model.ModelLine.Brand.Name,
                 model.FullName,
-                model.ProductionStarted,
-                model.ProductionEnded,
+                model.StartYearOfProduction,
+                model.EndYearOfProduction,
                 BodyType = model.BodyType == null ? null : model.BodyType.Name
             };
         }

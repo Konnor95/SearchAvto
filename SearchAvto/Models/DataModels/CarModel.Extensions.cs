@@ -11,7 +11,7 @@ namespace SearchAvto.Models.DataModels
                 if (!String.IsNullOrWhiteSpace(Name)) return ModelLine.FullName + " " + Name;
                 if (StartYearOfProduction != null)
                 {
-                    return ModelLine.FullName +" " +  StartYearOfProduction;
+                    return ModelLine.FullName + " " + StartYearOfProduction;
                 }
                 return ModelLine.FullName;
             }
@@ -101,12 +101,12 @@ namespace SearchAvto.Models.DataModels
                     TMainFeature,
                     TColor,
                     TAge,
-                    TSpeed,
-                    TSize,
                     TEngine,
                     TPassengers,
+                    TSpeed,
                     TDistance,
                     TOutLand,
+                    TSize,
                     TPrice
                 };
             }
@@ -115,12 +115,12 @@ namespace SearchAvto.Models.DataModels
                 TMainFeature = value[0];
                 TColor = value[1];
                 TAge = value[2];
-                TSpeed = value[3];
-                TSize = value[4];
-                TEngine = value[5];
-                TPassengers = value[6];
-                TDistance = value[7];
-                TOutLand = value[8];
+                TEngine = value[3];
+                TPassengers = value[4];
+                TSpeed = value[5];
+                TDistance = value[6];
+                TOutLand = value[7];
+                TSize = value[8];
                 TPrice = value[9];
             }
         }
